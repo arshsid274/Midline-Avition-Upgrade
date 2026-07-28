@@ -1,0 +1,198 @@
+"use client";
+
+import React from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import { Plane, ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+
+const TICKETS = [
+  {
+    id: "762151",
+    from: "Argentina",
+    fromShort: "ARG",
+    to: "Bolivia",
+    toShort: "BOL",
+    timeStart: "06:00",
+    timeEnd: "14:00",
+    flight: "BK165",
+    gate: "A11",
+    seat: "21C",
+  },
+  {
+    id: "882190",
+    from: "France",
+    fromShort: "FRA",
+    to: "Monaco",
+    toShort: "MCO",
+    timeStart: "09:00",
+    timeEnd: "10:15",
+    flight: "JT992",
+    gate: "C02",
+    seat: "01A",
+  },
+  {
+    id: "112044",
+    from: "United Kingdom",
+    fromShort: "GBR",
+    to: "Switzerland",
+    toShort: "CHE",
+    timeStart: "12:30",
+    timeEnd: "15:45",
+    flight: "LX441",
+    gate: "B19",
+    seat: "04D",
+  },
+  {
+    id: "554012",
+    from: "Italy",
+    fromShort: "ITA",
+    to: "Spain",
+    toShort: "ESP",
+    timeStart: "18:00",
+    timeEnd: "20:30",
+    flight: "IB321",
+    gate: "D05",
+    seat: "12F",
+  },
+];
+
+export default function TicketCarousel() {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: "start" }, [
+    Autoplay({ delay: 4000, stopOnInteraction: false }),
+  ]);
+
+  return (
+    <section aria-labelledby="ticket-carousel-heading" className="overflow-hidden bg-inverse-canvas px-4 py-14 sm:px-6 sm:py-16 lg:py-20">
+      <div className="mx-auto max-w-7xl">
+        <div className="mb-8 flex flex-col gap-5 sm:mb-12 sm:flex-row sm:items-end sm:justify-between">
+          <div className="space-y-2">
+            <div className="inline-block border-l-2 border-ibm-blue px-3 py-1 text-sm text-inverse-ink-muted">
+              Live Marketplace
+            </div>
+            <h2 id="ticket-carousel-heading" className="text-2xl font-light text-white sm:text-3xl">
+              Recent <span className="font-normal">Bookings</span>
+            </h2>
+          </div>
+
+          <div className="flex gap-3">
+            <button
+              type="button"
+              aria-label="Previous ticket"
+              onClick={() => emblaApi?.scrollPrev()}
+              className="border border-inverse-surface-1 p-2.5 text-inverse-ink-muted transition-colors hover:border-white hover:text-white sm:p-3"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              type="button"
+              aria-label="Next ticket"
+              onClick={() => emblaApi?.scrollNext()}
+              className="border border-inverse-surface-1 p-2.5 text-inverse-ink-muted transition-colors hover:border-white hover:text-white sm:p-3"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </div>
+        </div>
+
+        <div className="cursor-grab overflow-visible active:cursor-grabbing" ref={emblaRef}>
+          <div role="list" aria-label="Recent flight bookings" className="-ml-3 flex sm:-ml-4">
+            {TICKETS.map((ticket) => (
+              <div
+                key={ticket.id}
+                role="listitem"
+                aria-label={`${ticket.from} to ${ticket.to} flight ${ticket.flight}`}
+                className="perspective-1000 flex-[0_0_100%] pl-3 sm:flex-[0_0_50%] sm:pl-4 lg:flex-[0_0_33.33%]"
+              >
+                <div className="group relative flex h-[172px] w-full max-w-[360px] overflow-hidden border border-inverse-surface-1 bg-white transition-colors duration-500 sm:h-[180px]">
+                  <div className="flex w-12 flex-shrink-0 flex-col items-center justify-around border-r border-dashed border-hairline bg-white py-4 opacity-80 sm:w-14">
+                    {[...Array(12)].map((_, i) => (
+                      <div key={i} className={`w-8 bg-black ${i % 3 === 0 ? "h-[4px]" : "h-[1px]"}`} />
+                    ))}
+                  </div>
+
+                  <div className="absolute left-[44px] top-[-8px] z-20 h-4 w-4 rounded-full bg-inverse-canvas sm:left-[52px]" />
+                  <div className="absolute bottom-[-8px] left-[44px] z-20 h-4 w-4 rounded-full bg-inverse-canvas sm:left-[52px]" />
+
+                  <div className="relative flex flex-1 flex-col justify-between p-3.5 sm:p-4">
+                    <div className="pointer-events-none absolute inset-0 -translate-x-40 -rotate-12 bg-gradient-to-r from-transparent via-white/80 to-transparent group-hover:animate-sweep" />
+
+                    <div className="flex items-center justify-between">
+                      <div className="text-left">
+                        <p className="text-[10px] font-medium uppercase text-ink-subtle">{ticket.from}</p>
+                        <p className="text-xl font-semibold leading-none text-ink">{ticket.fromShort}</p>
+                        <p className="mt-1 text-[10px] text-ink-muted">Dep {ticket.timeStart}</p>
+                      </div>
+
+                      <ArrowRight size={18} className="text-ibm-blue" />
+
+                      <div className="text-right">
+                        <p className="text-[10px] font-medium uppercase text-ink-subtle">{ticket.to}</p>
+                        <p className="text-xl font-semibold leading-none text-ink">{ticket.toShort}</p>
+                        <p className="mt-1 text-[10px] text-ink-muted">{ticket.timeEnd}</p>
+                      </div>
+                    </div>
+
+                    <div className="my-2 border-t border-hairline" />
+
+                    <div className="grid grid-cols-2 gap-y-2">
+                      <div>
+                        <p className="text-[9px] uppercase text-ink-subtle">Flight ID</p>
+                        <p className="text-xs font-semibold text-ink">{ticket.id}</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] uppercase text-ink-subtle">Flight</p>
+                        <p className="text-xs font-semibold text-ink">{ticket.flight}</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] uppercase text-ink-subtle">Gate</p>
+                        <p className="text-xs font-semibold text-ink">{ticket.gate}</p>
+                      </div>
+                      <div>
+                        <p className="text-[9px] uppercase text-ink-subtle">Seat</p>
+                        <p className="text-xs font-semibold text-ink">{ticket.seat}</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex w-11 flex-col items-center justify-between bg-ibm-blue py-5 text-white transition-colors duration-700 group-hover:bg-ibm-blue-hover sm:w-14 sm:py-6">
+                    <Plane size={22} className="rotate-90" />
+                    <span className="rotate-90 text-[8px] font-bold tracking-tighter opacity-50">JETCLASS</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="sr-only">
+        <h3>Recent flight bookings</h3>
+        <ul>
+          {TICKETS.map((ticket) => (
+            <li key={`seo-ticket-${ticket.id}`}>
+              Flight {ticket.flight} from {ticket.from} to {ticket.to}. Departure {ticket.timeStart}, arrival{" "}
+              {ticket.timeEnd}, gate {ticket.gate}, seat {ticket.seat}.
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <style jsx global>{`
+        @keyframes sweep {
+          0% {
+            transform: translateX(-150%) rotate(-12deg);
+          }
+          100% {
+            transform: translateX(300%) rotate(-12deg);
+          }
+        }
+        .animate-sweep {
+          animation: sweep 1.6s ease-in-out forwards;
+        }
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+      `}</style>
+    </section>
+  );
+}

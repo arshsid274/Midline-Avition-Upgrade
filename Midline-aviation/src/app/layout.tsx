@@ -1,0 +1,171 @@
+import "./globals.css";
+import type { Metadata, Viewport } from "next";
+import Navbar from "./components/Navbar/navbar";
+import ClarityInit from "./components/ClarityInit";
+import SiteFooter from "./components/ui/SiteFooter";
+import WhatsAppButton from "./components/ui/WhatsAppButton";
+import ChatWidget from "./components/ui/ChatWidget";
+import CookieConsent from "./components/ui/CookieConsent";
+import { ibmPlexSans, ibmPlexMono } from "@/lib/fonts";
+import {
+  BRAND_THEME_COLOR,
+  CONTACT_EMAIL,
+  CONTACT_PHONE,
+  DEFAULT_DESCRIPTION,
+  DEFAULT_KEYWORDS,
+  DEFAULT_LOCALE,
+  DEFAULT_OG_IMAGE,
+  SITE_NAME,
+  SITE_URL,
+  absoluteUrl,
+} from "@/lib/seo";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: BRAND_THEME_COLOR,
+};
+
+const defaultTitle = `${SITE_NAME} | Private Jet Charter and Aviation Services`;
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Airline",
+  name: SITE_NAME,
+  url: SITE_URL,
+  logo: absoluteUrl(DEFAULT_OG_IMAGE),
+  description: DEFAULT_DESCRIPTION,
+  areaServed: "Worldwide",
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "customer support",
+      email: CONTACT_EMAIL,
+      telephone: CONTACT_PHONE,
+      areaServed: "Worldwide",
+      availableLanguage: ["English"],
+    },
+  ],
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  inLanguage: "en-US",
+  potentialAction: {
+    "@type": "ContactAction",
+    target: `${SITE_URL}/contact`,
+    name: "Contact Midline Aviation",
+  },
+};
+
+const googleSiteVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+
+export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  title: {
+    default: defaultTitle,
+    // Site name first so browser tabs always show "Midline Aviation".
+    template: `${SITE_NAME} | %s`,
+  },
+  alternates: {
+    canonical: SITE_URL,
+    languages: {
+      "en-US": SITE_URL,
+    },
+  },
+  description: DEFAULT_DESCRIPTION,
+  keywords: DEFAULT_KEYWORDS,
+  category: "Aviation",
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
+  verification: googleSiteVerification
+    ? {
+        google: googleSiteVerification,
+      }
+    : undefined,
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    title: defaultTitle,
+    description: DEFAULT_DESCRIPTION,
+    url: SITE_URL,
+    locale: DEFAULT_LOCALE,
+    siteName: SITE_NAME,
+    images: [
+      {
+        url: absoluteUrl(DEFAULT_OG_IMAGE),
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} logo`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: defaultTitle,
+    description: DEFAULT_DESCRIPTION,
+    images: [absoluteUrl(DEFAULT_OG_IMAGE)],
+  },
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${ibmPlexSans.variable} ${ibmPlexMono.variable}`}
+    >
+      <body className="min-h-screen bg-background pt-[72px] md:pt-[84px]">
+        {/* Flags that JS is active so the reveal CSS gate can hide-then-animate elements.
+            With no JS the class is never added, so [data-reveal] content stays fully visible. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "document.documentElement.classList.add('js')",
+          }}
+        />
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          suppressHydrationWarning
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+        <ClarityInit />
+        <Navbar />
+        {children}
+        <SiteFooter />
+        <WhatsAppButton />
+        <ChatWidget />
+        <CookieConsent />
+      </body>
+    </html>
+  );
+}

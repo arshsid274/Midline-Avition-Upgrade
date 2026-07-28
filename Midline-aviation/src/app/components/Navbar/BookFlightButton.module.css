@@ -1,0 +1,72 @@
+.cartBtn {
+  width: 140px;
+  height: 40px;
+  border-radius: 0;
+  border: none;
+  background-color: #0f62fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition-duration: 0.5s;
+  overflow: hidden;
+  position: relative;
+  text-decoration: none;
+}
+
+.cartBtn:hover {
+  background-color: #0050e6;
+}
+
+.cartBtn:focus-visible {
+  outline: 2px solid #0f62fe;
+  outline-offset: 2px;
+}
+
+.iconContainer {
+  position: absolute;
+  left: -50px;
+  width: 30px;
+  height: 30px;
+  background-color: transparent;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 2;
+  transition-duration: 0.5s;
+}
+
+.icon {
+  border-radius: 0;
+}
+
+.text {
+  height: 100%;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  z-index: 1;
+  transition-duration: 0.5s;
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cartBtn:hover .iconContainer {
+  transform: translateX(58px);
+  transition-duration: 0.5s;
+}
+
+.cartBtn:hover .text {
+  transform: translate(10px, 0);
+  transition-duration: 0.5s;
+}
+
+.cartBtn:active {
+  background-color: #002d9c;
+}

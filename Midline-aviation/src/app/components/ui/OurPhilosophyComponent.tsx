@@ -1,0 +1,53 @@
+import Image from "next/image";
+import Reveal from "@/app/components/motion/Reveal";
+
+export default function OurPhilosophyComponent() {
+  return (
+    <section className="mx-auto w-full max-w-7xl px-6 py-24 lg:px-10">
+      <div className="grid items-center gap-16 lg:grid-cols-2">
+        <Reveal as="div" className="space-y-8" variant="stagger" stagger={0.14}>
+          <div data-reveal-item className="space-y-4">
+            <h3 className="text-sm text-ink-muted">Our Philosophy</h3>
+            <h2 className="text-4xl font-light leading-tight text-ink">
+              The Art of Elegance &amp;
+              <br />
+              <span className="text-ibm-blue">Unmatched Comfort</span>
+            </h2>
+          </div>
+          <p data-reveal-item className="text-lg leading-relaxed text-ink-muted">
+            Midline Aviation combines global flexibility with absolute privacy to provide a seamless travel experience
+            tailored to your specific needs. Every flight is a masterpiece of precision and luxury.
+          </p>
+          <div data-reveal-item className="flex items-center gap-6">
+            <div className="flex flex-col">
+              <span className="text-3xl font-light text-ink">15+</span>
+              <span className="text-sm text-ink-muted">Years Experience</span>
+            </div>
+            <div className="h-12 w-px bg-hairline" />
+            <div className="flex flex-col">
+              <span className="text-3xl font-light text-ink">1200+</span>
+              <span className="text-sm text-ink-muted">Global Destinations</span>
+            </div>
+          </div>
+        </Reveal>
+
+        <Reveal as="div" variant="clip-wipe" duration={0.9} className="relative">
+          <div className="relative aspect-video overflow-hidden border border-hairline bg-surface-1">
+            <Image
+              src="/assets/images/aircraft/g450-nose.webp"
+              alt="Gulfstream G450 head-on at the terminal"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover transition-transform duration-700 hover:scale-105"
+            />
+          </div>
+          <div className="absolute -bottom-6 -left-6 max-w-xs border border-hairline bg-white p-6">
+            <p className="text-sm italic text-ink-muted">
+              &ldquo;Privacy is not a luxury, it is our foundational commitment to every client.&rdquo;
+            </p>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
