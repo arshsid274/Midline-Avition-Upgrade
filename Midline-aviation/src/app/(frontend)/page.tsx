@@ -1,8 +1,15 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import HomePageClient from "@/app/components/HomePageClient";
 import { SITE_NAME, SITE_URL, absoluteUrl, buildPageMetadata } from "@/lib/seo";
 import { getEnabledAccreditations } from "@/lib/cms/accreditations";
 import { getHomeContent } from "@/lib/cms/home";
+
+// Loaded only in draft mode, so the published static page never requests
+// this chunk.
+const LivePreviewListener = dynamic(
+  () => import("@/app/components/cms/LivePreviewListener")
+);
 
 export const metadata: Metadata = buildPageMetadata({
   title: "The Art of Seamless, Luxury Air Travel",
@@ -76,6 +83,7 @@ export default async function HomePage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homePageSchema) }}
       />
+      {home.isDraft && <LivePreviewListener />}
       <HomePageClient home={home} accreditationLogos={accreditationLogos} />
     </>
   );

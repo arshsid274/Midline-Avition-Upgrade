@@ -4,6 +4,7 @@ import { headingField } from '../payload/fields/heading'
 import { linkField } from '../payload/fields/link'
 import { videoField } from '../payload/fields/video'
 import { revalidateGlobalPublished } from '../payload/hooks/revalidate'
+import { GLOBAL_ROUTES, buildPreviewURL } from '../payload/preview/routes'
 
 /**
  * The home page, modelled as the marketer sees it.
@@ -30,6 +31,13 @@ export const HomePage: GlobalConfig = {
     group: 'Pages',
     description:
       'Everything on the home page. Tabs run top to bottom in the order visitors scroll through them.',
+    // The "Preview" button — opens the real page in a new tab, in draft mode.
+    preview: () => buildPreviewURL(GLOBAL_ROUTES['home-page']),
+    // The side-by-side iframe. Payload strips `url` from the client config, so
+    // PREVIEW_SECRET never reaches the browser bundle.
+    livePreview: {
+      url: () => buildPreviewURL(GLOBAL_ROUTES['home-page']),
+    },
   },
   versions: {
     drafts: {

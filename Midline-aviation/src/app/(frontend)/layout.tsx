@@ -6,6 +6,7 @@ import SiteFooter from "@/app/components/ui/SiteFooter";
 import WhatsAppButton from "@/app/components/ui/WhatsAppButton";
 import ChatWidget from "@/app/components/ui/ChatWidget";
 import CookieConsent from "@/app/components/ui/CookieConsent";
+import DraftBanner from "@/app/components/cms/DraftBanner";
 import { ibmPlexSans, ibmPlexMono } from "@/lib/fonts";
 import {
   BRAND_THEME_COLOR,
@@ -165,6 +166,7 @@ export default function RootLayout({
         <WhatsAppButton />
         <ChatWidget />
         <CookieConsent />
+        <DraftBanner />
       </body>
     </html>
   );

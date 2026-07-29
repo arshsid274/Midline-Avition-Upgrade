@@ -23,6 +23,7 @@
     "@gsap/react": "^2.1.2",
     "@microsoft/clarity": "^1.0.2",
     "@payloadcms/db-sqlite": "^3.86.0",
+    "@payloadcms/live-preview-react": "^3.86.0",
     "@payloadcms/next": "^3.86.0",
     "@payloadcms/storage-s3": "^3.86.0",
     "@payloadcms/ui": "^3.86.0",
