@@ -1,11 +1,11 @@
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
-import Navbar from "./components/Navbar/navbar";
-import ClarityInit from "./components/ClarityInit";
-import SiteFooter from "./components/ui/SiteFooter";
-import WhatsAppButton from "./components/ui/WhatsAppButton";
-import ChatWidget from "./components/ui/ChatWidget";
-import CookieConsent from "./components/ui/CookieConsent";
+import Navbar from "@/app/components/Navbar/navbar";
+import ClarityInit from "@/app/components/ClarityInit";
+import SiteFooter from "@/app/components/ui/SiteFooter";
+import WhatsAppButton from "@/app/components/ui/WhatsAppButton";
+import ChatWidget from "@/app/components/ui/ChatWidget";
+import CookieConsent from "@/app/components/ui/CookieConsent";
 import { ibmPlexSans, ibmPlexMono } from "@/lib/fonts";
 import {
   BRAND_THEME_COLOR,

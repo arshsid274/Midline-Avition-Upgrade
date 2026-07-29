@@ -45,3 +45,6 @@ next-env.d.ts
 public/assets/images/T7-MID*
 public/assets/images/T7-MIDA*
 public/assets/images/T7-MIDB*
+
+# Payload SQLite database (never web-served, never committed)
+/data

@@ -1,4 +1,9 @@
 import type { NextConfig } from "next";
+import { withPayload } from "@payloadcms/next/withPayload";
+
+// Cloudflare R2 custom domain serving CMS-managed images. Left unset locally,
+// where uploads fall back to Payload's own file route.
+const mediaHost = process.env.NEXT_PUBLIC_MEDIA_URL;
 
 const nextConfig: NextConfig = {
   // Gzip all server responses
@@ -25,6 +30,10 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Cache optimised images for 30 days on the server (default is 60 s)
     minimumCacheTTL: 2592000,
+    // Images served from R2 must be allow-listed or next/image returns 400.
+    // This is the single most likely failure when migrating a surface, and it
+    // is invisible on pages that use a raw <img> instead of next/image.
+    remotePatterns: mediaHost ? [new URL(`${mediaHost}/**`)] : [],
   },
 
   // ── Long-lived cache headers for static public/ assets ───────────────────
@@ -88,4 +97,7 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// withPayload injects the admin panel's bundler config. The nextConfig object
+// above is passed through untouched — the existing headers(), image tuning and
+// optimizePackageImports all still apply to the marketing site.
+export default withPayload(nextConfig, { devBundleServerPackages: false });
