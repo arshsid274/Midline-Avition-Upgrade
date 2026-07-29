@@ -6,6 +6,7 @@
     "dev": "next dev --webpack",
     "dev:turbo": "next dev --turbopack",
     "build": "next build",
+    "build:airports": "node scripts/build-airport-dataset.mjs",
     "start": "next start",
     "lint": "eslint"
   },
