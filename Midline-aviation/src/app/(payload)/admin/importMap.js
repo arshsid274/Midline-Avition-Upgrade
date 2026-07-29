@@ -1,8 +1,12 @@
+import { VideoPreview as VideoPreview_d03cb3f2a72d7677ca4c53784843f315 } from '@/payload/components/VideoPreview'
+import { BookingFormNote as BookingFormNote_0d2eb9c49221adcd50eabb157db4d896 } from '@/payload/components/SectionNote'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
+  "@/payload/components/VideoPreview#VideoPreview": VideoPreview_d03cb3f2a72d7677ca4c53784843f315,
+  "@/payload/components/SectionNote#BookingFormNote": BookingFormNote_0d2eb9c49221adcd50eabb157db4d896,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

@@ -19,6 +19,7 @@ export const Accreditations: CollectionConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Content Library',
     useAsTitle: 'shortName',
     defaultColumns: ['shortName', 'kind', 'enabled', 'order'],
     description:

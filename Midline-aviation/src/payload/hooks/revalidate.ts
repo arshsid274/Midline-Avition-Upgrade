@@ -56,3 +56,23 @@ export const revalidateGlobal =
     safeRevalidate(paths)
     return doc
   }
+
+/**
+ * Revalidate only when the published version actually changed.
+ *
+ * With autosave on, `afterChange` fires every ~1.5s while someone types. Using
+ * `revalidateGlobal` there would thrash the cache continuously for output that
+ * has not changed, because a draft save leaves the published document alone.
+ *
+ * The `previousDoc` clause covers unpublishing: published → draft must still
+ * bust the cache, or the old copy stays live forever.
+ */
+export const revalidateGlobalPublished =
+  (paths: string[]): GlobalAfterChangeHook =>
+  ({ doc, previousDoc }) => {
+    const wasOrIsPublished =
+      (doc as { _status?: string })?._status === 'published' ||
+      (previousDoc as { _status?: string })?._status === 'published'
+    if (wasOrIsPublished) safeRevalidate(paths)
+    return doc
+  }

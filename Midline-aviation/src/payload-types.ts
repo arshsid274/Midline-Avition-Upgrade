@@ -67,9 +67,9 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
-    media: Media;
     accreditations: Accreditation;
+    media: Media;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -77,9 +77,9 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
-    media: MediaSelect<false> | MediaSelect<true>;
     accreditations: AccreditationsSelect<false> | AccreditationsSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -89,8 +89,12 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'home-page': HomePage;
+  };
+  globalsSelect: {
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -117,71 +121,6 @@ export interface UserAuthOperations {
   unlock: {
     email: string;
     password: string;
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
- */
-export interface User {
-  id: number;
-  /**
-   * Shown in the admin panel so edits are attributable.
-   */
-  name?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  email: string;
-  resetPasswordToken?: string | null;
-  resetPasswordExpiration?: string | null;
-  salt?: string | null;
-  hash?: string | null;
-  loginAttempts?: number | null;
-  lockUntil?: string | null;
-  sessions?:
-    | {
-        id: string;
-        createdAt?: string | null;
-        expiresAt: string;
-      }[]
-    | null;
-  password?: string | null;
-  collection: 'users';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Describes the image for screen readers and search engines.
-   */
-  alt: string;
-  /**
-   * Original /assets path this image was imported from. Set by the seed script and used to make re-runs idempotent — do not edit.
-   */
-  sourcePath?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
   };
 }
 /**
@@ -226,6 +165,71 @@ export interface Accreditation {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Describes the image for screen readers and search engines.
+   */
+  alt: string;
+  /**
+   * Original /assets path this image was imported from. Set by the seed script and used to make re-runs idempotent — do not edit.
+   */
+  sourcePath?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  /**
+   * Shown in the admin panel so edits are attributable.
+   */
+  name?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -249,16 +253,16 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'accreditations';
+        value: number | Accreditation;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
     | ({
-        relationTo: 'accreditations';
-        value: number | Accreditation;
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -304,26 +308,19 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "accreditations_select".
  */
-export interface UsersSelect<T extends boolean = true> {
+export interface AccreditationsSelect<T extends boolean = true> {
+  key?: T;
+  logo?: T;
   name?: T;
+  shortName?: T;
+  kind?: T;
+  enabled?: T;
+  notes?: T;
+  order?: T;
   updatedAt?: T;
   createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
-    | T
-    | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
-      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -360,19 +357,26 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "accreditations_select".
+ * via the `definition` "users_select".
  */
-export interface AccreditationsSelect<T extends boolean = true> {
-  key?: T;
-  logo?: T;
+export interface UsersSelect<T extends boolean = true> {
   name?: T;
-  shortName?: T;
-  kind?: T;
-  enabled?: T;
-  notes?: T;
-  order?: T;
   updatedAt?: T;
   createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -413,6 +417,118 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * Everything on the home page. Tabs run top to bottom in the order visitors scroll through them.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  hero: {
+    eyebrow?: string | null;
+    /**
+     * The large headline over the video.
+     */
+    heading: {
+      line1: string;
+      /**
+       * Shown in Midline blue at the start of the second line. Leave empty for none.
+       */
+      accent?: string | null;
+      /**
+       * Follows the highlighted words, in the normal colour.
+       */
+      rest?: string | null;
+    };
+    body?: string | null;
+    cta: {
+      label: string;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href: string;
+    };
+    /**
+     * Plays muted on a loop, with no sound. Path such as /assets/videos/g200-showcase.mp4.
+     */
+    videoUrl: string;
+    /**
+     * Shown while the video loads. This is the first thing visitors see, so pick a sharp frame.
+     */
+    poster?: (number | null) | Media;
+  };
+  ctaBanner?: {
+    heading?: string | null;
+    body?: string | null;
+    primary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+    secondary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?:
+          | T
+          | {
+              line1?: T;
+              accent?: T;
+              rest?: T;
+            };
+        body?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        videoUrl?: T;
+        poster?: T;
+      };
+  ctaBanner?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        primary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        secondary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -27,6 +27,7 @@ export const Media: CollectionConfig = {
     read: () => true,
   },
   admin: {
+    group: 'Media',
     useAsTitle: 'alt',
     defaultColumns: ['alt', 'filename', 'sourcePath'],
   },

@@ -9,6 +9,7 @@ import sharp from 'sharp'
 import { Accreditations } from './collections/Accreditations'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
+import { HomePage } from './globals/HomePage'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -31,7 +32,11 @@ export default buildConfig({
     api: '/payload-api',
   },
 
-  collections: [Users, Media, Accreditations],
+  // Order matters: nav groups render in the order their entities appear, so
+  // "Pages" (the globals) must be listed before the library collections for
+  // the sidebar to read the way the site does.
+  collections: [Accreditations, Media, Users],
+  globals: [HomePage],
 
   /**
    * SQLite, via libSQL — the same adapter serves two very different hosts:
