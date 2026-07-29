@@ -4,11 +4,15 @@ import config from '../../src/payload.config.js'
 const payload = await getPayload({ config })
 const g = (await payload.findGlobal({ slug: 'home-page', depth: 1 })) as any
 console.log('_status:', g._status)
-console.log('hero.eyebrow   :', g.hero?.eyebrow)
-console.log('hero.heading   :', `${g.hero?.heading?.line1} | ${g.hero?.heading?.accent} | ${g.hero?.heading?.rest}`)
-console.log('hero.cta       :', `${g.hero?.cta?.label} -> ${g.hero?.cta?.href}`)
-console.log('hero.videoUrl  :', g.hero?.videoUrl)
-console.log('hero.poster    :', g.hero?.poster?.url, '| alt:', g.hero?.poster?.alt)
-console.log('cta.heading    :', g.ctaBanner?.heading)
-console.log('cta.primary    :', `${g.ctaBanner?.primary?.label} -> ${g.ctaBanner?.primary?.href}`)
-console.log('cta.secondary  :', `${g.ctaBanner?.secondary?.label} -> ${g.ctaBanner?.secondary?.href}`)
+const rows: [string, unknown][] = [
+  ['1 hero',           g.hero?.heading?.line1],
+  ['2 showcase',       `${g.showcase?.heading} (${g.showcase?.panels?.length ?? 0} panels)`],
+  ['3 destinations',   `${g.destinations?.heading} (${g.destinations?.cards?.length ?? 0} cards)`],
+  ['4 marketplace',    `${g.marketplace?.jetVisuals?.length ?? 0} aircraft`],
+  ['5 accreditations', g.accreditations?.heading],
+  ['6 fleet',          `${g.fleet?.heading} (${g.fleet?.cards?.length ?? 0} cards)`],
+  ['7 cta banner',     g.ctaBanner?.heading],
+]
+for (const [k, v] of rows) console.log(`  ${k.padEnd(18)} ${v}`)
+const media = await payload.count({ collection: 'media' })
+console.log('media docs:', media.totalDocs)

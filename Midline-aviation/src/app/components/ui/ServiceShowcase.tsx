@@ -138,7 +138,13 @@ function ShowcasePanel({ item }: { item: ShowcaseItem }) {
   );
 }
 
-export default function ServiceShowcase() {
+export default function ServiceShowcase({
+  items = SHOWCASE_ITEMS,
+  heading,
+}: {
+  items?: ShowcaseItem[];
+  heading?: string;
+} = {}) {
   return (
     <section
       aria-labelledby="service-showcase-heading"
@@ -153,7 +159,7 @@ export default function ServiceShowcase() {
         </h2>
 
         <div className="mt-10 space-y-20 lg:mt-14 lg:space-y-28">
-          {SHOWCASE_ITEMS.map((item) => (
+          {items.map((item) => (
             <ShowcasePanel key={item.id} item={item} />
           ))}
         </div>

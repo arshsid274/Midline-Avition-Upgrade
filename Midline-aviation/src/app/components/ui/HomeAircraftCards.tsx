@@ -64,7 +64,11 @@ function HoverVideoCard({ aircraft }: { aircraft: AircraftCard }) {
   );
 }
 
-export default function HomeAircraftCards() {
+export default function HomeAircraftCards({
+  cards = HOME_AIRCRAFT,
+}: {
+  cards?: AircraftCard[];
+} = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -166,7 +170,7 @@ export default function HomeAircraftCards() {
         </header>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {HOME_AIRCRAFT.map((aircraft) => (
+          {cards.map((aircraft) => (
             <CardContainer key={aircraft.id} className="h-full w-full" containerClassName="h-full w-full py-0">
               <CardBody
                 data-aircraft-card

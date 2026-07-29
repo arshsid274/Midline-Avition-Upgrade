@@ -38,11 +38,11 @@ export default function HomePageClient({ home, accreditationLogos }: HomePageCli
     <main className="relative z-[1] bg-white">
       <HomeHeroVideo content={home.hero} />
       <HeroBookingForm revealFromBelow />
-      <ServicesShowcase />
-      <PopularDestinationsCarousel />
+      <ServicesShowcase items={home.showcase.items} heading={home.showcase.heading} />
+      <PopularDestinationsCarousel cards={home.destinations.cards} />
       <TripsMapView />
       <LogoLoopSection logos={accreditationLogos} />
-      <HomeAircraftCards />
+      <HomeAircraftCards cards={home.fleet.cards} />
       <HomeCtaBanner content={home.ctaBanner} />
     </main>
   );

@@ -9,7 +9,11 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { POPULAR_DESTINATIONS, type DestinationCard } from "@/lib/home-content";
 
-export default function PopularDestinationsCarousel() {
+export default function PopularDestinationsCarousel({
+  cards = POPULAR_DESTINATIONS,
+}: {
+  cards?: DestinationCard[];
+} = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const textBlockRef = useRef<HTMLDivElement>(null);
   const carouselBlockRef = useRef<HTMLDivElement>(null);
@@ -153,7 +157,7 @@ export default function PopularDestinationsCarousel() {
               aria-label="Frequent travel destinations"
               className="-ml-3 flex cursor-grab active:cursor-grabbing sm:-ml-4"
             >
-              {POPULAR_DESTINATIONS.map((destination) => (
+              {cards.map((destination) => (
                 <article
                   key={destination.id}
                   role="listitem"

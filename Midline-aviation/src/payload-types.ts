@@ -459,6 +459,99 @@ export interface HomePage {
      */
     poster?: (number | null) | Media;
   };
+  showcase?: {
+    heading?: string | null;
+    panels?:
+      | {
+          title: string;
+          subtitle?: string | null;
+          description?: string | null;
+          image?: (number | null) | Media;
+          link?: {
+            label?: string | null;
+            /**
+             * e.g. /contact, /#book-your-flight, or a full https:// address.
+             */
+            href?: string | null;
+          };
+          /**
+           * Alternate this between panels so the page zig-zags.
+           */
+          imageOnRight?: boolean | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  destinations?: {
+    heading?: string | null;
+    intro?: string | null;
+    /**
+     * Drag to reorder. These scroll horizontally on the page.
+     */
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          image?: (number | null) | Media;
+          link?: {
+            label?: string | null;
+            /**
+             * e.g. /contact, /#book-your-flight, or a full https:// address.
+             */
+            href?: string | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  marketplace?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    /**
+     * Two photos per aircraft. The route details beside them come from the flight database, not from here.
+     */
+    jetVisuals?:
+      | {
+          title: string;
+          exterior?: (number | null) | Media;
+          interior?: (number | null) | Media;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  accreditations?: {
+    heading?: string | null;
+  };
+  fleet?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          image?: (number | null) | Media;
+          link?: {
+            label?: string | null;
+            /**
+             * e.g. /contact, /#book-your-flight, or a full https:// address.
+             */
+            href?: string | null;
+          };
+          registration?: string | null;
+          /**
+           * Otherwise the card reads "Available Now".
+           */
+          comingSoon?: boolean | null;
+          /**
+           * Plays when someone hovers the card. Leave empty to show only the picture.
+           */
+          videoUrl?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   ctaBanner?: {
     heading?: string | null;
     body?: string | null;
@@ -506,6 +599,91 @@ export interface HomePageSelect<T extends boolean = true> {
             };
         videoUrl?: T;
         poster?: T;
+      };
+  showcase?:
+    | T
+    | {
+        heading?: T;
+        panels?:
+          | T
+          | {
+              title?: T;
+              subtitle?: T;
+              description?: T;
+              image?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              imageOnRight?: T;
+              id?: T;
+            };
+      };
+  destinations?:
+    | T
+    | {
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+            };
+      };
+  marketplace?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        jetVisuals?:
+          | T
+          | {
+              title?: T;
+              exterior?: T;
+              interior?: T;
+              id?: T;
+            };
+      };
+  accreditations?:
+    | T
+    | {
+        heading?: T;
+      };
+  fleet?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              registration?: T;
+              comingSoon?: T;
+              videoUrl?: T;
+              id?: T;
+            };
       };
   ctaBanner?:
     | T

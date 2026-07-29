@@ -3,7 +3,13 @@ import { getPayload } from 'payload'
 // Relative, not the @/ alias: the Payload CLI transpiles these through tsx,
 // which does not read tsconfig paths.
 import config from '../../src/payload.config.js'
-import { HOME_CTA_BANNER, HOME_HERO } from '../../src/lib/home-content.js'
+import {
+  HOME_AIRCRAFT,
+  HOME_CTA_BANNER,
+  HOME_HERO,
+  POPULAR_DESTINATIONS,
+  SHOWCASE_ITEMS,
+} from '../../src/lib/home-content.js'
 
 import { importMedia } from './lib/media.mjs'
 
@@ -49,6 +55,69 @@ const run = async () => {
     console.log('  + hero')
   } else {
     console.log('  = hero already has content, skipped (use --force to overwrite)')
+  }
+
+  if (force || !existing?.showcase?.panels?.length) {
+    data.showcase = {
+      heading: 'Discover Midline',
+      panels: await Promise.all(
+        SHOWCASE_ITEMS.map(async (item) => ({
+          title: item.title,
+          subtitle: item.subtitle,
+          description: item.description,
+          image: await importMedia(payload, item.imageSrc, item.imageAlt),
+          link: { label: item.ctaLabel, href: item.href },
+          imageOnRight: Boolean(item.reverse),
+        }))
+      ),
+    }
+    console.log(`  + discover midline (${SHOWCASE_ITEMS.length} panels)`)
+  } else {
+    console.log('  = discover midline already has content, skipped')
+  }
+
+  if (force || !existing?.destinations?.cards?.length) {
+    data.destinations = {
+      heading: 'Frequent travel destinations',
+      cards: await Promise.all(
+        POPULAR_DESTINATIONS.map(async (item) => ({
+          title: item.name,
+          image: await importMedia(payload, item.imageSrc, item.imageAlt),
+          link: { label: item.name, href: item.href },
+        }))
+      ),
+    }
+    console.log(`  + destinations (${POPULAR_DESTINATIONS.length} cards)`)
+  } else {
+    console.log('  = destinations already has content, skipped')
+  }
+
+  if (force || !existing?.accreditations?.heading) {
+    data.accreditations = { heading: 'Accreditations & Memberships' }
+    console.log('  + accreditations strip')
+  } else {
+    console.log('  = accreditations strip already has content, skipped')
+  }
+
+  if (force || !existing?.fleet?.cards?.length) {
+    data.fleet = {
+      eyebrow: 'Fleet',
+      heading: 'Our Fleet',
+      cards: await Promise.all(
+        HOME_AIRCRAFT.map(async (item) => ({
+          title: item.name,
+          description: item.description,
+          registration: item.registration,
+          comingSoon: Boolean(item.comingSoon),
+          image: await importMedia(payload, item.imageSrc, item.imageAlt),
+          link: { label: 'More Details', href: item.href },
+          videoUrl: item.videoSrc ?? null,
+        }))
+      ),
+    }
+    console.log(`  + our fleet (${HOME_AIRCRAFT.length} cards)`)
+  } else {
+    console.log('  = our fleet already has content, skipped')
   }
 
   if (force || !ctaFilled) {

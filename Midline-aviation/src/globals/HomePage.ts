@@ -3,6 +3,7 @@ import type { GlobalConfig } from 'payload'
 import { headingField } from '../payload/fields/heading'
 import { linkField } from '../payload/fields/link'
 import { videoField } from '../payload/fields/video'
+import { cardArray, imageField, sectionHeader } from '../payload/fields/section'
 import { revalidateGlobalPublished } from '../payload/hooks/revalidate'
 import { GLOBAL_ROUTES, buildPreviewURL } from '../payload/preview/routes'
 
@@ -97,10 +98,143 @@ export const HomePage: GlobalConfig = {
           ],
         },
 
+        // ── 2 ─────────────────────────────────────────────────────────────
+        {
+          name: 'showcase',
+          label: '2 · Discover Midline',
+          description:
+            'The two large picture-and-text panels below the booking form. They alternate sides down the page.',
+          fields: [
+            { name: 'heading', type: 'text', label: 'Section headline' },
+            {
+              name: 'panels',
+              type: 'array',
+              label: 'Panels',
+              labels: { singular: 'Panel', plural: 'Panels' },
+              admin: {
+                initCollapsed: true,
+                components: { RowLabel: '@/payload/components/RowLabel#CardRowLabel' },
+              },
+              fields: [
+                { name: 'title', type: 'text', label: 'Title', required: true },
+                { name: 'subtitle', type: 'text', label: 'Line under the title' },
+                { name: 'description', type: 'textarea', label: 'Paragraph' },
+                imageField({ name: 'image', label: 'Picture' }),
+                linkField({ name: 'link', label: 'Button' }),
+                {
+                  name: 'imageOnRight',
+                  type: 'checkbox',
+                  label: 'Show the picture on the right',
+                  admin: {
+                    description: 'Alternate this between panels so the page zig-zags.',
+                  },
+                },
+              ],
+            },
+          ],
+        },
+
+        // ── 3 ─────────────────────────────────────────────────────────────
+        {
+          name: 'destinations',
+          label: '3 · Popular Destinations',
+          description: 'The sliding row of city cards.',
+          fields: [
+            ...sectionHeader({ includeEyebrow: false }),
+            cardArray({
+              name: 'cards',
+              label: 'Destination cards',
+              labelSingular: 'Destination',
+              description: 'Drag to reorder. These scroll horizontally on the page.',
+              withImage: true,
+              withLink: true,
+            }),
+          ],
+        },
+
+        // ── 4 ─────────────────────────────────────────────────────────────
+        {
+          name: 'marketplace',
+          label: '4 · Where We Fly',
+          description: 'The world map with the aircraft photo carousel beside it.',
+          fields: [
+            ...sectionHeader(),
+            {
+              type: 'collapsible',
+              label: 'Aircraft photos used on the map',
+              admin: { initCollapsed: true },
+              fields: [
+                {
+                  name: 'jetVisuals',
+                  type: 'array',
+                  label: 'Aircraft',
+                  labels: { singular: 'Aircraft', plural: 'Aircraft' },
+                  admin: {
+                    description:
+                      'Two photos per aircraft. The route details beside them come from the flight database, not from here.',
+                    components: { RowLabel: '@/payload/components/RowLabel#CardRowLabel' },
+                  },
+                  fields: [
+                    { name: 'title', type: 'text', label: 'Aircraft name', required: true },
+                    imageField({ name: 'exterior', label: 'Outside photo' }),
+                    imageField({ name: 'interior', label: 'Cabin photo' }),
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+
+        // ── 5 ─────────────────────────────────────────────────────────────
+        {
+          name: 'accreditations',
+          label: '5 · Accreditations strip',
+          description: 'The scrolling row of industry logos.',
+          fields: [
+            { name: 'heading', type: 'text', label: 'Section headline' },
+            {
+              name: 'accreditationsNote',
+              type: 'ui',
+              admin: {
+                components: { Field: '@/payload/components/SectionNote#AccreditationsNote' },
+              },
+            },
+          ],
+        },
+
+        // ── 6 ─────────────────────────────────────────────────────────────
+        {
+          name: 'fleet',
+          label: '6 · Our Fleet',
+          description: 'The three aircraft cards near the bottom of the page.',
+          fields: [
+            ...sectionHeader(),
+            cardArray({
+              name: 'cards',
+              label: 'Aircraft cards',
+              labelSingular: 'Aircraft',
+              withImage: true,
+              withLink: true,
+              extraFields: [
+                { name: 'registration', type: 'text', label: 'Tail number' },
+                {
+                  name: 'comingSoon',
+                  type: 'checkbox',
+                  label: 'Mark as "Coming Soon"',
+                  admin: { description: 'Otherwise the card reads "Available Now".' },
+                },
+                videoField({
+                  name: 'videoUrl',
+                  label: 'Hover video (optional)',
+                  description:
+                    'Plays when someone hovers the card. Leave empty to show only the picture.',
+                }),
+              ],
+            }),
+          ],
+        },
+
         // ── 7 ─────────────────────────────────────────────────────────────
-        // Numbered 7 because it is the seventh band on the page; the sections
-        // between it and the hero are migrated in later commits and will slot
-        // in above without renumbering this one.
         {
           name: 'ctaBanner',
           label: '7 · Blue banner (bottom)',

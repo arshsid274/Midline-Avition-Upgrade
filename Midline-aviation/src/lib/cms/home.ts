@@ -5,14 +5,24 @@ import { getPayload } from "payload";
 
 import config from "@/payload.config";
 import {
+  HOME_AIRCRAFT,
   HOME_CTA_BANNER,
   HOME_HERO,
+  POPULAR_DESTINATIONS,
+  SHOWCASE_ITEMS,
+  type AircraftCard,
   type CtaBannerContent,
+  type DestinationCard,
   type HeroContent,
+  type ShowcaseItem,
 } from "@/lib/home-content";
 
 export type HomeContent = {
   hero: HeroContent;
+  showcase: { heading: string; items: ShowcaseItem[] };
+  destinations: { heading: string; cards: DestinationCard[] };
+  accreditationsHeading: string;
+  fleet: { eyebrow: string; heading: string; cards: AircraftCard[] };
   ctaBanner: CtaBannerContent;
   /** True when rendering unpublished content, so the page can show a banner. */
   isDraft: boolean;
@@ -71,8 +81,65 @@ export const getHomeContent = async (): Promise<HomeContent> => {
   const heading = hero.heading ?? {};
   const banner = global?.ctaBanner ?? {};
 
+  // Each list falls back to the committed array whenever the CMS one is empty,
+  // so a half-finished draft never renders a blank section.
+  const showcasePanels: ShowcaseItem[] = (global?.showcase?.panels ?? []).length
+    ? global.showcase.panels.map((panel: any, index: number) => ({
+        id: `panel-${index}`,
+        title: text(panel.title, ""),
+        subtitle: text(panel.subtitle, ""),
+        description: text(panel.description, ""),
+        href: text(panel.link?.href, "/contact"),
+        ctaLabel: text(panel.link?.label, "Learn more"),
+        imageSrc: imageFrom(panel.image, { src: "", alt: "" }).src,
+        imageAlt: imageFrom(panel.image, { src: "", alt: "" }).alt,
+        reverse: Boolean(panel.imageOnRight),
+      }))
+    : SHOWCASE_ITEMS;
+
+  const destinationCards: DestinationCard[] = (global?.destinations?.cards ?? []).length
+    ? global.destinations.cards.map((card: any, index: number) => ({
+        id: `destination-${index}`,
+        name: text(card.title, ""),
+        imageSrc: imageFrom(card.image, { src: "", alt: "" }).src,
+        imageAlt: imageFrom(card.image, { src: "", alt: "" }).alt,
+        href: text(card.link?.href, "/contact"),
+      }))
+    : POPULAR_DESTINATIONS;
+
+  const fleetCards: AircraftCard[] = (global?.fleet?.cards ?? []).length
+    ? global.fleet.cards.map((card: any, index: number) => ({
+        id: `aircraft-${index}`,
+        name: text(card.title, ""),
+        registration: text(card.registration, ""),
+        description: text(card.description, ""),
+        comingSoon: Boolean(card.comingSoon),
+        imageSrc: imageFrom(card.image, { src: "", alt: "" }).src,
+        imageAlt: imageFrom(card.image, { src: "", alt: "" }).alt,
+        href: text(card.link?.href, "/fleet"),
+        videoSrc: typeof card.videoUrl === "string" && card.videoUrl ? card.videoUrl : undefined,
+      }))
+    : HOME_AIRCRAFT;
+
   return {
     isDraft: draft,
+    showcase: {
+      heading: text(global?.showcase?.heading, "Discover Midline"),
+      items: showcasePanels,
+    },
+    destinations: {
+      heading: text(global?.destinations?.heading, "Frequent travel destinations"),
+      cards: destinationCards,
+    },
+    accreditationsHeading: text(
+      global?.accreditations?.heading,
+      "Accreditations & Memberships"
+    ),
+    fleet: {
+      eyebrow: text(global?.fleet?.eyebrow, "Fleet"),
+      heading: text(global?.fleet?.heading, "Our Fleet"),
+      cards: fleetCards,
+    },
     hero: {
       eyebrow: text(hero.eyebrow, HOME_HERO.eyebrow),
       heading: {
