@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import { buildBreadcrumbSchema, buildPageMetadata, CONTACT_EMAIL, SITE_URL } from "@/lib/seo";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
+import { type FaqGroup } from "@/lib/faq-content";
+import { getFaqContent } from "@/lib/cms/faq";
 
 // Q&A copy sourced from the ops information-request workbook (Jul 2026).
 // The "what if Midline cancels / flight disruption" answer is marked
 // NEEDS REWRITE by ops and is intentionally not published yet.
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Frequently Asked Questions",
@@ -24,98 +26,25 @@ export const metadata: Metadata = buildPageMetadata({
 
 const breadcrumbSchema = buildBreadcrumbSchema([{ name: "FAQ", path: "/faq" }]);
 
-type QA = { q: string; a: string };
-type FaqGroup = { heading: string; items: QA[] };
 
-const FAQ_GROUPS: FaqGroup[] = [
-  {
-    heading: "Booking & Payment",
-    items: [
-      {
-        q: "What is the minimum booking lead time?",
-        a: "Flights can be arranged at extremely short notice — in some cases from as little as 30 minutes, subject to aircraft availability, routing, and permits.",
-      },
-      {
-        q: "What payment methods do you accept?",
-        a: "We accept bank transfer, credit card, cash, and cryptocurrency.",
-      },
-      {
-        q: "Which currencies can I pay in?",
-        a: "AED, USD, and EUR.",
-      },
-      {
-        q: "Is a deposit required to confirm a booking?",
-        a: "Full payment is required upon confirmation of the booking.",
-      },
-      {
-        q: "Are quoted prices all-inclusive?",
-        a: "Yes — our quotes are fully all-inclusive, with no additional fees or taxes on top.",
-      },
-    ],
-  },
-  {
-    heading: "Cancellation & Refunds",
-    items: [
-      {
-        q: "What is your cancellation policy?",
-        a: "Cancellation fees apply against the total charter price (invoice plus any non-refundable costs): 10% from signing of the contract; 50% within 7 days (168 hours) but more than 48 hours before scheduled departure; 75% within 48 hours but more than 24 hours before departure; and 100% within 24 hours of departure or in case of a no-show.",
-      },
-      {
-        q: "How are refunds handled and how long do they take?",
-        a: "Refunds are issued via the original payment method and are typically processed within 2–3 working days.",
-      },
-    ],
-  },
-  {
-    heading: "Onboard & Policies",
-    items: [
-      {
-        q: "Are pets allowed on board?",
-        a: "Yes — pets are welcome in the cabin. A fee of USD 1,500 applies per pet. Please advise us at booking.",
-      },
-      {
-        q: "What is your smoking policy?",
-        a: "Smoking is permitted on board, subject to a USD 2,000 cleaning fee.",
-      },
-      {
-        q: "What catering options do you offer?",
-        a: "We offer both standard and VIP catering options, tailored to your preferences.",
-      },
-    ],
-  },
-  {
-    heading: "Travel Logistics",
-    items: [
-      {
-        q: "Do you arrange ground transport and airport transfers?",
-        a: "Yes — ground transportation and airport transfers can be arranged on request.",
-      },
-      {
-        q: "Do you provide passport and visa support?",
-        a: "Passports and visas are the passenger's responsibility. We recommend confirming entry requirements for your destination before travel.",
-      },
-      {
-        q: "Which airports and FBOs do you use in key hubs?",
-        a: "In Dubai we operate from DWC (Falcon Aviation and ExecuJet FBOs) and DXB (Jet Aviation FBO).",
-      },
-    ],
-  },
-];
-
-const faqSchema = {
+/** Built from CMS content so the structured data cannot drift from the page. */
+const buildFaqSchema = (groups: FaqGroup[]) => ({
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "@id": `${SITE_URL}/faq#faq`,
-  mainEntity: FAQ_GROUPS.flatMap((group) =>
+  mainEntity: groups.flatMap((group) =>
     group.items.map((item) => ({
       "@type": "Question",
       name: item.q,
       acceptedAnswer: { "@type": "Answer", text: item.a },
     }))
   ),
-};
+});
 
-export default function FaqPage() {
+export default async function FaqPage() {
+  const content = await getFaqContent();
+  const faqSchema = buildFaqSchema(content.groups);
+
   return (
     <main className="bg-white">
       <script
@@ -142,11 +71,10 @@ export default function FaqPage() {
               on="load"
               className="font-display mt-4 text-4xl font-light leading-[1.1] text-white sm:text-5xl"
             >
-              Frequently asked questions.
+              {content.hero.heading}
             </SplitHeading>
             <p data-reveal-item className="mt-5 max-w-2xl text-base leading-8 text-inverse-ink-muted">
-              Booking, payment, policies, and logistics — the answers our clients ask for most. Anything
-              else, we are one message away.
+              {content.hero.body}
             </p>
           </Reveal>
         </div>
@@ -155,7 +83,7 @@ export default function FaqPage() {
       {/* ── Q&A groups ── */}
       <section className="px-4 py-14 sm:px-6 sm:py-18 lg:px-16">
         <div className="mx-auto w-full max-w-[900px]">
-          {FAQ_GROUPS.map((group, gi) => (
+          {content.groups.map((group, gi) => (
             <Reveal as="div" variant="fade-up" key={group.heading} className={gi === 0 ? "" : "mt-12 sm:mt-14"}>
               <h2 className="font-display text-2xl font-light text-ink sm:text-3xl">{group.heading}</h2>
               <div className="mt-5 divide-y divide-hairline border-y border-hairline">
@@ -182,13 +110,13 @@ export default function FaqPage() {
           ))}
 
           <Reveal as="div" variant="fade-up" className="mt-12 bg-ibm-blue p-7 text-center sm:mt-14 sm:p-9">
-            <h2 className="font-display text-2xl font-light text-white">Still have a question?</h2>
+            <h2 className="font-display text-2xl font-light text-white">{content.closing.heading}</h2>
             <p className="mt-2 text-sm leading-7 text-white/80 sm:text-base">
-              Our team answers around the clock at{" "}
+              {content.closing.bodyBefore}{" "}
               <a className="font-semibold text-white underline underline-offset-2" href={`mailto:${CONTACT_EMAIL}`}>
                 {CONTACT_EMAIL}
               </a>{" "}
-              — or use the booking form and we will come back with a tailored quote.
+              {content.closing.bodyAfter}
             </p>
           </Reveal>
         </div>

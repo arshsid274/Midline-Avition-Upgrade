@@ -93,11 +93,13 @@ export interface Config {
     'home-page': HomePage;
     'contact-page': ContactPage;
     'safety-page': SafetyPage;
+    'faq-page': FaqPage;
   };
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
     'safety-page': SafetyPageSelect<false> | SafetyPageSelect<true>;
+    'faq-page': FaqPageSelect<false> | FaqPageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -688,6 +690,43 @@ export interface SafetyPage {
   createdAt?: string | null;
 }
 /**
+ * The questions and answers page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-page".
+ */
+export interface FaqPage {
+  id: number;
+  hero?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    body?: string | null;
+  };
+  groups?: {
+    items?:
+      | {
+          heading: string;
+          questions?:
+            | {
+                q: string;
+                a: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  closing?: {
+    heading?: string | null;
+    bodyBefore?: string | null;
+    bodyAfter?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page_select".
  */
@@ -917,6 +956,47 @@ export interface SafetyPageSelect<T extends boolean = true> {
     | {
         heading?: T;
         body?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-page_select".
+ */
+export interface FaqPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+      };
+  groups?:
+    | T
+    | {
+        items?:
+          | T
+          | {
+              heading?: T;
+              questions?:
+                | T
+                | {
+                    q?: T;
+                    a?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  closing?:
+    | T
+    | {
+        heading?: T;
+        bodyBefore?: T;
+        bodyAfter?: T;
       };
   _status?: T;
   updatedAt?: T;

@@ -37,3 +37,17 @@ export const FactRowLabel = () => {
   if (data?.label) return <span>{data.label}</span>
   return <span>{`Fact ${(rowNumber ?? 0) + 1}`}</span>
 }
+
+export const GroupRowLabel = () => {
+  const { data, rowNumber } = useRowLabel<{ heading?: string; questions?: unknown[] }>()
+  if (data?.heading) {
+    const count = data.questions?.length ?? 0
+    return <span>{`${data.heading} (${count})`}</span>
+  }
+  return <span>{`Group ${(rowNumber ?? 0) + 1}`}</span>
+}
+
+export const QuestionRowLabel = () => {
+  const { data, rowNumber } = useRowLabel<{ q?: string }>()
+  return <span>{data?.q || `Question ${(rowNumber ?? 0) + 1}`}</span>
+}
