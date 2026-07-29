@@ -4,8 +4,9 @@ import FleetAircraftComparisonSection from "@/app/components/ui/FleetAircraftCom
 import FleetExceptionalHero from "@/app/components/ui/FleetExceptionalHero";
 import FleetInteriorGallerySection from "@/app/components/ui/FleetInteriorGallerySection";
 import ServicesMissionShowcase from "@/app/components/ui/ServicesMissionShowcase";
+import { getFleetPageContent } from "@/lib/cms/fleet";
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Our Fleet",
@@ -16,10 +17,12 @@ export const metadata: Metadata = buildPageMetadata({
   keywords: ["midline fleet", "embraer legacy 650", "gulfstream g450", "gulfstream g200"],
 });
 
-export default function FleetPage() {
+export default async function FleetPage() {
+  const content = await getFleetPageContent();
+
   return (
     <main className="midline-page">
-      <FleetExceptionalHero />
+      <FleetExceptionalHero content={content.hero} />
 
       <FleetAircraftComparisonSection />
 

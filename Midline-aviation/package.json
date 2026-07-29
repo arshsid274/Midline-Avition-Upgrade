@@ -25,7 +25,8 @@
     "seed:services": "payload run scripts/seed/service-pages.mts",
     "seed:gallery": "payload run scripts/seed/gallery.mts",
     "seed:aircraft": "payload run scripts/seed/aircraft.mts",
-    "seed:all": "node --experimental-strip-types scripts/seed/all.mts"
+    "seed:all": "node --experimental-strip-types scripts/seed/all.mts",
+    "seed:fleet": "payload run scripts/seed/fleet-page.mts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

@@ -16,6 +16,7 @@ export const GLOBAL_ROUTES: Record<string, string> = {
   'sales-page': '/services/aircraft-sales',
   'cargo-page': '/services/cargo-transportation',
   'mro-page': '/services/mro',
+  'fleet-page': '/fleet',
 }
 
 /**

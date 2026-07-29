@@ -1,7 +1,12 @@
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
+import { FLEET_PAGE } from "@/lib/fleet-page-content";
 
-export default function FleetExceptionalHero() {
+export default function FleetExceptionalHero({
+  content = FLEET_PAGE.hero,
+}: {
+  content?: { heading: string; body: string; videoUrl: string; poster: { src: string; alt: string } };
+} = {}) {
   return (
     <section className="relative isolate h-[calc(100svh-72px)] w-full overflow-hidden md:h-[calc(100svh-84px)]">
       <div className="relative h-full w-full">
@@ -13,10 +18,10 @@ export default function FleetExceptionalHero() {
           muted
           playsInline
           preload="metadata"
-          poster="/assets/images/aircraft/g200-exterior.webp"
+          poster={content.poster.src}
           className="absolute inset-0 h-full w-full object-cover object-center"
         >
-          <source src="/assets/videos/g200-showcase.mp4" type="video/mp4" />
+          <source src={content.videoUrl} type="video/mp4" />
         </video>
         <div className="absolute inset-0 bg-gradient-to-b from-black/34 via-black/16 to-black/34" />
 
@@ -35,10 +40,10 @@ export default function FleetExceptionalHero() {
             delay={0.25}
             className="font-display text-4xl font-light tracking-[-0.02em] text-white sm:text-5xl md:text-6xl"
           >
-            Our Exceptional Fleet
+            {content.heading}
           </SplitHeading>
           <p data-reveal-item className="mt-3 max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base md:text-lg">
-            Experience a new era of aviation excellence with our fully modernized range of aircraft.
+            {content.body}
           </p>
           <span aria-hidden data-reveal-item className="mt-4 h-[2px] w-16 bg-ibm-blue" />
         </Reveal>

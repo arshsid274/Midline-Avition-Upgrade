@@ -14,6 +14,7 @@ import { Users } from './collections/Users'
 import { AboutPage } from './globals/AboutPage'
 import { ContactPage } from './globals/ContactPage'
 import { FaqPage } from './globals/FaqPage'
+import { FleetPage } from './globals/FleetPage'
 import { HomePage } from './globals/HomePage'
 import { SafetyPage } from './globals/SafetyPage'
 import {
@@ -52,6 +53,7 @@ export default buildConfig({
   globals: [
     HomePage,
     AboutPage,
+    FleetPage,
     CharterPage,
     ManagementPage,
     SalesPage,

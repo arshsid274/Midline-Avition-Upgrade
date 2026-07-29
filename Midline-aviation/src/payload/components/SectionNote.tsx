@@ -46,3 +46,11 @@ export const MembershipsNote = () => (
     marked <strong>Membership</strong> and <strong>enabled</strong> appear on this page.
   </p>
 )
+
+export const AircraftNote = () => (
+  <p style={noteStyle}>
+    The aircraft, their photographs and their performance figures are edited in{' '}
+    <a href="/admin/collections/aircraft">Content Library → Aircraft</a>. Changes there appear
+    here, on the home page and on each aircraft&apos;s own page.
+  </p>
+)

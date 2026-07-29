@@ -96,6 +96,7 @@ export interface Config {
   globals: {
     'home-page': HomePage;
     'about-page': AboutPage;
+    'fleet-page': FleetPage;
     'charter-page': CharterPage;
     'management-page': ManagementPage;
     'sales-page': SalesPage;
@@ -108,6 +109,7 @@ export interface Config {
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'fleet-page': FleetPageSelect<false> | FleetPageSelect<true>;
     'charter-page': CharterPageSelect<false> | CharterPageSelect<true>;
     'management-page': ManagementPageSelect<false> | ManagementPageSelect<true>;
     'sales-page': SalesPageSelect<false> | SalesPageSelect<true>;
@@ -877,6 +879,52 @@ export interface AboutPage {
   createdAt?: string | null;
 }
 /**
+ * The fleet overview page. The aircraft themselves are edited in Aircraft.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fleet-page".
+ */
+export interface FleetPage {
+  id: number;
+  hero?: {
+    heading?: string | null;
+    body?: string | null;
+    /**
+     * Plays muted on a loop, with no sound. Path such as /assets/videos/g200-showcase.mp4.
+     */
+    videoUrl?: string | null;
+    poster?: (number | null) | Media;
+  };
+  comparison?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+  };
+  interior?: {
+    heading?: string | null;
+    link?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+    /**
+     * The first photo is the large one.
+     */
+    tiles?:
+      | {
+          image: number | Media;
+          caption?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * The services · aircraft charter page. Tabs run top to bottom in the order visitors scroll.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1581,6 +1629,49 @@ export interface AboutPageSelect<T extends boolean = true> {
               bio?: T;
               photo?: T;
               objectPosition?: T;
+              id?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "fleet-page_select".
+ */
+export interface FleetPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
+        videoUrl?: T;
+        poster?: T;
+      };
+  comparison?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+      };
+  interior?:
+    | T
+    | {
+        heading?: T;
+        link?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        tiles?:
+          | T
+          | {
+              image?: T;
+              caption?: T;
               id?: T;
             };
       };
