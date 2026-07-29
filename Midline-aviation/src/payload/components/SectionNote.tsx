@@ -31,3 +31,10 @@ export const AccreditationsNote = () => (
     <strong>enabled</strong> on one to show it here and on the Safety page.
   </p>
 )
+
+export const ContactFormNote = () => (
+  <p style={noteStyle}>
+    The <strong>enquiry form</strong> beside these details has fixed wording — its fields and
+    dropdowns are part of the booking system, not editable copy.
+  </p>
+)

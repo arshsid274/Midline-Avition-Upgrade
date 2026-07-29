@@ -25,3 +25,9 @@ export const StatRowLabel = () => {
   }
   return <span>{`Number ${(rowNumber ?? 0) + 1}`}</span>
 }
+
+export const ContactRowLabel = () => {
+  const { data, rowNumber } = useRowLabel<{ kind?: string; value?: string }>()
+  if (data?.value) return <span>{data.value}</span>
+  return <span>{`Detail ${(rowNumber ?? 0) + 1}`}</span>
+}

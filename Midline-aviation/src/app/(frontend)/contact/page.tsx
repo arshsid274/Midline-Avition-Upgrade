@@ -2,10 +2,12 @@ import type { Metadata } from "next";
 import { absoluteUrl, buildBreadcrumbSchema, buildPageMetadata } from "@/lib/seo";
 import { Clock3, Mail, MapPin, Phone } from "lucide-react";
 import ContactInquiryForm from "@/app/components/ui/ContactInquiryForm";
+import { getContactContent } from "@/lib/cms/contact";
+import ContactDetailRows from "@/app/components/ui/ContactDetailRows";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Contact Midline Aviation",
@@ -25,7 +27,9 @@ const contactPageSchema = {
 
 const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Contact", path: "/contact" }]);
 
-export default function ContactPage() {
+export default async function ContactPage() {
+  const content = await getContactContent();
+
   return (
     <>
       <script
@@ -45,10 +49,10 @@ export default function ContactPage() {
         muted
         playsInline
         preload="metadata"
-        poster="/assets/images/aircraft/contact-poster.webp"
+        poster={content.poster.src}
         className="absolute inset-0 h-full w-full object-cover"
       >
-        <source src="/assets/videos/contact.mp4" type="video/mp4" />
+        <source src={content.videoUrl} type="video/mp4" />
       </video>
 
       <div className="absolute inset-0 bg-black/22" />
@@ -63,37 +67,15 @@ export default function ContactPage() {
           delay={0.1}
           className="flex flex-col justify-center text-white"
         >
-          <p data-reveal-item className="text-sm text-inverse-ink-muted">Midline Aviation</p>
-          <SplitHeading as="h1" mode="lcp" on="load" delay={0.25} className="font-display mt-4 text-4xl font-light leading-tight sm:text-5xl md:text-6xl">
-            Let&apos;s Plan Your Next Journey
+          <p data-reveal-item className="text-sm text-inverse-ink-muted">{content.eyebrow}</p>
+          <SplitHeading key={content.heading} as="h1" mode="lcp" on="load" delay={0.25} className="font-display mt-4 text-4xl font-light leading-tight sm:text-5xl md:text-6xl">
+            {content.heading}
           </SplitHeading>
           <p data-reveal-item className="mt-5 max-w-xl text-sm leading-relaxed text-white/78 sm:text-base">
-            Connect with our concierge team for private charter, aircraft management, and bespoke aviation support
-            tailored to your itinerary.
+            {content.body}
           </p>
 
-          <div data-reveal-item className="mt-8 space-y-4">
-            <div className="flex items-start gap-3 border border-inverse-surface-1 bg-inverse-canvas px-4 py-3">
-              <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-white" />
-              <p className="text-sm text-inverse-ink-muted">Office 213, Building A5, Business Park, Dubai South, UAE</p>
-            </div>
-            <div className="flex items-center gap-3 border border-inverse-surface-1 bg-inverse-canvas px-4 py-3">
-              <Mail className="h-4 w-4 shrink-0 text-white" />
-              <a className="text-sm text-inverse-ink-muted transition-colors hover:text-white" href="mailto:info@midlineaviation.com">
-                info@midlineaviation.com
-              </a>
-            </div>
-            <div className="flex items-center gap-3 border border-inverse-surface-1 bg-inverse-canvas px-4 py-3">
-              <Phone className="h-4 w-4 shrink-0 text-white" />
-              <a className="text-sm text-inverse-ink-muted transition-colors hover:text-white" href="tel:+97145533430">
-                +971 455 334 30
-              </a>
-            </div>
-            <div className="flex items-center gap-3 border border-inverse-surface-1 bg-inverse-canvas px-4 py-3">
-              <Clock3 className="h-4 w-4 shrink-0 text-white" />
-              <p className="text-sm text-inverse-ink-muted">24/7 Client Support and Flight Coordination</p>
-            </div>
-          </div>
+          <ContactDetailRows rows={content.details} />
         </Reveal>
 
         <Reveal

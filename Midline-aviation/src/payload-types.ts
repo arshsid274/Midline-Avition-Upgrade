@@ -91,9 +91,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'home-page': HomePage;
+    'contact-page': ContactPage;
   };
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -575,6 +577,47 @@ export interface HomePage {
   createdAt?: string | null;
 }
 /**
+ * The contact page — background video, contact details, and the enquiry form.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page".
+ */
+export interface ContactPage {
+  id: number;
+  hero?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    /**
+     * Plays muted on a loop, with no sound. Path such as /assets/videos/g200-showcase.mp4.
+     */
+    videoUrl?: string | null;
+    /**
+     * Shown while the video loads.
+     */
+    poster?: (number | null) | Media;
+  };
+  details?: {
+    rows?:
+      | {
+          /**
+           * Chooses the icon shown beside it.
+           */
+          kind: 'address' | 'email' | 'phone' | 'hours';
+          value: string;
+          /**
+           * Only for email and phone — mailto:someone@example.com or tel:+9714... Leave empty otherwise.
+           */
+          href?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page_select".
  */
@@ -701,6 +744,37 @@ export interface HomePageSelect<T extends boolean = true> {
           | {
               label?: T;
               href?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page_select".
+ */
+export interface ContactPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+        videoUrl?: T;
+        poster?: T;
+      };
+  details?:
+    | T
+    | {
+        rows?:
+          | T
+          | {
+              kind?: T;
+              value?: T;
+              href?: T;
+              id?: T;
             };
       };
   _status?: T;

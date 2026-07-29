@@ -9,6 +9,7 @@ import sharp from 'sharp'
 import { Accreditations } from './collections/Accreditations'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
+import { ContactPage } from './globals/ContactPage'
 import { HomePage } from './globals/HomePage'
 
 const filename = fileURLToPath(import.meta.url)
@@ -36,7 +37,7 @@ export default buildConfig({
   // "Pages" (the globals) must be listed before the library collections for
   // the sidebar to read the way the site does.
   collections: [Accreditations, Media, Users],
-  globals: [HomePage],
+  globals: [HomePage, ContactPage],
 
   /**
    * SQLite, via libSQL — the same adapter serves two very different hosts:
