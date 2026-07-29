@@ -83,3 +83,160 @@ export const HOME_CTA_BANNER: CtaBannerContent = {
     href: "/contact",
   },
 };
+
+export type ShowcaseItem = {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  href: string;
+  ctaLabel: string;
+  imageSrc: string;
+  imageAlt: string;
+  reverse?: boolean;
+};
+
+export const SHOWCASE_ITEMS: ShowcaseItem[] = [] = [
+  {
+    id: "private-charter",
+    title: "Private Charter",
+    subtitle: "Elite travel management",
+    description:
+      "Indulge in seamless luxury with our VIP private charter service, where we manage every detail from A to Z, creating an exclusive journey tailored to perfection just for you.",
+    href: "/services/aircraft-charter",
+    ctaLabel: "Explore Charter",
+    imageSrc: "/assets/images/aircraft/g450-red-carpet.webp",
+    imageAlt: "Red carpet rolled out to a waiting private charter jet",
+  },
+  {
+    id: "concierge-service",
+    title: "Concierge Service",
+    subtitle: "VIP luxury and prestigious experience",
+    description:
+      "Benefit from the power of access provided by Midline Concierge. From luxury hotel reservations and entertainment to the finest yachts and villas around the globe.",
+    href: "/contact",
+    ctaLabel: "Contact Concierge",
+    imageSrc: "/assets/images/aircraft/concierge.webp",
+    imageAlt: "Luxury concierge arrival with chauffeur and luggage handling",
+    reverse: true,
+  },
+];
+
+export type DestinationCard = {
+  id: string;
+  name: string;
+  imageSrc: string;
+  imageAlt: string;
+  href: string;
+};
+
+export const POPULAR_DESTINATIONS: DestinationCard[] = [] = [
+  {
+    id: "london",
+    name: "London",
+    imageSrc: "/assets/images/frequent-travel-destinations/london.webp",
+    imageAlt: "London skyline along the Thames",
+    href: "/contact",
+  },
+  {
+    id: "paris",
+    name: "Paris",
+    imageSrc: "/assets/images/frequent-travel-destinations/paris.webp",
+    imageAlt: "Paris cityscape with the Eiffel Tower",
+    href: "/contact",
+  },
+  {
+    id: "maldives",
+    name: "Maldives",
+    imageSrc: "/assets/images/frequent-travel-destinations/maldives.webp",
+    imageAlt: "Maldives island resort from above",
+    href: "/contact",
+  },
+  {
+    id: "singapore",
+    name: "Singapore",
+    imageSrc: "/assets/images/frequent-travel-destinations/singapore.webp",
+    imageAlt: "Singapore skyline and waterfront",
+    href: "/contact",
+  },
+  {
+    id: "turkey",
+    name: "Turkey",
+    imageSrc: "/assets/images/frequent-travel-destinations/turkey.webp",
+    imageAlt: "Historic skyline of Istanbul, Turkey",
+    href: "/contact",
+  },
+  {
+    id: "madrid",
+    name: "Madrid",
+    imageSrc: "/assets/images/frequent-travel-destinations/madrid.webp",
+    imageAlt: "Madrid city architecture at golden hour",
+    href: "/contact",
+  },
+  {
+    id: "uzbekistan",
+    name: "Uzbekistan",
+    imageSrc: "/assets/images/frequent-travel-destinations/uzbekistan.webp",
+    imageAlt: "Historic architecture of Uzbekistan",
+    href: "/contact",
+  },
+  {
+    id: "mumbai",
+    name: "Mumbai",
+    imageSrc: "/assets/images/frequent-travel-destinations/mumbai.webp",
+    imageAlt: "Mumbai skyline along Marine Drive",
+    href: "/contact",
+  },
+  {
+    id: "chennai",
+    name: "Chennai",
+    imageSrc: "/assets/images/frequent-travel-destinations/chennai.webp",
+    imageAlt: "Chennai cityscape and coastline",
+    href: "/contact",
+  },
+];
+
+export type AircraftCard = {
+  id: string;
+  name: string;
+  registration: string;
+  description: string;
+  comingSoon?: boolean;
+  imageSrc: string;
+  imageAlt: string;
+  href: string;
+  videoSrc?: string;
+};
+
+export const HOME_AIRCRAFT: AircraftCard[] = [] = [
+  {
+    id: "legacy-650",
+    name: "Embraer Legacy 650",
+    registration: "T7-MIDB",
+    description:
+      "The flagship of luxury aviation delivers ultra-long-range performance, cutting-edge design, and unmatched speed. The Embraer Legacy 650 redefines private air travel with elegance and power.",
+    imageSrc: "/assets/images/aircraft/legacy650-exterior-2.webp",
+    imageAlt: "Embraer Legacy 650 (T7-MIDB) on the tarmac",
+    href: "/fleet/embraer-legacy-650",
+  },
+  {
+    id: "g450",
+    name: "Gulfstream G450",
+    registration: "T7-MID",
+    description:
+      "A long-range business jet known for its advanced technology, quiet cabin, and superior reliability. Perfect for intercontinental travel with unmatched comfort and safety.",
+    imageSrc: "/assets/images/aircraft/g450-exterior.webp",
+    imageAlt: "Gulfstream G450 (T7-MID) on the tarmac",
+    href: "/fleet/gulfstream-g450",
+  },
+  {
+    id: "g200",
+    name: "Gulfstream G200",
+    registration: "T7-MIDA",
+    description:
+      "A versatile midsize jet offering exceptional comfort and performance for regional and medium-haul flights. The G200 combines spacious seating with impressive range and efficiency.",
+    imageSrc: "/assets/images/aircraft/g200-exterior.webp",
+    imageAlt: "Gulfstream G200 (T7-MIDA) on the tarmac",
+    href: "/fleet/gulfstream-g200",
+  },
+];
