@@ -14,5 +14,5 @@ for (const t of tabs) {
   }
 }
 console.log('\nNAV GROUPS:')
-for (const col of c.collections ?? []) console.log(`  ${(col.admin?.group ?? '(none)').padEnd(18)} ${col.slug}`)
-for (const gl of c.globals ?? []) console.log(`  ${(gl.admin?.group ?? '(none)').padEnd(18)} ${gl.slug}`)
+for (const col of c.collections ?? []) console.log(`  ${String(col.admin?.group ?? '(none)').padEnd(18)} ${col.slug}`)
+for (const gl of c.globals ?? []) console.log(`  ${String(gl.admin?.group ?? '(none)').padEnd(18)} ${gl.slug}`)
