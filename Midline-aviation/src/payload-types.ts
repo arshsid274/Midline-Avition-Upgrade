@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     accreditations: Accreditation;
+    'gallery-items': GalleryItem;
     media: Media;
     users: User;
     'payload-kv': PayloadKv;
@@ -78,6 +79,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     accreditations: AccreditationsSelect<false> | AccreditationsSelect<true>;
+    'gallery-items': GalleryItemsSelect<false> | GalleryItemsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
@@ -218,6 +220,38 @@ export interface Media {
   };
 }
 /**
+ * Everything in the gallery grid. Drag the order number to rearrange.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-items".
+ */
+export interface GalleryItem {
+  id: number;
+  kind: 'image' | 'video';
+  image?: (number | null) | Media;
+  /**
+   * Path such as /assets/videos/gallery/name.mp4.
+   */
+  videoUrl?: string | null;
+  /**
+   * The frame shown before the film plays.
+   */
+  poster?: (number | null) | Media;
+  caption: string;
+  alt: string;
+  /**
+   * The filter buttons. "All" and "Videos" are automatic.
+   */
+  category: 'Gulfstream G450' | 'Gulfstream G200' | 'Embraer Legacy 650' | 'Services';
+  /**
+   * Controls the tile shape in the grid.
+   */
+  orientation: 'landscape' | 'portrait';
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -273,6 +307,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'accreditations';
         value: number | Accreditation;
+      } | null)
+    | ({
+        relationTo: 'gallery-items';
+        value: number | GalleryItem;
       } | null)
     | ({
         relationTo: 'media';
@@ -336,6 +374,23 @@ export interface AccreditationsSelect<T extends boolean = true> {
   kind?: T;
   enabled?: T;
   notes?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "gallery-items_select".
+ */
+export interface GalleryItemsSelect<T extends boolean = true> {
+  kind?: T;
+  image?: T;
+  videoUrl?: T;
+  poster?: T;
+  caption?: T;
+  alt?: T;
+  category?: T;
+  orientation?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;

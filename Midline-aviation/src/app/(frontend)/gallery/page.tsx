@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { absoluteUrl, buildBreadcrumbSchema, buildPageMetadata } from "@/lib/seo";
 import GalleryClient from "./GalleryClient";
+import { getGalleryItems } from "@/lib/cms/gallery";
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Fleet Gallery",
@@ -29,7 +30,9 @@ const gallerySchema = {
 
 const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Gallery", path: "/gallery" }]);
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const items = await getGalleryItems();
+
   return (
     <>
       <script
@@ -42,7 +45,7 @@ export default function GalleryPage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <GalleryClient />
+      <GalleryClient items={items} />
     </>
   );
 }

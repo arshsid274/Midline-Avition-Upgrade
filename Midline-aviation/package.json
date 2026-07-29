@@ -22,7 +22,8 @@
     "seed:safety": "payload run scripts/seed/safety-page.mts",
     "seed:faq": "payload run scripts/seed/faq-page.mts",
     "seed:about": "payload run scripts/seed/about-page.mts",
-    "seed:services": "payload run scripts/seed/service-pages.mts"
+    "seed:services": "payload run scripts/seed/service-pages.mts",
+    "seed:gallery": "payload run scripts/seed/gallery.mts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
