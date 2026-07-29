@@ -16,8 +16,9 @@ import {
 import { buildBreadcrumbSchema, buildPageMetadata, buildServiceSchema } from "@/lib/seo";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
+import { getServiceHero } from "@/lib/cms/service";
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Aircraft Sales and Acquisition",
@@ -92,7 +93,9 @@ const services = [
   { label: "Post-sale transition planning", icon: BadgeCheck },
 ] as const;
 
-export default function AircraftSalesPage() {
+export default async function AircraftSalesPage() {
+  const hero = await getServiceHero("sales-page");
+
   return (
     <main className="midline-page bg-white text-ink">
       <script
@@ -107,7 +110,7 @@ export default function AircraftSalesPage() {
       />
       <section className="relative min-h-[calc(100svh-72px)] overflow-hidden md:min-h-[calc(100svh-84px)]">
         <Image
-          src="/assets/images/aircraft/sales-hero.webp"
+          src={hero.image.src}
           alt="Clients walking to the Gulfstream G200 T7-MIDA on the Midline ramp"
           fill
           sizes="100vw"

@@ -21,7 +21,8 @@
     "seed:contact": "payload run scripts/seed/contact-page.mts",
     "seed:safety": "payload run scripts/seed/safety-page.mts",
     "seed:faq": "payload run scripts/seed/faq-page.mts",
-    "seed:about": "payload run scripts/seed/about-page.mts"
+    "seed:about": "payload run scripts/seed/about-page.mts",
+    "seed:services": "payload run scripts/seed/service-pages.mts"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

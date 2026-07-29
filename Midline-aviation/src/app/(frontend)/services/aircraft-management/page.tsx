@@ -4,8 +4,9 @@ import AircraftManagementHeroSection from "@/app/components/ui/AircraftManagemen
 import AircraftManagementStandardsSection from "@/app/components/ui/AircraftManagementStandardsSection";
 import AircraftManagementSafetyCardsSection from "@/app/components/ui/AircraftManagementSafetyCardsSection";
 import AircraftManagementFleetSection from "@/app/components/ui/AircraftManagementFleetSection";
+import { getServiceHero } from "@/lib/cms/service";
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Aircraft Management Services",
@@ -29,7 +30,9 @@ const breadcrumbSchema = buildBreadcrumbSchema([
   { name: "Aircraft Management", path: "/services/aircraft-management" },
 ]);
 
-export default function AircraftManagementPage() {
+export default async function AircraftManagementPage() {
+  const hero = await getServiceHero("management-page");
+
   return (
     <>
       <script
@@ -43,7 +46,7 @@ export default function AircraftManagementPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <main className="midline-page">
-        <AircraftManagementHeroSection />
+        <AircraftManagementHeroSection hero={hero} />
         <AircraftManagementStandardsSection />
         <AircraftManagementSafetyCardsSection />
         <AircraftManagementFleetSection />

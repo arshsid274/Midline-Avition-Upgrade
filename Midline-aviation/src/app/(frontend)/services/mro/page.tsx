@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { buildBreadcrumbSchema, buildPageMetadata, buildServiceSchema } from "@/lib/seo";
 import MROComingSoon from "@/app/components/ui/MROComingSoon";
+import { getServiceHero } from "@/lib/cms/service";
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Aircraft MRO Services — Coming Soon",
@@ -26,7 +27,9 @@ const breadcrumbSchema = buildBreadcrumbSchema([
   { name: "MRO Services", path: "/services/mro" },
 ]);
 
-export default function MROPage() {
+export default async function MROPage() {
+  const hero = await getServiceHero("mro-page");
+
   return (
     <>
       <script
@@ -40,7 +43,7 @@ export default function MROPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <main className="midline-page">
-        <MROComingSoon />
+        <MROComingSoon hero={hero} />
       </main>
     </>
   );

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, ClipboardCheck, Cog, ShieldAlert } from "lucide-react";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
+import { SERVICE_HEROES, type ServiceHero } from "@/lib/service-content";
 
 const capabilities = [
   {
@@ -24,12 +25,12 @@ const capabilities = [
 
 const TICKER_ITEMS = Array.from({ length: 8 });
 
-export default function MROComingSoon() {
+export default function MROComingSoon({ hero = SERVICE_HEROES["mro-page"] }: { hero?: ServiceHero } = {}) {
   return (
     <section className="relative isolate flex min-h-[calc(100svh-72px)] w-full flex-col overflow-hidden md:min-h-[calc(100svh-84px)]">
       {/* Real T7-MID ground-handling photography, slow Ken-Burns drift */}
       <Image
-        src="/assets/images/aircraft/g450-nose.webp"
+        src={hero.image.src}
         alt="Gulfstream G450 head-on during ground handling at the Midline facility"
         fill
         sizes="100vw"

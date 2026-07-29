@@ -5,6 +5,7 @@ import * as migration_20260729_101237_contact_page from './20260729_101237_conta
 import * as migration_20260729_101856_safety_page from './20260729_101856_safety_page';
 import * as migration_20260729_102155_faq_page from './20260729_102155_faq_page';
 import * as migration_20260729_102545_about_page from './20260729_102545_about_page';
+import * as migration_20260729_102835_service_pages from './20260729_102835_service_pages';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260729_102545_about_page.up,
     down: migration_20260729_102545_about_page.down,
-    name: '20260729_102545_about_page'
+    name: '20260729_102545_about_page',
+  },
+  {
+    up: migration_20260729_102835_service_pages.up,
+    down: migration_20260729_102835_service_pages.down,
+    name: '20260729_102835_service_pages'
   },
 ];

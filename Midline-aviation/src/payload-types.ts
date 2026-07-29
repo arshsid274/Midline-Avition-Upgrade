@@ -92,6 +92,11 @@ export interface Config {
   globals: {
     'home-page': HomePage;
     'about-page': AboutPage;
+    'charter-page': CharterPage;
+    'management-page': ManagementPage;
+    'sales-page': SalesPage;
+    'cargo-page': CargoPage;
+    'mro-page': MroPage;
     'contact-page': ContactPage;
     'safety-page': SafetyPage;
     'faq-page': FaqPage;
@@ -99,6 +104,11 @@ export interface Config {
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
+    'charter-page': CharterPageSelect<false> | CharterPageSelect<true>;
+    'management-page': ManagementPageSelect<false> | ManagementPageSelect<true>;
+    'sales-page': SalesPageSelect<false> | SalesPageSelect<true>;
+    'cargo-page': CargoPageSelect<false> | CargoPageSelect<true>;
+    'mro-page': MroPageSelect<false> | MroPageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
     'safety-page': SafetyPageSelect<false> | SafetyPageSelect<true>;
     'faq-page': FaqPageSelect<false> | FaqPageSelect<true>;
@@ -667,6 +677,357 @@ export interface AboutPage {
   createdAt?: string | null;
 }
 /**
+ * The services · aircraft charter page. Tabs run top to bottom in the order visitors scroll.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "charter-page".
+ */
+export interface CharterPage {
+  id: number;
+  hero?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    headingAccent?: string | null;
+    body?: string | null;
+    image?: (number | null) | Media;
+    primary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+    secondary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+  };
+  features?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          points?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  showcase?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          image?: (number | null) | Media;
+          link?: {
+            label?: string | null;
+            /**
+             * e.g. /contact, /#book-your-flight, or a full https:// address.
+             */
+            href?: string | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  closing?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    cta?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The services · aircraft management page. Tabs run top to bottom in the order visitors scroll.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "management-page".
+ */
+export interface ManagementPage {
+  id: number;
+  hero?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    headingAccent?: string | null;
+    body?: string | null;
+    image?: (number | null) | Media;
+    primary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+    secondary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+  };
+  features?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          points?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  showcase?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          image?: (number | null) | Media;
+          link?: {
+            label?: string | null;
+            /**
+             * e.g. /contact, /#book-your-flight, or a full https:// address.
+             */
+            href?: string | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The services · aircraft sales page. Tabs run top to bottom in the order visitors scroll.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sales-page".
+ */
+export interface SalesPage {
+  id: number;
+  hero?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    headingAccent?: string | null;
+    body?: string | null;
+    image?: (number | null) | Media;
+    primary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+    secondary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+  };
+  showcase?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          image?: (number | null) | Media;
+          link?: {
+            label?: string | null;
+            /**
+             * e.g. /contact, /#book-your-flight, or a full https:// address.
+             */
+            href?: string | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  closing?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    cta?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The services · cargo transportation page. Tabs run top to bottom in the order visitors scroll.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cargo-page".
+ */
+export interface CargoPage {
+  id: number;
+  hero?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    headingAccent?: string | null;
+    body?: string | null;
+    image?: (number | null) | Media;
+    primary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+    secondary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+    /**
+     * The figures shown under the buttons.
+     */
+    stats?:
+      | {
+          value: string;
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  features?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          points?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  showcase?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          image?: (number | null) | Media;
+          link?: {
+            label?: string | null;
+            /**
+             * e.g. /contact, /#book-your-flight, or a full https:// address.
+             */
+            href?: string | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * The services · mro page. Tabs run top to bottom in the order visitors scroll.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mro-page".
+ */
+export interface MroPage {
+  id: number;
+  hero?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    headingAccent?: string | null;
+    body?: string | null;
+    image?: (number | null) | Media;
+    primary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+    secondary?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+  };
+  features?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          points?:
+            | {
+                text: string;
+                id?: string | null;
+              }[]
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * The contact page — background video, contact details, and the enquiry form.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1020,6 +1381,358 @@ export interface AboutPageSelect<T extends boolean = true> {
               bio?: T;
               photo?: T;
               objectPosition?: T;
+              id?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "charter-page_select".
+ */
+export interface CharterPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        headingAccent?: T;
+        body?: T;
+        image?: T;
+        primary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        secondary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+      };
+  features?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              points?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  showcase?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+            };
+      };
+  closing?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "management-page_select".
+ */
+export interface ManagementPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        headingAccent?: T;
+        body?: T;
+        image?: T;
+        primary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        secondary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+      };
+  features?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              points?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  showcase?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sales-page_select".
+ */
+export interface SalesPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        headingAccent?: T;
+        body?: T;
+        image?: T;
+        primary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        secondary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+      };
+  showcase?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+            };
+      };
+  closing?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cargo-page_select".
+ */
+export interface CargoPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        headingAccent?: T;
+        body?: T;
+        image?: T;
+        primary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        secondary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        stats?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              id?: T;
+            };
+      };
+  features?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              points?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
+              id?: T;
+            };
+      };
+  showcase?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              id?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "mro-page_select".
+ */
+export interface MroPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        headingAccent?: T;
+        body?: T;
+        image?: T;
+        primary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+        secondary?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+      };
+  features?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              points?:
+                | T
+                | {
+                    text?: T;
+                    id?: T;
+                  };
               id?: T;
             };
       };

@@ -3,8 +3,9 @@ import { buildBreadcrumbSchema, buildPageMetadata, buildServiceSchema } from "@/
 import CargoHeroSection from "@/app/components/ui/CargoHeroSection";
 import CargoWhyChooseSection from "@/app/components/ui/CargoWhyChooseSection";
 import CargoCapabilitiesSection from "@/app/components/ui/CargoCapabilitiesSection";
+import { getServiceHero } from "@/lib/cms/service";
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Air Cargo Transportation Services",
@@ -28,7 +29,9 @@ const breadcrumbSchema = buildBreadcrumbSchema([
   { name: "Cargo Transportation", path: "/services/cargo-transportation" },
 ]);
 
-export default function CargoTransportPage() {
+export default async function CargoTransportPage() {
+  const hero = await getServiceHero("cargo-page");
+
   return (
     <>
       <script
@@ -42,7 +45,7 @@ export default function CargoTransportPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <main>
-        <CargoHeroSection />
+        <CargoHeroSection hero={hero} />
         <CargoWhyChooseSection />
         <CargoCapabilitiesSection />
       </main>

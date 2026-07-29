@@ -2,12 +2,13 @@ import Image from "next/image";
 import { Package, ArrowRight } from "lucide-react";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
+import { SERVICE_HEROES, type ServiceHero } from "@/lib/service-content";
 
-export default function CargoHeroSection() {
+export default function CargoHeroSection({ hero = SERVICE_HEROES["cargo-page"] }: { hero?: ServiceHero } = {}) {
   return (
     <section className="relative isolate h-[calc(100svh-72px)] w-full overflow-hidden md:h-[calc(100svh-84px)]">
       <Image
-        src="/assets/images/aircraft/cargo-hero.webp"
+        src={hero.image.src}
         alt="Gulfstream G450 T7-MID on the ramp at night under apron floodlights, ready for cargo operations"
         fill
         sizes="100vw"
@@ -33,7 +34,7 @@ export default function CargoHeroSection() {
             className="inline-flex items-center gap-2.5 text-sm text-inverse-ink-muted"
           >
             <Package className="h-3 w-3" />
-            Global Logistics Experts
+            {hero.eyebrow}
           </span>
 
           {/* Heading */}

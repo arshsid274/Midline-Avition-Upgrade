@@ -14,6 +14,13 @@ import { ContactPage } from './globals/ContactPage'
 import { FaqPage } from './globals/FaqPage'
 import { HomePage } from './globals/HomePage'
 import { SafetyPage } from './globals/SafetyPage'
+import {
+  CargoPage,
+  CharterPage,
+  ManagementPage,
+  MroPage,
+  SalesPage,
+} from './globals/servicePages'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -40,7 +47,18 @@ export default buildConfig({
   // "Pages" (the globals) must be listed before the library collections for
   // the sidebar to read the way the site does.
   collections: [Accreditations, Media, Users],
-  globals: [HomePage, AboutPage, ContactPage, SafetyPage, FaqPage],
+  globals: [
+    HomePage,
+    AboutPage,
+    CharterPage,
+    ManagementPage,
+    SalesPage,
+    CargoPage,
+    MroPage,
+    ContactPage,
+    SafetyPage,
+    FaqPage,
+  ],
 
   /**
    * SQLite, via libSQL — the same adapter serves two very different hosts:

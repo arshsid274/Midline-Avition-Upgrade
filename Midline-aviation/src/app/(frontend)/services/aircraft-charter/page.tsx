@@ -6,8 +6,9 @@ import CharterStepsComponent from "@/app/components/ui/CharterStepsComponent";
 import WhyChooseUsComponent from "@/app/components/ui/WhyChooseUsComponent";
 import BespokeTravelCategoriesComponent from "@/app/components/ui/BespokeTravelCategoriesComponent";
 import ClientTestimonialsComponent from "@/app/components/ui/ClientTestimonialsComponent";
+import { getServiceHero } from "@/lib/cms/service";
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Private Jet Charter Services",
@@ -31,7 +32,9 @@ const breadcrumbSchema = buildBreadcrumbSchema([
   { name: "Aircraft Charter", path: "/services/aircraft-charter" },
 ]);
 
-export default function CharterPage() {
+export default async function CharterPage() {
+  const hero = await getServiceHero("charter-page");
+
   return (
     <>
       <script
@@ -45,7 +48,7 @@ export default function CharterPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <main className="midline-page bg-white">
-        <AircraftCharterHeroComponent />
+        <AircraftCharterHeroComponent hero={hero} />
         <OurPhilosophyComponent />
         <CharterStepsComponent />
         <WhyChooseUsComponent />

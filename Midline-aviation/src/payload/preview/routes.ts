@@ -11,6 +11,11 @@ export const GLOBAL_ROUTES: Record<string, string> = {
   'safety-page': '/safety',
   'faq-page': '/faq',
   'about-page': '/about',
+  'charter-page': '/services/aircraft-charter',
+  'management-page': '/services/aircraft-management',
+  'sales-page': '/services/aircraft-sales',
+  'cargo-page': '/services/cargo-transportation',
+  'mro-page': '/services/mro',
 }
 
 /**
