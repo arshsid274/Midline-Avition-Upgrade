@@ -34,15 +34,29 @@ export default buildConfig({
   collections: [Users, Media, Accreditations],
 
   /**
-   * SQLite: a single file, no database server, no monthly cost. It lives at
-   * <repo>/data/midline.db — a sibling of public/, so it is never web-served.
-   * On a VPS, override DATABASE_URI to a path outside the deploy directory
+   * SQLite, via libSQL — the same adapter serves two very different hosts:
+   *
+   *   local / VPS / cPanel   file:./data/midline.db      (a plain file on disk)
+   *   Vercel                 libsql://...  + auth token  (hosted Turso)
+   *
+   * A file-backed database cannot work on Vercel: the filesystem is read-only
+   * and ephemeral, and every serverless invocation gets its own instance, so
+   * writes would fail and nothing would be shared. Turso is still SQLite, so
+   * moving between the two is a change of environment variables, not schema.
+   *
+   * On a VPS, point DATABASE_URI outside the deploy directory
    * (e.g. file:/var/lib/midline/cms.db) so releases cannot clobber it.
    */
   db: sqliteAdapter({
     client: {
       url: process.env.DATABASE_URI || 'file:./data/midline.db',
+      ...(process.env.DATABASE_AUTH_TOKEN
+        ? { authToken: process.env.DATABASE_AUTH_TOKEN }
+        : {}),
     },
+    // Drizzle's schema "push" is development-only. Production deploys must run
+    // `payload migrate`, so keep push off whenever NODE_ENV is production.
+    push: process.env.NODE_ENV !== 'production',
   }),
 
   secret: process.env.PAYLOAD_SECRET || '',
