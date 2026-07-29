@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { buildBreadcrumbSchema, buildPageMetadata, CONTACT_EMAIL } from "@/lib/seo";
 import LegalPage from "@/app/components/ui/LegalPage";
+import { getLegalMeta } from "@/lib/cms/legal";
 
 // ⚠️ DRAFT — requires management/legal sign-off before launch.
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Terms & Conditions",
@@ -16,7 +17,9 @@ const breadcrumbSchema = buildBreadcrumbSchema([
   { name: "Terms & Conditions", path: "/terms-and-conditions" },
 ]);
 
-export default function TermsPage() {
+export default async function TermsPage() {
+  const meta = await getLegalMeta("terms");
+
   return (
     <>
       <script
@@ -24,7 +27,8 @@ export default function TermsPage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <LegalPage title="Terms & Conditions" updated="July 2026">
+      <LegalPage title={meta.title}
+      updated={meta.updated}>
         <section>
           <h2>1. About these terms</h2>
           <p>

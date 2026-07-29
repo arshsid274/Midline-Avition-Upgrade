@@ -105,6 +105,7 @@ export interface Config {
     'contact-page': ContactPage;
     'safety-page': SafetyPage;
     'faq-page': FaqPage;
+    'legal-pages': LegalPage;
   };
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
@@ -118,6 +119,7 @@ export interface Config {
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
     'safety-page': SafetyPageSelect<false> | SafetyPageSelect<true>;
     'faq-page': FaqPageSelect<false> | FaqPageSelect<true>;
+    'legal-pages': LegalPagesSelect<false> | LegalPagesSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1422,6 +1424,39 @@ export interface FaqPage {
   createdAt?: string | null;
 }
 /**
+ * Titles and revision dates for the privacy, terms and cookie documents.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal-pages".
+ */
+export interface LegalPage {
+  id: number;
+  privacy: {
+    title: string;
+    /**
+     * Shown as "Last updated: …". Change this whenever legal revises the wording.
+     */
+    updated: string;
+  };
+  terms: {
+    title: string;
+    /**
+     * Shown as "Last updated: …". Change this whenever legal revises the wording.
+     */
+    updated: string;
+  };
+  cookies: {
+    title: string;
+    /**
+     * Shown as "Last updated: …". Change this whenever legal revises the wording.
+     */
+    updated: string;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page_select".
  */
@@ -2169,6 +2204,34 @@ export interface FaqPageSelect<T extends boolean = true> {
         heading?: T;
         bodyBefore?: T;
         bodyAfter?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "legal-pages_select".
+ */
+export interface LegalPagesSelect<T extends boolean = true> {
+  privacy?:
+    | T
+    | {
+        title?: T;
+        updated?: T;
+      };
+  terms?:
+    | T
+    | {
+        title?: T;
+        updated?: T;
+      };
+  cookies?:
+    | T
+    | {
+        title?: T;
+        updated?: T;
       };
   _status?: T;
   updatedAt?: T;

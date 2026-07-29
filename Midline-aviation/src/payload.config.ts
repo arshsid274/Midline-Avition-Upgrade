@@ -15,6 +15,7 @@ import { AboutPage } from './globals/AboutPage'
 import { ContactPage } from './globals/ContactPage'
 import { FaqPage } from './globals/FaqPage'
 import { FleetPage } from './globals/FleetPage'
+import { LegalPages } from './globals/LegalPages'
 import { HomePage } from './globals/HomePage'
 import { SafetyPage } from './globals/SafetyPage'
 import {
@@ -62,6 +63,7 @@ export default buildConfig({
     ContactPage,
     SafetyPage,
     FaqPage,
+    LegalPages,
   ],
 
   /**

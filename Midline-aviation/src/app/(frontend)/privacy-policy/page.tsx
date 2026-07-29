@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { buildBreadcrumbSchema, buildPageMetadata, CONTACT_EMAIL } from "@/lib/seo";
 import LegalPage from "@/app/components/ui/LegalPage";
+import { getLegalMeta } from "@/lib/cms/legal";
 
 // ⚠️ DRAFT — requires management/legal sign-off before launch.
 // Placeholders needing confirmation are marked [CONFIRM: …].
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Privacy Policy",
@@ -16,7 +17,9 @@ export const metadata: Metadata = buildPageMetadata({
 
 const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Privacy Policy", path: "/privacy-policy" }]);
 
-export default function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage() {
+  const meta = await getLegalMeta("privacy");
+
   return (
     <>
       <script
@@ -24,7 +27,8 @@ export default function PrivacyPolicyPage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <LegalPage title="Privacy Policy" updated="July 2026">
+      <LegalPage title={meta.title}
+      updated={meta.updated}>
         <section>
           <h2>1. Who we are</h2>
           <p>

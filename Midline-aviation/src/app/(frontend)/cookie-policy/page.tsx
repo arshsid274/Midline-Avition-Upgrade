@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { buildBreadcrumbSchema, buildPageMetadata, CONTACT_EMAIL } from "@/lib/seo";
 import LegalPage from "@/app/components/ui/LegalPage";
+import { getLegalMeta } from "@/lib/cms/legal";
 
 // ⚠️ DRAFT — requires management/legal sign-off before launch.
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Cookie Policy",
@@ -14,7 +15,9 @@ export const metadata: Metadata = buildPageMetadata({
 
 const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Cookie Policy", path: "/cookie-policy" }]);
 
-export default function CookiePolicyPage() {
+export default async function CookiePolicyPage() {
+  const meta = await getLegalMeta("cookies");
+
   return (
     <>
       <script
@@ -22,7 +25,8 @@ export default function CookiePolicyPage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <LegalPage title="Cookie Policy" updated="July 2026">
+      <LegalPage title={meta.title}
+      updated={meta.updated}>
         <section>
           <h2>1. What cookies are</h2>
           <p>

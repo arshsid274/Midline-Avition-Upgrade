@@ -54,3 +54,11 @@ export const AircraftNote = () => (
     here, on the home page and on each aircraft&apos;s own page.
   </p>
 )
+
+export const LegalNote = () => (
+  <p style={noteStyle}>
+    The wording of this document is maintained in the codebase, where each revision carries an
+    author and a reviewable history — which is what legal sign-off needs. Ask a developer to
+    change the text, then update the date above.
+  </p>
+)
