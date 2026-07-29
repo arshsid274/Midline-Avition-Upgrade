@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import HomeHeroVideo from "@/app/components/ui/HomeHeroVideo";
 import HeroBookingForm from "@/app/components/ui/HeroBookingForm";
 import HomeCtaBanner from "@/app/components/ui/HomeCtaBanner";
+import type { AccreditationLogo } from "@/lib/cms/accreditations";
 
 const ServicesShowcase = dynamic(() => import("@/app/components/ui/ServiceShowcase"), {
   loading: () => null,
@@ -24,7 +25,13 @@ const HomeAircraftCards = dynamic(() => import("@/app/components/ui/HomeAircraft
   loading: () => null,
 });
 
-export default function HomePageClient() {
+type HomePageClientProps = {
+  accreditationLogos: AccreditationLogo[];
+};
+
+// A pure prop conduit: the fetch stays in the Server Component parent so this
+// stays a client boundary with no data access of its own.
+export default function HomePageClient({ accreditationLogos }: HomePageClientProps) {
   return (
     <main className="relative z-[1] bg-white">
       <HomeHeroVideo />
@@ -32,7 +39,7 @@ export default function HomePageClient() {
       <ServicesShowcase />
       <PopularDestinationsCarousel />
       <TripsMapView />
-      <LogoLoopSection />
+      <LogoLoopSection logos={accreditationLogos} />
       <HomeAircraftCards />
       <HomeCtaBanner />
     </main>

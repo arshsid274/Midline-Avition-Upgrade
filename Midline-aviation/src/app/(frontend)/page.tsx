@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HomePageClient from "@/app/components/HomePageClient";
 import { SITE_NAME, SITE_URL, absoluteUrl, buildPageMetadata } from "@/lib/seo";
+import { getEnabledAccreditations } from "@/lib/cms/accreditations";
 
 export const metadata: Metadata = buildPageMetadata({
   title: "The Art of Seamless, Luxury Air Travel",
@@ -61,7 +62,9 @@ const homePageSchema = {
   ],
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const accreditationLogos = await getEnabledAccreditations();
+
   return (
     <>
       <script
@@ -69,7 +72,7 @@ export default function HomePage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homePageSchema) }}
       />
-      <HomePageClient />
+      <HomePageClient accreditationLogos={accreditationLogos} />
     </>
   );
 }

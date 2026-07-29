@@ -2,13 +2,16 @@
   "name": "aviation-website",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --webpack",
     "dev:turbo": "next dev --turbopack",
     "build": "next build",
     "build:airports": "node scripts/build-airport-dataset.mjs",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:accreditations": "payload run scripts/seed/accreditations.mts",
+    "payload": "payload"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",

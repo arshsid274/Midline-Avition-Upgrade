@@ -6,8 +6,9 @@ import { s3Storage } from '@payloadcms/storage-s3'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
-import { Media } from '@/collections/Media'
-import { Users } from '@/collections/Users'
+import { Accreditations } from './collections/Accreditations'
+import { Media } from './collections/Media'
+import { Users } from './collections/Users'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -30,7 +31,7 @@ export default buildConfig({
     api: '/payload-api',
   },
 
-  collections: [Users, Media],
+  collections: [Users, Media, Accreditations],
 
   /**
    * SQLite: a single file, no database server, no monthly cost. It lives at

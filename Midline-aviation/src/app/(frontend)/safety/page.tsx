@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { BadgeCheck, FileCheck2, ShieldCheck, Users, Wrench } from "lucide-react";
 import { buildBreadcrumbSchema, buildPageMetadata, CONTACT_EMAIL } from "@/lib/seo";
-import { enabledMemberships } from "@/lib/accreditations";
+import { getEnabledMemberships } from "@/lib/cms/accreditations";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
 
@@ -10,7 +10,7 @@ import SplitHeading from "@/app/components/motion/SplitHeading";
 // Part 145 standard, pilot minimums, WYVERN level) are intentionally omitted —
 // add them here once ops confirms; do not scaffold empty labels.
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "Safety & Certifications",
@@ -39,7 +39,9 @@ const maintenanceFacts = [
   { icon: Users, label: "Flight crew", value: "Recurrent training programmes" },
 ];
 
-export default function SafetyPage() {
+export default async function SafetyPage() {
+  const enabledMemberships = await getEnabledMemberships();
+
   return (
     <main className="bg-white">
       <script
@@ -149,7 +151,7 @@ export default function SafetyPage() {
           <Reveal as="div" variant="stagger" stagger={0.1} className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {enabledMemberships.map((m) => (
               <div
-                key={m.id}
+                key={m.key}
                 data-reveal-item
                 className="flex items-center gap-5 border border-hairline bg-surface-1 p-5"
               >

@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 
-import { revalidateEverywhere } from '@/payload/hooks/revalidate'
+import { revalidateEverywhere } from '../payload/hooks/revalidate'
 
 /**
  * Every image on the site. Files live on Cloudflare R2 (see the s3Storage
