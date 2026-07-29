@@ -7,6 +7,10 @@
 import type { ServerFunctionClient } from 'payload'
 
 import config from '@payload-config'
+// The admin panel's own stylesheet. Without it Payload renders completely
+// unstyled — the brand mark blows up to fill the viewport and no layout applies.
+// Must come before custom.scss so overrides win.
+import '@payloadcms/next/css'
 import { RootLayout, handleServerFunctions } from '@payloadcms/next/layouts'
 import React from 'react'
 
