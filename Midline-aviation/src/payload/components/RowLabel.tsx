@@ -57,3 +57,14 @@ export const PersonRowLabel = () => {
   if (data?.name) return <span>{data.title ? `${data.name} — ${data.title}` : data.name}</span>
   return <span>{`Person ${(rowNumber ?? 0) + 1}`}</span>
 }
+
+export const SpecRowLabel = () => {
+  const { data, rowNumber } = useRowLabel<{ label?: string; value?: number; unit?: string }>()
+  if (data?.label) return <span>{`${data.label} — ${data.value ?? ''}${data.unit ?? ''}`}</span>
+  return <span>{`Figure ${(rowNumber ?? 0) + 1}`}</span>
+}
+
+export const GalleryRowLabel = () => {
+  const { data, rowNumber } = useRowLabel<{ span?: string }>()
+  return <span>{`Photo ${(rowNumber ?? 0) + 1}${data?.span && data.span !== 'standard' ? ` (${data.span})` : ''}`}</span>
+}

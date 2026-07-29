@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { JETS, getJet } from "@/lib/fleet";
+import { getAircraft, getAircraftBySlug, getAircraftSlugs } from "@/lib/cms/aircraft";
 import {
   buildBreadcrumbSchema,
   buildPageMetadata,
@@ -12,10 +12,12 @@ import JetEditorialGallery from "@/app/components/ui/jet/JetEditorialGallery";
 import JetVerticalShowcase from "@/app/components/ui/jet/JetVerticalShowcase";
 import JetCrossLinks from "@/app/components/ui/jet/JetCrossLinks";
 
-export const dynamicParams = false;
+// A newly created aircraft has no prerendered route until it is published —
+// generateStaticParams cannot read draft mode — so allow on-demand rendering.
+export const dynamicParams = true;
 
-export function generateStaticParams() {
-  return JETS.map((jet) => ({ slug: jet.slug }));
+export async function generateStaticParams() {
+  return (await getAircraftSlugs()).map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({
@@ -24,7 +26,8 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const jet = getJet(slug);
+  const fleet = await getAircraft();
+  const jet = fleet.find((candidate) => candidate.slug === slug);
   if (!jet) return {};
 
   return buildPageMetadata({
@@ -43,7 +46,8 @@ export default async function JetPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const jet = getJet(slug);
+  const fleet = await getAircraft();
+  const jet = fleet.find((candidate) => candidate.slug === slug);
   if (!jet) notFound();
 
   const serviceSchema = buildServiceSchema({
@@ -80,7 +84,7 @@ export default async function JetPage({
         <JetSpecsBand jet={jet} />
         <JetEditorialGallery jet={jet} />
         <JetVerticalShowcase jet={jet} />
-        <JetCrossLinks jet={jet} />
+        <JetCrossLinks jet={jet} fleet={fleet} />
       </main>
     </>
   );

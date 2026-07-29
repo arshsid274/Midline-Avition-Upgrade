@@ -1,12 +1,12 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
-import { JETS } from "@/lib/fleet";
+import { getAircraftSlugs } from "@/lib/cms/aircraft";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
-  const jetEntries: MetadataRoute.Sitemap = JETS.map((jet) => ({
-    url: `${SITE_URL}/fleet/${jet.slug}`,
+  const jetEntries: MetadataRoute.Sitemap = (await getAircraftSlugs()).map((slug) => ({
+    url: `${SITE_URL}/fleet/${slug}`,
     lastModified: now,
     changeFrequency: "weekly",
     priority: 0.8,

@@ -67,6 +67,7 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    aircraft: Aircraft;
     accreditations: Accreditation;
     'gallery-items': GalleryItem;
     media: Media;
@@ -78,6 +79,7 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    aircraft: AircraftSelect<false> | AircraftSelect<true>;
     accreditations: AccreditationsSelect<false> | AccreditationsSelect<true>;
     'gallery-items': GalleryItemsSelect<false> | GalleryItemsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -144,41 +146,83 @@ export interface UserAuthOperations {
   };
 }
 /**
- * Logos in the home-page marquee and the /safety memberships list. Untick "enabled" to hide one without deleting it.
+ * Each aircraft has its own page at /fleet/<web address>.
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "accreditations".
+ * via the `definition` "aircraft".
  */
-export interface Accreditation {
+export interface Aircraft {
   id: number;
-  /**
-   * Stable identifier (e.g. "nbaa"). Used by the seed script — avoid changing.
-   */
-  key: string;
-  logo: number | Media;
-  /**
-   * Full organisation name. Also used as the image alt text, so write it as you would describe the logo.
-   */
   name: string;
+  tail: string;
+  category?: string | null;
+  tagline?: string | null;
+  description?:
+    | {
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
-   * Abbreviation used in the /safety list, e.g. "NBAA".
+   * The tiles in the "at a glance" band.
    */
-  shortName: string;
+  specs?:
+    | {
+        label: string;
+        value: number;
+        unit?: string | null;
+        decimals?: number | null;
+        note?: string | null;
+        /**
+         * For values that are not a plain number, e.g. a cabin height. Overrides the number and stops it counting up.
+         */
+        displayValue?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
-   * Only "membership" entries appear on /safety.
+   * Fills the top of the aircraft page.
    */
-  kind: 'rating' | 'membership' | 'authority';
+  heroImage: number | Media;
   /**
-   * Off until the certificate is verified. Hidden everywhere while off.
+   * Plays behind the header instead of the picture. Leave empty for a photo header.
    */
-  enabled?: boolean | null;
+  heroVideoUrl?: string | null;
   /**
-   * Internal only — never rendered on the site.
+   * The editorial grid further down the page.
    */
-  notes?: string | null;
+  gallery?:
+    | {
+        image: number | Media;
+        span?: ('standard' | 'wide' | 'tall') | null;
+        id?: string | null;
+      }[]
+    | null;
+  verticalVideo?: {
+    /**
+     * Plays muted on a loop, with no sound. Path such as /assets/videos/g200-showcase.mp4.
+     */
+    url?: string | null;
+    poster?: (number | null) | Media;
+    heading?: string | null;
+    caption?: string | null;
+  };
   /**
-   * Lower numbers appear first.
+   * The page lives at /fleet/<this>. Changing it breaks existing links — avoid once published.
    */
+  slug: string;
+  seoTitle?: string | null;
+  seoDescription?: string | null;
+  seoKeywords?:
+    | {
+        keyword: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The 1200x630 banner used when the page is shared.
+   */
+  ogImage?: string | null;
   order?: number | null;
   updatedAt: string;
   createdAt: string;
@@ -218,6 +262,46 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+/**
+ * Logos in the home-page marquee and the /safety memberships list. Untick "enabled" to hide one without deleting it.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "accreditations".
+ */
+export interface Accreditation {
+  id: number;
+  /**
+   * Stable identifier (e.g. "nbaa"). Used by the seed script — avoid changing.
+   */
+  key: string;
+  logo: number | Media;
+  /**
+   * Full organisation name. Also used as the image alt text, so write it as you would describe the logo.
+   */
+  name: string;
+  /**
+   * Abbreviation used in the /safety list, e.g. "NBAA".
+   */
+  shortName: string;
+  /**
+   * Only "membership" entries appear on /safety.
+   */
+  kind: 'rating' | 'membership' | 'authority';
+  /**
+   * Off until the certificate is verified. Hidden everywhere while off.
+   */
+  enabled?: boolean | null;
+  /**
+   * Internal only — never rendered on the site.
+   */
+  notes?: string | null;
+  /**
+   * Lower numbers appear first.
+   */
+  order?: number | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Everything in the gallery grid. Drag the order number to rearrange.
@@ -305,6 +389,10 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'aircraft';
+        value: number | Aircraft;
+      } | null)
+    | ({
         relationTo: 'accreditations';
         value: number | Accreditation;
       } | null)
@@ -361,6 +449,63 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "aircraft_select".
+ */
+export interface AircraftSelect<T extends boolean = true> {
+  name?: T;
+  tail?: T;
+  category?: T;
+  tagline?: T;
+  description?:
+    | T
+    | {
+        text?: T;
+        id?: T;
+      };
+  specs?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        unit?: T;
+        decimals?: T;
+        note?: T;
+        displayValue?: T;
+        id?: T;
+      };
+  heroImage?: T;
+  heroVideoUrl?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        span?: T;
+        id?: T;
+      };
+  verticalVideo?:
+    | T
+    | {
+        url?: T;
+        poster?: T;
+        heading?: T;
+        caption?: T;
+      };
+  slug?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  ogImage?: T;
+  order?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

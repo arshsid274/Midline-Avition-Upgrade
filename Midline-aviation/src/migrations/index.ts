@@ -7,6 +7,7 @@ import * as migration_20260729_102155_faq_page from './20260729_102155_faq_page'
 import * as migration_20260729_102545_about_page from './20260729_102545_about_page';
 import * as migration_20260729_102835_service_pages from './20260729_102835_service_pages';
 import * as migration_20260729_103235_gallery_items from './20260729_103235_gallery_items';
+import * as migration_20260729_103453_aircraft from './20260729_103453_aircraft';
 
 export const migrations = [
   {
@@ -52,6 +53,11 @@ export const migrations = [
   {
     up: migration_20260729_103235_gallery_items.up,
     down: migration_20260729_103235_gallery_items.down,
-    name: '20260729_103235_gallery_items'
+    name: '20260729_103235_gallery_items',
+  },
+  {
+    up: migration_20260729_103453_aircraft.up,
+    down: migration_20260729_103453_aircraft.down,
+    name: '20260729_103453_aircraft'
   },
 ];

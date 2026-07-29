@@ -7,6 +7,7 @@ import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
 import { Accreditations } from './collections/Accreditations'
+import { Aircraft } from './collections/Aircraft'
 import { GalleryItems } from './collections/GalleryItems'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
@@ -47,7 +48,7 @@ export default buildConfig({
   // Order matters: nav groups render in the order their entities appear, so
   // "Pages" (the globals) must be listed before the library collections for
   // the sidebar to read the way the site does.
-  collections: [Accreditations, GalleryItems, Media, Users],
+  collections: [Aircraft, Accreditations, GalleryItems, Media, Users],
   globals: [
     HomePage,
     AboutPage,
