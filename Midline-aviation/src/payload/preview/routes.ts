@@ -10,6 +10,7 @@ export const GLOBAL_ROUTES: Record<string, string> = {
   'contact-page': '/contact',
   'safety-page': '/safety',
   'faq-page': '/faq',
+  'about-page': '/about',
 }
 
 /**

@@ -91,12 +91,14 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     'home-page': HomePage;
+    'about-page': AboutPage;
     'contact-page': ContactPage;
     'safety-page': SafetyPage;
     'faq-page': FaqPage;
   };
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'about-page': AboutPageSelect<false> | AboutPageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
     'safety-page': SafetyPageSelect<false> | SafetyPageSelect<true>;
     'faq-page': FaqPageSelect<false> | FaqPageSelect<true>;
@@ -581,6 +583,90 @@ export interface HomePage {
   createdAt?: string | null;
 }
 /**
+ * The about page — what we do, our story, and the leadership team.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page".
+ */
+export interface AboutPage {
+  id: number;
+  whatWeDo?: {
+    heading?: string | null;
+    slides?:
+      | {
+          label: string;
+          title: string;
+          description?: string | null;
+          image?: (number | null) | Media;
+          link?: {
+            label?: string | null;
+            /**
+             * e.g. /contact, /#book-your-flight, or a full https:// address.
+             */
+            href?: string | null;
+          };
+          /**
+           * Which part of the picture stays visible when cropped, e.g. "center 40%". Leave as-is unless a face or tail is being cut off.
+           */
+          imagePosition?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  story?: {
+    heading?: string | null;
+    paragraphs?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    image?: (number | null) | Media;
+  };
+  sustainability?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    image?: (number | null) | Media;
+    cardTitle?: string | null;
+    cardBody?: string | null;
+    points?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+    link?: {
+      label?: string | null;
+      /**
+       * e.g. /contact, /#book-your-flight, or a full https:// address.
+       */
+      href?: string | null;
+    };
+  };
+  leadership?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    members?:
+      | {
+          name: string;
+          title: string;
+          bio?: string | null;
+          photo?: (number | null) | Media;
+          /**
+           * Which part of the photo stays visible when cropped, e.g. "center 20%". Adjust if a face is cut off.
+           */
+          objectPosition?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * The contact page — background video, contact details, and the enquiry form.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -853,6 +939,88 @@ export interface HomePageSelect<T extends boolean = true> {
           | {
               label?: T;
               href?: T;
+            };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "about-page_select".
+ */
+export interface AboutPageSelect<T extends boolean = true> {
+  whatWeDo?:
+    | T
+    | {
+        heading?: T;
+        slides?:
+          | T
+          | {
+              label?: T;
+              title?: T;
+              description?: T;
+              image?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              imagePosition?: T;
+              id?: T;
+            };
+      };
+  story?:
+    | T
+    | {
+        heading?: T;
+        paragraphs?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        image?: T;
+      };
+  sustainability?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        image?: T;
+        cardTitle?: T;
+        cardBody?: T;
+        points?:
+          | T
+          | {
+              text?: T;
+              id?: T;
+            };
+        link?:
+          | T
+          | {
+              label?: T;
+              href?: T;
+            };
+      };
+  leadership?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        members?:
+          | T
+          | {
+              name?: T;
+              title?: T;
+              bio?: T;
+              photo?: T;
+              objectPosition?: T;
+              id?: T;
             };
       };
   _status?: T;

@@ -2,6 +2,7 @@ import { VideoPreview as VideoPreview_d03cb3f2a72d7677ca4c53784843f315 } from '@
 import { BookingFormNote as BookingFormNote_0d2eb9c49221adcd50eabb157db4d896 } from '@/payload/components/SectionNote'
 import { CardRowLabel as CardRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
 import { AccreditationsNote as AccreditationsNote_0d2eb9c49221adcd50eabb157db4d896 } from '@/payload/components/SectionNote'
+import { PersonRowLabel as PersonRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
 import { ContactRowLabel as ContactRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
 import { ContactFormNote as ContactFormNote_0d2eb9c49221adcd50eabb157db4d896 } from '@/payload/components/SectionNote'
 import { FactRowLabel as FactRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
@@ -17,6 +18,7 @@ export const importMap = {
   "@/payload/components/SectionNote#BookingFormNote": BookingFormNote_0d2eb9c49221adcd50eabb157db4d896,
   "@/payload/components/RowLabel#CardRowLabel": CardRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,
   "@/payload/components/SectionNote#AccreditationsNote": AccreditationsNote_0d2eb9c49221adcd50eabb157db4d896,
+  "@/payload/components/RowLabel#PersonRowLabel": PersonRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,
   "@/payload/components/RowLabel#ContactRowLabel": ContactRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,
   "@/payload/components/SectionNote#ContactFormNote": ContactFormNote_0d2eb9c49221adcd50eabb157db4d896,
   "@/payload/components/RowLabel#FactRowLabel": FactRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,

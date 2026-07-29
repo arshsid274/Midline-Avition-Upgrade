@@ -4,66 +4,21 @@ import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { featureSlides, type FeatureKey, type FeatureSlide } from "@/lib/about-content";
 
-type FeatureKey = "charters" | "emptyLegs" | "experiences";
 
-interface FeatureSlide {
-  key: FeatureKey;
-  label: string;
-  eyebrow: string;
-  title: string;
-  description: string;
-  ctaHref: string;
-  imageSrc: string;
-  imageAlt: string;
-  imagePosition: string;
-}
 
-const featureSlides: FeatureSlide[] = [
-  {
-    key: "charters",
-    label: "Charters",
-    eyebrow: "Charters",
-    title: "Travel the way you want",
-    description:
-      "With just a few taps, book private charters for business trips, personal travel, or urgent departures. Access thousands of airports closer to your starting point and arrive with less friction, with dependable service designed around your schedule.",
-    ctaHref: "/services/aircraft-charter",
-    imageSrc: "/assets/images/aircraft/g450-cabin.webp",
-    imageAlt: "Guest relaxing in the Gulfstream G450 cabin",
-    imagePosition: "center 40%",
-  },
-  {
-    key: "emptyLegs",
-    label: "Empty legs",
-    eyebrow: "Empty legs",
-    title: "Luxury flights with smarter pricing",
-    description:
-      "Empty-leg flights happen when aircraft reposition without passengers. That opens access to private aviation at significantly lower rates, while keeping the same premium cabin experience, safety standards, and service quality.",
-    ctaHref: "/fleet",
-    imageSrc: "/assets/images/aircraft/legacy650-exterior-2.webp",
-    imageAlt: "Embraer Legacy 650 repositioning on the ramp",
-    imagePosition: "center 50%",
-  },
-  {
-    key: "experiences",
-    label: "Experiences",
-    eyebrow: "Experiences",
-    title: "Go beyond traditional itineraries",
-    description:
-      "Our curated aviation experiences unlock scenic destinations and unique journeys, from coastal escapes to remote luxury retreats. Every route is crafted to blend seamless flight logistics with memorable, destination-first travel.",
-    ctaHref: "/contact",
-    imageSrc: "/assets/images/aircraft/g450-celebration.webp",
-    imageAlt: "Guests celebrating aboard the Gulfstream G450",
-    imagePosition: "center 40%",
-  },
-];
 
-export default function ContactLegacyStorySection() {
+export default function ContactLegacyStorySection({
+  slides = featureSlides,
+}: {
+  slides?: FeatureSlide[];
+} = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const [activeFeature, setActiveFeature] = useState<FeatureKey>("charters");
 
   const activeSlide = useMemo(
-    () => featureSlides.find((slide) => slide.key === activeFeature) ?? featureSlides[0],
+    () => slides.find((slide) => slide.key === activeFeature) ?? slides[0],
     [activeFeature],
   );
 
@@ -87,7 +42,7 @@ export default function ContactLegacyStorySection() {
 
         <div data-reveal-item className="mt-4 flex justify-center sm:mt-5">
           <div className="inline-flex items-center border border-hairline bg-white p-1">
-            {featureSlides.map((slide) => (
+            {slides.map((slide) => (
               <button
                 key={slide.key}
                 type="button"

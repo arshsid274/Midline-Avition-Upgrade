@@ -3,8 +3,9 @@ import { SITE_NAME, SITE_URL, absoluteUrl, buildBreadcrumbSchema, buildPageMetad
 import ContactLeadershipSection from "@/app/components/ui/ContactLeadershipSection";
 import ContactLegacyStorySection from "@/app/components/ui/ContactLegacyStorySection";
 import ContactSustainabilityInnovationSection from "@/app/components/ui/ContactSustainabilityInnovationSection";
+import { getAboutContent } from "@/lib/cms/about";
 
-export const dynamic = "force-static";
+export const revalidate = false;
 
 export const metadata: Metadata = buildPageMetadata({
   title: "About Us",
@@ -29,7 +30,9 @@ const aboutPageSchema = {
 
 const breadcrumbSchema = buildBreadcrumbSchema([{ name: "About Us", path: "/about" }]);
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const content = await getAboutContent();
+
   return (
     <>
       <script
@@ -44,9 +47,9 @@ export default function AboutPage() {
       />
       <main className="midline-page py-10 sm:py-12 md:py-16">
         <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
-          <ContactLegacyStorySection />
+          <ContactLegacyStorySection slides={content.whatWeDo.slides} />
           <ContactSustainabilityInnovationSection />
-          <ContactLeadershipSection />
+          <ContactLeadershipSection members={content.leadership.members} />
         </div>
       </main>
     </>

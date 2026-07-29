@@ -51,3 +51,9 @@ export const QuestionRowLabel = () => {
   const { data, rowNumber } = useRowLabel<{ q?: string }>()
   return <span>{data?.q || `Question ${(rowNumber ?? 0) + 1}`}</span>
 }
+
+export const PersonRowLabel = () => {
+  const { data, rowNumber } = useRowLabel<{ name?: string; title?: string }>()
+  if (data?.name) return <span>{data.title ? `${data.name} — ${data.title}` : data.name}</span>
+  return <span>{`Person ${(rowNumber ?? 0) + 1}`}</span>
+}

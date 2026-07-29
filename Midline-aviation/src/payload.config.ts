@@ -9,6 +9,7 @@ import sharp from 'sharp'
 import { Accreditations } from './collections/Accreditations'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
+import { AboutPage } from './globals/AboutPage'
 import { ContactPage } from './globals/ContactPage'
 import { FaqPage } from './globals/FaqPage'
 import { HomePage } from './globals/HomePage'
@@ -39,7 +40,7 @@ export default buildConfig({
   // "Pages" (the globals) must be listed before the library collections for
   // the sidebar to read the way the site does.
   collections: [Accreditations, Media, Users],
-  globals: [HomePage, ContactPage, SafetyPage, FaqPage],
+  globals: [HomePage, AboutPage, ContactPage, SafetyPage, FaqPage],
 
   /**
    * SQLite, via libSQL — the same adapter serves two very different hosts:
