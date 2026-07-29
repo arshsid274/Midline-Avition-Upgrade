@@ -11,6 +11,7 @@ import { Media } from './collections/Media'
 import { Users } from './collections/Users'
 import { ContactPage } from './globals/ContactPage'
 import { HomePage } from './globals/HomePage'
+import { SafetyPage } from './globals/SafetyPage'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -37,7 +38,7 @@ export default buildConfig({
   // "Pages" (the globals) must be listed before the library collections for
   // the sidebar to read the way the site does.
   collections: [Accreditations, Media, Users],
-  globals: [HomePage, ContactPage],
+  globals: [HomePage, ContactPage, SafetyPage],
 
   /**
    * SQLite, via libSQL — the same adapter serves two very different hosts:

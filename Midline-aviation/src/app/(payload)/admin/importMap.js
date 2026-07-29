@@ -4,6 +4,8 @@ import { CardRowLabel as CardRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@
 import { AccreditationsNote as AccreditationsNote_0d2eb9c49221adcd50eabb157db4d896 } from '@/payload/components/SectionNote'
 import { ContactRowLabel as ContactRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
 import { ContactFormNote as ContactFormNote_0d2eb9c49221adcd50eabb157db4d896 } from '@/payload/components/SectionNote'
+import { FactRowLabel as FactRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
+import { MembershipsNote as MembershipsNote_0d2eb9c49221adcd50eabb157db4d896 } from '@/payload/components/SectionNote'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
@@ -15,6 +17,8 @@ export const importMap = {
   "@/payload/components/SectionNote#AccreditationsNote": AccreditationsNote_0d2eb9c49221adcd50eabb157db4d896,
   "@/payload/components/RowLabel#ContactRowLabel": ContactRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,
   "@/payload/components/SectionNote#ContactFormNote": ContactFormNote_0d2eb9c49221adcd50eabb157db4d896,
+  "@/payload/components/RowLabel#FactRowLabel": FactRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,
+  "@/payload/components/SectionNote#MembershipsNote": MembershipsNote_0d2eb9c49221adcd50eabb157db4d896,
   "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

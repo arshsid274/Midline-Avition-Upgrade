@@ -38,3 +38,11 @@ export const ContactFormNote = () => (
     dropdowns are part of the booking system, not editable copy.
   </p>
 )
+
+export const MembershipsNote = () => (
+  <p style={noteStyle}>
+    The logos shown here come from{' '}
+    <a href="/admin/collections/accreditations">Content Library → Accreditations</a> — only those
+    marked <strong>Membership</strong> and <strong>enabled</strong> appear on this page.
+  </p>
+)

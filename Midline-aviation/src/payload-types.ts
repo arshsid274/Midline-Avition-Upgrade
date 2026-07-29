@@ -92,10 +92,12 @@ export interface Config {
   globals: {
     'home-page': HomePage;
     'contact-page': ContactPage;
+    'safety-page': SafetyPage;
   };
   globalsSelect: {
     'home-page': HomePageSelect<false> | HomePageSelect<true>;
     'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
+    'safety-page': SafetyPageSelect<false> | SafetyPageSelect<true>;
   };
   locale: null;
   widgets: {
@@ -618,6 +620,74 @@ export interface ContactPage {
   createdAt?: string | null;
 }
 /**
+ * The safety page. Tabs run top to bottom in the order visitors scroll.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "safety-page".
+ */
+export interface SafetyPage {
+  id: number;
+  hero?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    body?: string | null;
+  };
+  operator?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    /**
+     * The three boxes under the paragraph.
+     */
+    facts?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  ratings?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    cardTitle?: string | null;
+    cardBody?: string | null;
+  };
+  memberships?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+  };
+  insurance?: {
+    eyebrow?: string | null;
+    body?: string | null;
+  };
+  maintenance?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    /**
+     * The three tiles under the paragraph.
+     */
+    facts?:
+      | {
+          label: string;
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  questions?: {
+    heading?: string | null;
+    /**
+     * The contact email is inserted automatically before this text.
+     */
+    body?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "home-page_select".
  */
@@ -776,6 +846,77 @@ export interface ContactPageSelect<T extends boolean = true> {
               href?: T;
               id?: T;
             };
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "safety-page_select".
+ */
+export interface SafetyPageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+      };
+  operator?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+        facts?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+      };
+  ratings?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        cardTitle?: T;
+        cardBody?: T;
+      };
+  memberships?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+      };
+  insurance?:
+    | T
+    | {
+        eyebrow?: T;
+        body?: T;
+      };
+  maintenance?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        body?: T;
+        facts?:
+          | T
+          | {
+              label?: T;
+              value?: T;
+              id?: T;
+            };
+      };
+  questions?:
+    | T
+    | {
+        heading?: T;
+        body?: T;
       };
   _status?: T;
   updatedAt?: T;

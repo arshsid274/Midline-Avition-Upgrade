@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { BadgeCheck, FileCheck2, ShieldCheck, Users, Wrench } from "lucide-react";
 import { buildBreadcrumbSchema, buildPageMetadata, CONTACT_EMAIL } from "@/lib/seo";
 import { getEnabledMemberships } from "@/lib/cms/accreditations";
+import { getSafetyContent } from "@/lib/cms/safety";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
 
@@ -9,6 +10,9 @@ import SplitHeading from "@/app/components/motion/SplitHeading";
 // Fields the workbook marks [PENDING] (AOC number/dates, insurance limit,
 // Part 145 standard, pilot minimums, WYVERN level) are intentionally omitted —
 // add them here once ops confirms; do not scaffold empty labels.
+
+/** Icons for the maintenance tiles, by position. */
+const MAINTENANCE_ICONS = [Wrench, FileCheck2, Users];
 
 export const revalidate = false;
 
@@ -27,20 +31,13 @@ export const metadata: Metadata = buildPageMetadata({
 
 const breadcrumbSchema = buildBreadcrumbSchema([{ name: "Safety & Certifications", path: "/safety" }]);
 
-const operatorFacts = [
-  { label: "Registered operator on AOC", value: "Titan Aviation" },
-  { label: "Issuing authority", value: "Civil Aviation Authority of San Marino" },
-  { label: "Authorisation", value: "Private charter operations" },
-];
 
-const maintenanceFacts = [
-  { icon: Wrench, label: "Maintenance", value: "Carried out by Titan Aviation" },
-  { icon: FileCheck2, label: "Airworthiness", value: "Current Certificates of Airworthiness across the fleet" },
-  { icon: Users, label: "Flight crew", value: "Recurrent training programmes" },
-];
 
 export default async function SafetyPage() {
-  const enabledMemberships = await getEnabledMemberships();
+  const [enabledMemberships, content] = await Promise.all([
+    getEnabledMemberships(),
+    getSafetyContent(),
+  ]);
 
   return (
     <main className="bg-white">
@@ -55,19 +52,19 @@ export default async function SafetyPage() {
         <div className="mx-auto w-full max-w-[1180px]">
           <Reveal as="div" on="load" variant="stagger" stagger={0.12}>
             <p data-reveal-item className="text-sm text-inverse-ink-muted">
-              Safety &amp; Certifications
+              {content.hero.eyebrow}
             </p>
             <SplitHeading
+              key={content.hero.heading}
               as="h1"
               mode="lcp"
               on="load"
               className="font-display mt-4 max-w-3xl text-4xl font-light leading-[1.1] text-white sm:text-5xl"
             >
-              Safety is the standard, not the amenity.
+              {content.hero.heading}
             </SplitHeading>
             <p data-reveal-item className="mt-5 max-w-2xl text-base leading-8 text-inverse-ink-muted">
-              Every Midline Aviation charter is flown under a certificated operator, audited operating
-              standards, and comprehensive insurance — here is exactly how our flights are run.
+              {content.hero.body}
             </p>
           </Reveal>
         </div>
@@ -82,19 +79,17 @@ export default async function SafetyPage() {
           className="mx-auto grid w-full max-w-[1180px] gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start"
         >
           <div data-reveal-item>
-            <p className="text-sm text-ink-muted">Operator Status</p>
+            <p className="text-sm text-ink-muted">{content.operator.eyebrow}</p>
             <h2 className="font-display mt-3 text-3xl font-light text-ink sm:text-4xl">
-              Flown under a certificated operator.
+              {content.operator.heading}
             </h2>
           </div>
           <div data-reveal-item>
             <p className="text-base leading-8 text-ink-muted sm:text-lg">
-              Midline Aviation arranges and manages private charter flights operated under the Air
-              Operator Certificate (AOC) of Titan Aviation, registered with the Civil Aviation Authority
-              of San Marino. The AOC authorises private charter operations.
+              {content.operator.body}
             </p>
             <dl className="mt-8 grid gap-3 sm:grid-cols-3">
-              {operatorFacts.map((fact) => (
+              {content.operator.facts.map((fact) => (
                 <div key={fact.label} className="border border-hairline bg-surface-1 p-4">
                   <dt className="text-xs text-ink-muted">
                     {fact.label}
@@ -112,10 +107,10 @@ export default async function SafetyPage() {
         <div className="mx-auto w-full max-w-[1180px]">
           <Reveal as="div" variant="fade-up" className="max-w-3xl">
             <p className="text-sm text-ink-muted">
-              Safety Ratings &amp; Audits
+              {content.ratings.eyebrow}
             </p>
             <h2 className="font-display mt-3 text-3xl font-light text-ink sm:text-4xl">
-              Audited operating standards.
+              {content.ratings.heading}
             </h2>
           </Reveal>
           <Reveal
@@ -127,10 +122,9 @@ export default async function SafetyPage() {
               <ShieldCheck className="h-7 w-7" />
             </span>
             <div>
-              <h3 className="text-lg font-semibold text-ink">IS-BAO</h3>
+              <h3 className="text-lg font-semibold text-ink">{content.ratings.cardTitle}</h3>
               <p className="mt-1.5 max-w-2xl text-sm leading-7 text-ink-muted sm:text-base">
-                Our operations are conducted to the International Standard for Business Aircraft
-                Operations (IS-BAO) — the global benchmark for business aviation safety management.
+{content.ratings.cardBody}
               </p>
             </div>
           </Reveal>
@@ -142,10 +136,10 @@ export default async function SafetyPage() {
         <div className="mx-auto w-full max-w-[1180px]">
           <Reveal as="div" variant="fade-up" className="max-w-3xl">
             <p className="text-sm text-ink-muted">
-              Memberships &amp; Affiliations
+              {content.memberships.eyebrow}
             </p>
             <h2 className="font-display mt-3 text-3xl font-light text-ink sm:text-4xl">
-              Part of the business aviation community.
+              {content.memberships.heading}
             </h2>
           </Reveal>
           <Reveal as="div" variant="stagger" stagger={0.1} className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -196,15 +190,16 @@ export default async function SafetyPage() {
               Maintenance &amp; Crew
             </p>
             <h2 className="font-display mt-3 text-3xl font-light text-ink sm:text-4xl">
-              Maintained aircraft, current crews.
+              {content.maintenance.heading}
             </h2>
             <p className="mt-5 text-base leading-8 text-ink-muted">
-              Aircraft maintenance is carried out by Titan Aviation. All aircraft hold current
-              Certificates of Airworthiness, and flight crew complete recurrent training programmes.
+              {content.maintenance.body}
             </p>
           </Reveal>
           <Reveal as="div" variant="stagger" stagger={0.1} className="mt-8 grid gap-4 sm:grid-cols-3">
-            {maintenanceFacts.map(({ icon: Icon, label, value }) => (
+            {content.maintenance.facts.map(({ label, value }, index) => {
+              const Icon = MAINTENANCE_ICONS[index] ?? Wrench;
+              return (
               <div key={label} data-reveal-item className="border border-hairline bg-white p-5">
                 <span className="inline-flex h-10 w-10 items-center justify-center bg-ibm-blue/10 text-ibm-blue">
                   <Icon className="h-5 w-5" />
@@ -214,7 +209,8 @@ export default async function SafetyPage() {
                 </p>
                 <p className="mt-1 text-sm font-semibold leading-snug text-ink">{value}</p>
               </div>
-            ))}
+            );
+            })}
           </Reveal>
         </div>
       </section>
@@ -223,7 +219,7 @@ export default async function SafetyPage() {
       <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-16">
         <Reveal as="div" variant="fade-up" className="mx-auto w-full max-w-[1180px] text-center">
           <h2 className="font-display text-2xl font-light text-ink sm:text-3xl">
-            Questions about how we operate?
+            {content.questions.heading}
           </h2>
           <p className="mt-3 text-base leading-8 text-ink-muted">
             Write to <a className="font-semibold text-ibm-blue transition-colors hover:text-ibm-blue-60" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>{" "}
