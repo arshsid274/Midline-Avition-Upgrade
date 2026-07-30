@@ -1,9 +1,8 @@
 import "server-only";
 
 import { draftMode } from "next/headers";
-import { getPayload } from "payload";
 
-import config from "@/payload.config";
+import { tryGetPayload } from "@/lib/cms/payload";
 import { SERVICE_HEROES, type ServiceHero } from "@/lib/service-content";
 
 const text = (v: unknown, f: string) => (typeof v === "string" && v.trim() ? v : f);
@@ -18,8 +17,10 @@ const text = (v: unknown, f: string) => (typeof v === "string" && v.trim() ? v :
 export const getServiceHero = async (slug: keyof typeof SERVICE_HEROES): Promise<ServiceHero> => {
   const fallback = SERVICE_HEROES[slug];
   const { isEnabled: draft } = await draftMode();
-  const payload = await getPayload({ config });
-  const g = (await payload.findGlobal({ slug: slug as any, depth: 1, draft })) as Record<string, any>;
+  const payload = await tryGetPayload();
+  const g = (payload
+    ? await payload.findGlobal({ slug: slug as any, depth: 1, draft })
+    : {}) as Record<string, any>;
   const hero = g?.hero ?? {};
   const image = hero.image;
 

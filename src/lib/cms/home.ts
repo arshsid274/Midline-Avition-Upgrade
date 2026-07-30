@@ -3,9 +3,8 @@ import "server-only";
 import { draftMode } from "next/headers";
 
 import { uploadUrl } from "@/lib/cms/resolve";
-import { getPayload } from "payload";
 
-import config from "@/payload.config";
+import { tryGetPayload } from "@/lib/cms/payload";
 import {
   HOME_AIRCRAFT,
   HOME_CTA_BANNER,
@@ -69,15 +68,17 @@ const linkFrom = (value: unknown, fallback: { label: string; href: string }) => 
  */
 export const getHomeContent = async (): Promise<HomeContent> => {
   const { isEnabled: draft } = await draftMode();
-  const payload = await getPayload({ config });
+  const payload = await tryGetPayload();
 
   // depth 1 resolves the poster upload so `url` is populated. Media has no
   // onward relationships, so one hop is enough.
-  const global = (await payload.findGlobal({
+  const global = (payload
+    ? await payload.findGlobal({
     slug: "home-page",
     depth: 1,
     draft,
-  })) as Record<string, any>;
+  })
+    : {}) as Record<string, any>;
 
   const hero = global?.hero ?? {};
   const heading = hero.heading ?? {};

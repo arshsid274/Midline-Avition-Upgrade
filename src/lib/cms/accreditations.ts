@@ -1,8 +1,7 @@
 import "server-only";
 
-import { getPayload } from "payload";
 
-import config from "@/payload.config";
+import { tryGetPayload } from "@/lib/cms/payload";
 
 /**
  * Serializable shape handed to Client Components. Deliberately not the raw
@@ -31,16 +30,16 @@ const mediaUrl = (logo: unknown): string | null => {
  * field comes back as a bare ID and every logo silently disappears.
  */
 export const getEnabledAccreditations = async (): Promise<AccreditationLogo[]> => {
-  const payload = await getPayload({ config });
+  const payload = await tryGetPayload();
 
-  const { docs } = await payload.find({
+  const docs = payload ? (await payload.find({
     collection: "accreditations",
     where: { enabled: { equals: true } },
     sort: "order",
     depth: 1,
     limit: 100,
     pagination: false,
-  });
+  })).docs : [];
 
   return docs.flatMap((doc) => {
     const src = mediaUrl(doc.logo);
@@ -52,16 +51,16 @@ export const getEnabledAccreditations = async (): Promise<AccreditationLogo[]> =
 
 /** Only memberships appear on /safety, matching the previous filter. */
 export const getEnabledMemberships = async (): Promise<AccreditationLogo[]> => {
-  const payload = await getPayload({ config });
+  const payload = await tryGetPayload();
 
-  const { docs } = await payload.find({
+  const docs = payload ? (await payload.find({
     collection: "accreditations",
     where: { enabled: { equals: true }, kind: { equals: "membership" } },
     sort: "order",
     depth: 1,
     limit: 100,
     pagination: false,
-  });
+  })).docs : [];
 
   return docs.flatMap((doc) => {
     const src = mediaUrl(doc.logo);

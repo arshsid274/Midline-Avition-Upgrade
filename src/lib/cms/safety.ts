@@ -1,9 +1,8 @@
 import "server-only";
 
 import { draftMode } from "next/headers";
-import { getPayload } from "payload";
 
-import config from "@/payload.config";
+import { tryGetPayload } from "@/lib/cms/payload";
 import { SAFETY_CONTENT, type Fact, type SafetyContent } from "@/lib/safety-content";
 
 const text = (v: unknown, f: string) => (typeof v === "string" && v.trim() ? v : f);
@@ -14,8 +13,10 @@ const facts = (v: unknown, f: Fact[]): Fact[] =>
 
 export const getSafetyContent = async (): Promise<SafetyContent> => {
   const { isEnabled: draft } = await draftMode();
-  const payload = await getPayload({ config });
-  const g = (await payload.findGlobal({ slug: "safety-page", depth: 1, draft })) as Record<string, any>;
+  const payload = await tryGetPayload();
+  const g = (payload
+    ? await payload.findGlobal({ slug: "safety-page", depth: 1, draft })
+    : {}) as Record<string, any>;
   const d = SAFETY_CONTENT;
 
   return {

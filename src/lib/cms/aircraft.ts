@@ -1,9 +1,8 @@
 import "server-only";
 
 import { draftMode } from "next/headers";
-import { getPayload } from "payload";
 
-import config from "@/payload.config";
+import { tryGetPayload } from "@/lib/cms/payload";
 import { JETS, type Jet, type JetImage } from "@/lib/fleet";
 import { uploadUrl } from "@/lib/cms/resolve";
 
@@ -72,15 +71,15 @@ const toJet = (doc: any): Jet => ({
 /** All aircraft, in admin order. Falls back to the committed data if empty. */
 export const getAircraft = async (): Promise<Jet[]> => {
   const { isEnabled: draft } = await draftMode();
-  const payload = await getPayload({ config });
-  const { docs } = await payload.find({
+  const payload = await tryGetPayload();
+  const docs = payload ? (await payload.find({
     collection: "aircraft",
     sort: "order",
     depth: 1,
     limit: 100,
     pagination: false,
     draft,
-  });
+  })).docs : [];
   return docs.length ? docs.map(toJet) : JETS;
 };
 
@@ -96,13 +95,13 @@ export const getAircraftBySlug = async (slug: string): Promise<Jet | undefined> 
  * dynamicParams so it still renders on demand.
  */
 export const getAircraftSlugs = async (): Promise<string[]> => {
-  const payload = await getPayload({ config });
-  const { docs } = await payload.find({
+  const payload = await tryGetPayload();
+  const docs = payload ? (await payload.find({
     collection: "aircraft",
     sort: "order",
     depth: 0,
     limit: 100,
     pagination: false,
-  });
+  })).docs : [];
   return docs.length ? docs.map((d: any) => d.slug) : JETS.map((j) => j.slug);
 };

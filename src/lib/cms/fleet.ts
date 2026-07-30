@@ -1,9 +1,8 @@
 import "server-only";
 
 import { draftMode } from "next/headers";
-import { getPayload } from "payload";
 
-import config from "@/payload.config";
+import { tryGetPayload } from "@/lib/cms/payload";
 import { FLEET_PAGE } from "@/lib/fleet-page-content";
 import { uploadUrl } from "@/lib/cms/resolve";
 
@@ -15,8 +14,10 @@ const img = (v: unknown, f: { src: string; alt: string }) =>
 
 export const getFleetPageContent = async () => {
   const { isEnabled: draft } = await draftMode();
-  const payload = await getPayload({ config });
-  const g = (await payload.findGlobal({ slug: "fleet-page", depth: 1, draft })) as Record<string, any>;
+  const payload = await tryGetPayload();
+  const g = (payload
+    ? await payload.findGlobal({ slug: "fleet-page", depth: 1, draft })
+    : {}) as Record<string, any>;
 
   return {
     hero: {

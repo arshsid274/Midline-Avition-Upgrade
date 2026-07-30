@@ -1,9 +1,8 @@
 import "server-only";
 
 import { draftMode } from "next/headers";
-import { getPayload } from "payload";
 
-import config from "@/payload.config";
+import { tryGetPayload } from "@/lib/cms/payload";
 import { CONTACT_CONTENT, type ContactContent } from "@/lib/contact-content";
 import { uploadUrl } from "@/lib/cms/resolve";
 
@@ -14,13 +13,15 @@ const text = (value: unknown, fallback: string) =>
 
 export const getContactContent = async (): Promise<ContactPageContent> => {
   const { isEnabled: draft } = await draftMode();
-  const payload = await getPayload({ config });
+  const payload = await tryGetPayload();
 
-  const global = (await payload.findGlobal({
+  const global = (payload
+    ? await payload.findGlobal({
     slug: "contact-page",
     depth: 1,
     draft,
-  })) as Record<string, any>;
+  })
+    : {}) as Record<string, any>;
 
   const hero = global?.hero ?? {};
   const poster = hero.poster;

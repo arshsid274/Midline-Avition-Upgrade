@@ -1,9 +1,8 @@
 import "server-only";
 
 import { draftMode } from "next/headers";
-import { getPayload } from "payload";
 
-import config from "@/payload.config";
+import { tryGetPayload } from "@/lib/cms/payload";
 import { FAQ_GROUPS, FAQ_PAGE, type FaqGroup } from "@/lib/faq-content";
 
 const text = (v: unknown, f: string) => (typeof v === "string" && v.trim() ? v : f);
@@ -16,8 +15,10 @@ export type FaqContent = {
 
 export const getFaqContent = async (): Promise<FaqContent> => {
   const { isEnabled: draft } = await draftMode();
-  const payload = await getPayload({ config });
-  const g = (await payload.findGlobal({ slug: "faq-page", depth: 0, draft })) as Record<string, any>;
+  const payload = await tryGetPayload();
+  const g = (payload
+    ? await payload.findGlobal({ slug: "faq-page", depth: 0, draft })
+    : {}) as Record<string, any>;
 
   const groups: FaqGroup[] = (g?.groups?.items ?? []).length
     ? g.groups.items.map((grp: any) => ({

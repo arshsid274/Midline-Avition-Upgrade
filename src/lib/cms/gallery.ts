@@ -1,8 +1,7 @@
 import "server-only";
 
-import { getPayload } from "payload";
 
-import config from "@/payload.config";
+import { tryGetPayload } from "@/lib/cms/payload";
 import { GALLERY_ITEMS, type GalleryItem } from "@/lib/gallery-content";
 import { uploadUrl } from "@/lib/cms/resolve";
 
@@ -14,14 +13,14 @@ import { uploadUrl } from "@/lib/cms/resolve";
  * filtering and lightbox code is untouched.
  */
 export const getGalleryItems = async (): Promise<GalleryItem[]> => {
-  const payload = await getPayload({ config });
-  const { docs } = await payload.find({
+  const payload = await tryGetPayload();
+  const docs = payload ? (await payload.find({
     collection: "gallery-items",
     sort: "order",
     depth: 1,
     limit: 500,
     pagination: false,
-  });
+  })).docs : [];
 
   if (!docs.length) return GALLERY_ITEMS;
 
