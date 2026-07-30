@@ -4,6 +4,7 @@ import { getPayload } from "payload";
 
 import config from "@/payload.config";
 import { GALLERY_ITEMS, type GalleryItem } from "@/lib/gallery-content";
+import { uploadUrl } from "@/lib/cms/resolve";
 
 /**
  * Gallery tiles in admin order.
@@ -26,7 +27,7 @@ export const getGalleryItems = async (): Promise<GalleryItem[]> => {
 
   return docs.flatMap((doc: any) => {
     const isVideo = doc.kind === "video";
-    const src = isVideo ? doc.videoUrl : doc.image?.url;
+    const src = isVideo ? uploadUrl(doc.videoUrl) : doc.image?.url;
     if (typeof src !== "string" || !src) return [];
     return [
       {

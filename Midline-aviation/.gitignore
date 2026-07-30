@@ -51,3 +51,6 @@ public/assets/images/T7-MIDB*
 
 # Payload local upload staging (superseded by R2 once configured)
 /media
+
+# Payload video uploads (local disk fallback; R2 in production)
+/videos

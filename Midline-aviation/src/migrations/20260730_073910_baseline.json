@@ -2,6 +2,579 @@
   "version": "6",
   "dialect": "sqlite",
   "tables": {
+    "aircraft_description": {
+      "name": "aircraft_description",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "text": {
+          "name": "text",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "aircraft_description_order_idx": {
+          "name": "aircraft_description_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "aircraft_description_parent_id_idx": {
+          "name": "aircraft_description_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "aircraft_description_parent_id_fk": {
+          "name": "aircraft_description_parent_id_fk",
+          "tableFrom": "aircraft_description",
+          "tableTo": "aircraft",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "aircraft_specs": {
+      "name": "aircraft_specs",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "label": {
+          "name": "label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "value": {
+          "name": "value",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "unit": {
+          "name": "unit",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "decimals": {
+          "name": "decimals",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "note": {
+          "name": "note",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "display_value": {
+          "name": "display_value",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "aircraft_specs_order_idx": {
+          "name": "aircraft_specs_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "aircraft_specs_parent_id_idx": {
+          "name": "aircraft_specs_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "aircraft_specs_parent_id_fk": {
+          "name": "aircraft_specs_parent_id_fk",
+          "tableFrom": "aircraft_specs",
+          "tableTo": "aircraft",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "aircraft_gallery": {
+      "name": "aircraft_gallery",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "span": {
+          "name": "span",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'standard'"
+        }
+      },
+      "indexes": {
+        "aircraft_gallery_order_idx": {
+          "name": "aircraft_gallery_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "aircraft_gallery_parent_id_idx": {
+          "name": "aircraft_gallery_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        },
+        "aircraft_gallery_image_idx": {
+          "name": "aircraft_gallery_image_idx",
+          "columns": [
+            "image_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "aircraft_gallery_image_id_media_id_fk": {
+          "name": "aircraft_gallery_image_id_media_id_fk",
+          "tableFrom": "aircraft_gallery",
+          "tableTo": "media",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "aircraft_gallery_parent_id_fk": {
+          "name": "aircraft_gallery_parent_id_fk",
+          "tableFrom": "aircraft_gallery",
+          "tableTo": "aircraft",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "aircraft_seo_keywords": {
+      "name": "aircraft_seo_keywords",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "keyword": {
+          "name": "keyword",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "aircraft_seo_keywords_order_idx": {
+          "name": "aircraft_seo_keywords_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "aircraft_seo_keywords_parent_id_idx": {
+          "name": "aircraft_seo_keywords_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "aircraft_seo_keywords_parent_id_fk": {
+          "name": "aircraft_seo_keywords_parent_id_fk",
+          "tableFrom": "aircraft_seo_keywords",
+          "tableTo": "aircraft",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "aircraft": {
+      "name": "aircraft",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "tail": {
+          "name": "tail",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "category": {
+          "name": "category",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "tagline": {
+          "name": "tagline",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "hero_image_id": {
+          "name": "hero_image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "hero_video_url_id": {
+          "name": "hero_video_url_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "vertical_video_url_id": {
+          "name": "vertical_video_url_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "vertical_video_poster_id": {
+          "name": "vertical_video_poster_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "vertical_video_heading": {
+          "name": "vertical_video_heading",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "vertical_video_caption": {
+          "name": "vertical_video_caption",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "seo_title": {
+          "name": "seo_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "seo_description": {
+          "name": "seo_description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "og_image": {
+          "name": "og_image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "order": {
+          "name": "order",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": 0
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        }
+      },
+      "indexes": {
+        "aircraft_hero_image_idx": {
+          "name": "aircraft_hero_image_idx",
+          "columns": [
+            "hero_image_id"
+          ],
+          "isUnique": false
+        },
+        "aircraft_hero_video_url_idx": {
+          "name": "aircraft_hero_video_url_idx",
+          "columns": [
+            "hero_video_url_id"
+          ],
+          "isUnique": false
+        },
+        "aircraft_vertical_video_vertical_video_url_idx": {
+          "name": "aircraft_vertical_video_vertical_video_url_idx",
+          "columns": [
+            "vertical_video_url_id"
+          ],
+          "isUnique": false
+        },
+        "aircraft_vertical_video_vertical_video_poster_idx": {
+          "name": "aircraft_vertical_video_vertical_video_poster_idx",
+          "columns": [
+            "vertical_video_poster_id"
+          ],
+          "isUnique": false
+        },
+        "aircraft_slug_idx": {
+          "name": "aircraft_slug_idx",
+          "columns": [
+            "slug"
+          ],
+          "isUnique": true
+        },
+        "aircraft_updated_at_idx": {
+          "name": "aircraft_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        },
+        "aircraft_created_at_idx": {
+          "name": "aircraft_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "aircraft_hero_image_id_media_id_fk": {
+          "name": "aircraft_hero_image_id_media_id_fk",
+          "tableFrom": "aircraft",
+          "tableTo": "media",
+          "columnsFrom": [
+            "hero_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "aircraft_hero_video_url_id_videos_id_fk": {
+          "name": "aircraft_hero_video_url_id_videos_id_fk",
+          "tableFrom": "aircraft",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "hero_video_url_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "aircraft_vertical_video_url_id_videos_id_fk": {
+          "name": "aircraft_vertical_video_url_id_videos_id_fk",
+          "tableFrom": "aircraft",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "vertical_video_url_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "aircraft_vertical_video_poster_id_media_id_fk": {
+          "name": "aircraft_vertical_video_poster_id_media_id_fk",
+          "tableFrom": "aircraft",
+          "tableTo": "media",
+          "columnsFrom": [
+            "vertical_video_poster_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
     "accreditations": {
       "name": "accreditations",
       "columns": {
@@ -162,9 +735,9 @@
           "notNull": false,
           "autoincrement": false
         },
-        "video_url": {
-          "name": "video_url",
-          "type": "text",
+        "video_url_id": {
+          "name": "video_url_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -238,6 +811,13 @@
           ],
           "isUnique": false
         },
+        "gallery_items_video_url_idx": {
+          "name": "gallery_items_video_url_idx",
+          "columns": [
+            "video_url_id"
+          ],
+          "isUnique": false
+        },
         "gallery_items_poster_idx": {
           "name": "gallery_items_poster_idx",
           "columns": [
@@ -267,6 +847,19 @@
           "tableTo": "media",
           "columnsFrom": [
             "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "gallery_items_video_url_id_videos_id_fk": {
+          "name": "gallery_items_video_url_id_videos_id_fk",
+          "tableFrom": "gallery_items",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "video_url_id"
           ],
           "columnsTo": [
             "id"
@@ -473,6 +1066,145 @@
             "sizes_thumbnail_filename"
           ],
           "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "videos": {
+      "name": "videos",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "title": {
+          "name": "title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "source_path": {
+          "name": "source_path",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "url": {
+          "name": "url",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "thumbnail_u_r_l": {
+          "name": "thumbnail_u_r_l",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "filename": {
+          "name": "filename",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "filesize": {
+          "name": "filesize",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "width": {
+          "name": "width",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "height": {
+          "name": "height",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "focal_x": {
+          "name": "focal_x",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "focal_y": {
+          "name": "focal_y",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "videos_source_path_idx": {
+          "name": "videos_source_path_idx",
+          "columns": [
+            "source_path"
+          ],
+          "isUnique": true
+        },
+        "videos_updated_at_idx": {
+          "name": "videos_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        },
+        "videos_created_at_idx": {
+          "name": "videos_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        },
+        "videos_filename_idx": {
+          "name": "videos_filename_idx",
+          "columns": [
+            "filename"
+          ],
+          "isUnique": true
         }
       },
       "foreignKeys": {},
@@ -798,6 +1530,13 @@
           "notNull": true,
           "autoincrement": false
         },
+        "aircraft_id": {
+          "name": "aircraft_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "accreditations_id": {
           "name": "accreditations_id",
           "type": "integer",
@@ -814,6 +1553,13 @@
         },
         "media_id": {
           "name": "media_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "videos_id": {
+          "name": "videos_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false,
@@ -849,6 +1595,13 @@
           ],
           "isUnique": false
         },
+        "payload_locked_documents_rels_aircraft_id_idx": {
+          "name": "payload_locked_documents_rels_aircraft_id_idx",
+          "columns": [
+            "aircraft_id"
+          ],
+          "isUnique": false
+        },
         "payload_locked_documents_rels_accreditations_id_idx": {
           "name": "payload_locked_documents_rels_accreditations_id_idx",
           "columns": [
@@ -870,6 +1623,13 @@
           ],
           "isUnique": false
         },
+        "payload_locked_documents_rels_videos_id_idx": {
+          "name": "payload_locked_documents_rels_videos_id_idx",
+          "columns": [
+            "videos_id"
+          ],
+          "isUnique": false
+        },
         "payload_locked_documents_rels_users_id_idx": {
           "name": "payload_locked_documents_rels_users_id_idx",
           "columns": [
@@ -885,6 +1645,19 @@
           "tableTo": "payload_locked_documents",
           "columnsFrom": [
             "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_aircraft_fk": {
+          "name": "payload_locked_documents_rels_aircraft_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "aircraft",
+          "columnsFrom": [
+            "aircraft_id"
           ],
           "columnsTo": [
             "id"
@@ -924,6 +1697,19 @@
           "tableTo": "media",
           "columnsFrom": [
             "media_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "payload_locked_documents_rels_videos_fk": {
+          "name": "payload_locked_documents_rels_videos_fk",
+          "tableFrom": "payload_locked_documents_rels",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "videos_id"
           ],
           "columnsTo": [
             "id"
@@ -1619,9 +2405,9 @@
           "notNull": false,
           "autoincrement": false
         },
-        "video_url": {
-          "name": "video_url",
-          "type": "text",
+        "video_url_id": {
+          "name": "video_url_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -1648,6 +2434,13 @@
             "image_id"
           ],
           "isUnique": false
+        },
+        "home_page_fleet_cards_video_url_idx": {
+          "name": "home_page_fleet_cards_video_url_idx",
+          "columns": [
+            "video_url_id"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
@@ -1657,6 +2450,19 @@
           "tableTo": "media",
           "columnsFrom": [
             "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "home_page_fleet_cards_video_url_id_videos_id_fk": {
+          "name": "home_page_fleet_cards_video_url_id_videos_id_fk",
+          "tableFrom": "home_page_fleet_cards",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "video_url_id"
           ],
           "columnsTo": [
             "id"
@@ -1741,9 +2547,9 @@
           "notNull": false,
           "autoincrement": false
         },
-        "hero_video_url": {
-          "name": "hero_video_url",
-          "type": "text",
+        "hero_video_url_id": {
+          "name": "hero_video_url_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -1891,6 +2697,13 @@
         }
       },
       "indexes": {
+        "home_page_hero_hero_video_url_idx": {
+          "name": "home_page_hero_hero_video_url_idx",
+          "columns": [
+            "hero_video_url_id"
+          ],
+          "isUnique": false
+        },
         "home_page_hero_hero_poster_idx": {
           "name": "home_page_hero_hero_poster_idx",
           "columns": [
@@ -1907,6 +2720,19 @@
         }
       },
       "foreignKeys": {
+        "home_page_hero_video_url_id_videos_id_fk": {
+          "name": "home_page_hero_video_url_id_videos_id_fk",
+          "tableFrom": "home_page",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "hero_video_url_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "home_page_hero_poster_id_media_id_fk": {
           "name": "home_page_hero_poster_id_media_id_fk",
           "tableFrom": "home_page",
@@ -2384,9 +3210,9 @@
           "notNull": false,
           "autoincrement": false
         },
-        "video_url": {
-          "name": "video_url",
-          "type": "text",
+        "video_url_id": {
+          "name": "video_url_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -2420,6 +3246,13 @@
             "image_id"
           ],
           "isUnique": false
+        },
+        "_home_page_v_version_fleet_cards_video_url_idx": {
+          "name": "_home_page_v_version_fleet_cards_video_url_idx",
+          "columns": [
+            "video_url_id"
+          ],
+          "isUnique": false
         }
       },
       "foreignKeys": {
@@ -2429,6 +3262,19 @@
           "tableTo": "media",
           "columnsFrom": [
             "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "_home_page_v_version_fleet_cards_video_url_id_videos_id_fk": {
+          "name": "_home_page_v_version_fleet_cards_video_url_id_videos_id_fk",
+          "tableFrom": "_home_page_v_version_fleet_cards",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "video_url_id"
           ],
           "columnsTo": [
             "id"
@@ -2513,9 +3359,9 @@
           "notNull": false,
           "autoincrement": false
         },
-        "version_hero_video_url": {
-          "name": "version_hero_video_url",
-          "type": "text",
+        "version_hero_video_url_id": {
+          "name": "version_hero_video_url_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -2693,6 +3539,13 @@
         }
       },
       "indexes": {
+        "_home_page_v_version_hero_version_hero_video_url_idx": {
+          "name": "_home_page_v_version_hero_version_hero_video_url_idx",
+          "columns": [
+            "version_hero_video_url_id"
+          ],
+          "isUnique": false
+        },
         "_home_page_v_version_hero_version_hero_poster_idx": {
           "name": "_home_page_v_version_hero_version_hero_poster_idx",
           "columns": [
@@ -2737,6 +3590,19 @@
         }
       },
       "foreignKeys": {
+        "_home_page_v_version_hero_video_url_id_videos_id_fk": {
+          "name": "_home_page_v_version_hero_video_url_id_videos_id_fk",
+          "tableFrom": "_home_page_v",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "version_hero_video_url_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "_home_page_v_version_hero_poster_id_media_id_fk": {
           "name": "_home_page_v_version_hero_poster_id_media_id_fk",
           "tableFrom": "_home_page_v",
@@ -3957,6 +4823,575 @@
           "tableTo": "media",
           "columnsFrom": [
             "version_sustainability_image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "fleet_page_interior_tiles": {
+      "name": "fleet_page_interior_tiles",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "caption": {
+          "name": "caption",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "fleet_page_interior_tiles_order_idx": {
+          "name": "fleet_page_interior_tiles_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "fleet_page_interior_tiles_parent_id_idx": {
+          "name": "fleet_page_interior_tiles_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        },
+        "fleet_page_interior_tiles_image_idx": {
+          "name": "fleet_page_interior_tiles_image_idx",
+          "columns": [
+            "image_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "fleet_page_interior_tiles_image_id_media_id_fk": {
+          "name": "fleet_page_interior_tiles_image_id_media_id_fk",
+          "tableFrom": "fleet_page_interior_tiles",
+          "tableTo": "media",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "fleet_page_interior_tiles_parent_id_fk": {
+          "name": "fleet_page_interior_tiles_parent_id_fk",
+          "tableFrom": "fleet_page_interior_tiles",
+          "tableTo": "fleet_page",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "fleet_page": {
+      "name": "fleet_page",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "hero_heading": {
+          "name": "hero_heading",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "hero_body": {
+          "name": "hero_body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "hero_video_url_id": {
+          "name": "hero_video_url_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "hero_poster_id": {
+          "name": "hero_poster_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "comparison_eyebrow": {
+          "name": "comparison_eyebrow",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "comparison_heading": {
+          "name": "comparison_heading",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "comparison_intro": {
+          "name": "comparison_intro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "interior_heading": {
+          "name": "interior_heading",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "interior_link_label": {
+          "name": "interior_link_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "interior_link_href": {
+          "name": "interior_link_href",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'draft'"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "fleet_page_hero_hero_video_url_idx": {
+          "name": "fleet_page_hero_hero_video_url_idx",
+          "columns": [
+            "hero_video_url_id"
+          ],
+          "isUnique": false
+        },
+        "fleet_page_hero_hero_poster_idx": {
+          "name": "fleet_page_hero_hero_poster_idx",
+          "columns": [
+            "hero_poster_id"
+          ],
+          "isUnique": false
+        },
+        "fleet_page__status_idx": {
+          "name": "fleet_page__status_idx",
+          "columns": [
+            "_status"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "fleet_page_hero_video_url_id_videos_id_fk": {
+          "name": "fleet_page_hero_video_url_id_videos_id_fk",
+          "tableFrom": "fleet_page",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "hero_video_url_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "fleet_page_hero_poster_id_media_id_fk": {
+          "name": "fleet_page_hero_poster_id_media_id_fk",
+          "tableFrom": "fleet_page",
+          "tableTo": "media",
+          "columnsFrom": [
+            "hero_poster_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "_fleet_page_v_version_interior_tiles": {
+      "name": "_fleet_page_v_version_interior_tiles",
+      "columns": {
+        "_order": {
+          "name": "_order",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "_parent_id": {
+          "name": "_parent_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "caption": {
+          "name": "caption",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "_uuid": {
+          "name": "_uuid",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_fleet_page_v_version_interior_tiles_order_idx": {
+          "name": "_fleet_page_v_version_interior_tiles_order_idx",
+          "columns": [
+            "_order"
+          ],
+          "isUnique": false
+        },
+        "_fleet_page_v_version_interior_tiles_parent_id_idx": {
+          "name": "_fleet_page_v_version_interior_tiles_parent_id_idx",
+          "columns": [
+            "_parent_id"
+          ],
+          "isUnique": false
+        },
+        "_fleet_page_v_version_interior_tiles_image_idx": {
+          "name": "_fleet_page_v_version_interior_tiles_image_idx",
+          "columns": [
+            "image_id"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_fleet_page_v_version_interior_tiles_image_id_media_id_fk": {
+          "name": "_fleet_page_v_version_interior_tiles_image_id_media_id_fk",
+          "tableFrom": "_fleet_page_v_version_interior_tiles",
+          "tableTo": "media",
+          "columnsFrom": [
+            "image_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "_fleet_page_v_version_interior_tiles_parent_id_fk": {
+          "name": "_fleet_page_v_version_interior_tiles_parent_id_fk",
+          "tableFrom": "_fleet_page_v_version_interior_tiles",
+          "tableTo": "_fleet_page_v",
+          "columnsFrom": [
+            "_parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "_fleet_page_v": {
+      "name": "_fleet_page_v",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "version_hero_heading": {
+          "name": "version_hero_heading",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_hero_body": {
+          "name": "version_hero_body",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_hero_video_url_id": {
+          "name": "version_hero_video_url_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_hero_poster_id": {
+          "name": "version_hero_poster_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_comparison_eyebrow": {
+          "name": "version_comparison_eyebrow",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_comparison_heading": {
+          "name": "version_comparison_heading",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_comparison_intro": {
+          "name": "version_comparison_intro",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_interior_heading": {
+          "name": "version_interior_heading",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_interior_link_label": {
+          "name": "version_interior_link_label",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_interior_link_href": {
+          "name": "version_interior_link_href",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version__status": {
+          "name": "version__status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'draft'"
+        },
+        "version_updated_at": {
+          "name": "version_updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_created_at": {
+          "name": "version_created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_fleet_page_v_version_hero_version_hero_video_url_idx": {
+          "name": "_fleet_page_v_version_hero_version_hero_video_url_idx",
+          "columns": [
+            "version_hero_video_url_id"
+          ],
+          "isUnique": false
+        },
+        "_fleet_page_v_version_hero_version_hero_poster_idx": {
+          "name": "_fleet_page_v_version_hero_version_hero_poster_idx",
+          "columns": [
+            "version_hero_poster_id"
+          ],
+          "isUnique": false
+        },
+        "_fleet_page_v_version_version__status_idx": {
+          "name": "_fleet_page_v_version_version__status_idx",
+          "columns": [
+            "version__status"
+          ],
+          "isUnique": false
+        },
+        "_fleet_page_v_created_at_idx": {
+          "name": "_fleet_page_v_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        },
+        "_fleet_page_v_updated_at_idx": {
+          "name": "_fleet_page_v_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        },
+        "_fleet_page_v_latest_idx": {
+          "name": "_fleet_page_v_latest_idx",
+          "columns": [
+            "latest"
+          ],
+          "isUnique": false
+        },
+        "_fleet_page_v_autosave_idx": {
+          "name": "_fleet_page_v_autosave_idx",
+          "columns": [
+            "autosave"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {
+        "_fleet_page_v_version_hero_video_url_id_videos_id_fk": {
+          "name": "_fleet_page_v_version_hero_video_url_id_videos_id_fk",
+          "tableFrom": "_fleet_page_v",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "version_hero_video_url_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
+        "_fleet_page_v_version_hero_poster_id_media_id_fk": {
+          "name": "_fleet_page_v_version_hero_poster_id_media_id_fk",
+          "tableFrom": "_fleet_page_v",
+          "tableTo": "media",
+          "columnsFrom": [
+            "version_hero_poster_id"
           ],
           "columnsTo": [
             "id"
@@ -8444,9 +9879,9 @@
           "notNull": false,
           "autoincrement": false
         },
-        "hero_video_url": {
-          "name": "hero_video_url",
-          "type": "text",
+        "hero_video_url_id": {
+          "name": "hero_video_url_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -8482,6 +9917,13 @@
         }
       },
       "indexes": {
+        "contact_page_hero_hero_video_url_idx": {
+          "name": "contact_page_hero_hero_video_url_idx",
+          "columns": [
+            "hero_video_url_id"
+          ],
+          "isUnique": false
+        },
         "contact_page_hero_hero_poster_idx": {
           "name": "contact_page_hero_hero_poster_idx",
           "columns": [
@@ -8498,6 +9940,19 @@
         }
       },
       "foreignKeys": {
+        "contact_page_hero_video_url_id_videos_id_fk": {
+          "name": "contact_page_hero_video_url_id_videos_id_fk",
+          "tableFrom": "contact_page",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "hero_video_url_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "contact_page_hero_poster_id_media_id_fk": {
           "name": "contact_page_hero_poster_id_media_id_fk",
           "tableFrom": "contact_page",
@@ -8635,9 +10090,9 @@
           "notNull": false,
           "autoincrement": false
         },
-        "version_hero_video_url": {
-          "name": "version_hero_video_url",
-          "type": "text",
+        "version_hero_video_url_id": {
+          "name": "version_hero_video_url_id",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -8703,6 +10158,13 @@
         }
       },
       "indexes": {
+        "_contact_page_v_version_hero_version_hero_video_url_idx": {
+          "name": "_contact_page_v_version_hero_version_hero_video_url_idx",
+          "columns": [
+            "version_hero_video_url_id"
+          ],
+          "isUnique": false
+        },
         "_contact_page_v_version_hero_version_hero_poster_idx": {
           "name": "_contact_page_v_version_hero_version_hero_poster_idx",
           "columns": [
@@ -8747,6 +10209,19 @@
         }
       },
       "foreignKeys": {
+        "_contact_page_v_version_hero_video_url_id_videos_id_fk": {
+          "name": "_contact_page_v_version_hero_video_url_id_videos_id_fk",
+          "tableFrom": "_contact_page_v",
+          "tableTo": "videos",
+          "columnsFrom": [
+            "version_hero_video_url_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "set null",
+          "onUpdate": "no action"
+        },
         "_contact_page_v_version_hero_poster_id_media_id_fk": {
           "name": "_contact_page_v_version_hero_poster_id_media_id_fk",
           "tableFrom": "_contact_page_v",
@@ -10024,6 +11499,242 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {},
       "checkConstraints": {}
+    },
+    "legal_pages": {
+      "name": "legal_pages",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "privacy_title": {
+          "name": "privacy_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "privacy_updated": {
+          "name": "privacy_updated",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "terms_title": {
+          "name": "terms_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "terms_updated": {
+          "name": "terms_updated",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cookies_title": {
+          "name": "cookies_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "cookies_updated": {
+          "name": "cookies_updated",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "_status": {
+          "name": "_status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'draft'"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "legal_pages__status_idx": {
+          "name": "legal_pages__status_idx",
+          "columns": [
+            "_status"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "_legal_pages_v": {
+      "name": "_legal_pages_v",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "version_privacy_title": {
+          "name": "version_privacy_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_privacy_updated": {
+          "name": "version_privacy_updated",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_terms_title": {
+          "name": "version_terms_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_terms_updated": {
+          "name": "version_terms_updated",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_cookies_title": {
+          "name": "version_cookies_title",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_cookies_updated": {
+          "name": "version_cookies_updated",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version__status": {
+          "name": "version__status",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "'draft'"
+        },
+        "version_updated_at": {
+          "name": "version_updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "version_created_at": {
+          "name": "version_created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))"
+        },
+        "latest": {
+          "name": "latest",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "autosave": {
+          "name": "autosave",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "_legal_pages_v_version_version__status_idx": {
+          "name": "_legal_pages_v_version_version__status_idx",
+          "columns": [
+            "version__status"
+          ],
+          "isUnique": false
+        },
+        "_legal_pages_v_created_at_idx": {
+          "name": "_legal_pages_v_created_at_idx",
+          "columns": [
+            "created_at"
+          ],
+          "isUnique": false
+        },
+        "_legal_pages_v_updated_at_idx": {
+          "name": "_legal_pages_v_updated_at_idx",
+          "columns": [
+            "updated_at"
+          ],
+          "isUnique": false
+        },
+        "_legal_pages_v_latest_idx": {
+          "name": "_legal_pages_v_latest_idx",
+          "columns": [
+            "latest"
+          ],
+          "isUnique": false
+        },
+        "_legal_pages_v_autosave_idx": {
+          "name": "_legal_pages_v_autosave_idx",
+          "columns": [
+            "autosave"
+          ],
+          "isUnique": false
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
     }
   },
   "views": {},
@@ -10035,6 +11746,6 @@
   "internal": {
     "indexes": {}
   },
-  "id": "65ca389a-9b52-4a3f-a6fe-9b76c4470194",
+  "id": "2de56319-5dfe-48af-94fe-11ebe1c20b26",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

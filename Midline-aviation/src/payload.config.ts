@@ -11,6 +11,7 @@ import { Aircraft } from './collections/Aircraft'
 import { GalleryItems } from './collections/GalleryItems'
 import { Media } from './collections/Media'
 import { Users } from './collections/Users'
+import { Videos } from './collections/Videos'
 import { AboutPage } from './globals/AboutPage'
 import { ContactPage } from './globals/ContactPage'
 import { FaqPage } from './globals/FaqPage'
@@ -50,7 +51,7 @@ export default buildConfig({
   // Order matters: nav groups render in the order their entities appear, so
   // "Pages" (the globals) must be listed before the library collections for
   // the sidebar to read the way the site does.
-  collections: [Aircraft, Accreditations, GalleryItems, Media, Users],
+  collections: [Aircraft, Accreditations, GalleryItems, Media, Videos, Users],
   globals: [
     HomePage,
     AboutPage,
@@ -114,7 +115,12 @@ export default buildConfig({
       enabled: Boolean(process.env.R2_BUCKET),
       collections: {
         [Media.slug]: { prefix: 'media' },
+        [Videos.slug]: { prefix: 'videos' },
       },
+      // Vercel caps a serverless request body at 4.5 MB. Films are tens of MB,
+      // so they must go straight from the browser to R2 rather than through a
+      // function. Without this, large uploads work locally and fail on deploy.
+      clientUploads: true,
       bucket: process.env.R2_BUCKET || '',
       config: {
         endpoint: process.env.R2_ENDPOINT || '',

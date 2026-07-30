@@ -71,6 +71,7 @@ export interface Config {
     accreditations: Accreditation;
     'gallery-items': GalleryItem;
     media: Media;
+    videos: Video;
     users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
@@ -83,6 +84,7 @@ export interface Config {
     accreditations: AccreditationsSelect<false> | AccreditationsSelect<true>;
     'gallery-items': GalleryItemsSelect<false> | GalleryItemsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    videos: VideosSelect<false> | VideosSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
@@ -191,7 +193,7 @@ export interface Aircraft {
   /**
    * Plays behind the header instead of the picture. Leave empty for a photo header.
    */
-  heroVideoUrl?: string | null;
+  heroVideoUrl?: (number | null) | Video;
   /**
    * The editorial grid further down the page.
    */
@@ -204,9 +206,9 @@ export interface Aircraft {
     | null;
   verticalVideo?: {
     /**
-     * Plays muted on a loop, with no sound. Path such as /assets/videos/g200-showcase.mp4.
+     * Plays muted on a loop, with no sound. Upload a new file to replace it, or choose one already in the library.
      */
-    url?: string | null;
+    url?: (number | null) | Video;
     poster?: (number | null) | Media;
     heading?: string | null;
     caption?: string | null;
@@ -268,6 +270,34 @@ export interface Media {
   };
 }
 /**
+ * Films used in page headers, aircraft pages and the gallery. Upload a new file over an existing entry to replace it everywhere it appears.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos".
+ */
+export interface Video {
+  id: number;
+  /**
+   * How this film is listed when choosing one, e.g. "G200 showcase reel".
+   */
+  title: string;
+  /**
+   * Original /assets path this film was imported from. Set by the seed script and used to keep re-runs idempotent — do not edit.
+   */
+  sourcePath?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
  * Logos in the home-page marquee and the /safety memberships list. Untick "enabled" to hide one without deleting it.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -320,7 +350,7 @@ export interface GalleryItem {
   /**
    * Path such as /assets/videos/gallery/name.mp4.
    */
-  videoUrl?: string | null;
+  videoUrl?: (number | null) | Video;
   /**
    * The frame shown before the film plays.
    */
@@ -407,6 +437,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'videos';
+        value: number | Video;
       } | null)
     | ({
         relationTo: 'users';
@@ -579,6 +613,25 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "videos_select".
+ */
+export interface VideosSelect<T extends boolean = true> {
+  title?: T;
+  sourcePath?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
@@ -673,9 +726,9 @@ export interface HomePage {
       href: string;
     };
     /**
-     * Plays muted on a loop, with no sound. Path such as /assets/videos/g200-showcase.mp4.
+     * Plays muted on a loop, with no sound. Upload a new file to replace it, or choose one already in the library.
      */
-    videoUrl: string;
+    videoUrl: number | Video;
     /**
      * Shown while the video loads. This is the first thing visitors see, so pick a sharp frame.
      */
@@ -769,7 +822,7 @@ export interface HomePage {
           /**
            * Plays when someone hovers the card. Leave empty to show only the picture.
            */
-          videoUrl?: string | null;
+          videoUrl?: (number | null) | Video;
           id?: string | null;
         }[]
       | null;
@@ -892,9 +945,9 @@ export interface FleetPage {
     heading?: string | null;
     body?: string | null;
     /**
-     * Plays muted on a loop, with no sound. Path such as /assets/videos/g200-showcase.mp4.
+     * Plays muted on a loop, with no sound. Upload a new file to replace it, or choose one already in the library.
      */
-    videoUrl?: string | null;
+    videoUrl?: (number | null) | Video;
     poster?: (number | null) | Media;
   };
   comparison?: {
@@ -1290,9 +1343,9 @@ export interface ContactPage {
     heading?: string | null;
     body?: string | null;
     /**
-     * Plays muted on a loop, with no sound. Path such as /assets/videos/g200-showcase.mp4.
+     * Plays muted on a loop, with no sound. Upload a new file to replace it, or choose one already in the library.
      */
-    videoUrl?: string | null;
+    videoUrl?: (number | null) | Video;
     /**
      * Shown while the video loads.
      */

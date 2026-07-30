@@ -12,6 +12,7 @@ import {
 } from '../../src/lib/home-content.js'
 
 import { importMedia } from './lib/media.mjs'
+import { importVideo } from './lib/video.mjs'
 
 /**
  * Seeds the Home Page global from src/lib/home-content.ts.
@@ -49,7 +50,7 @@ const run = async () => {
       heading: HOME_HERO.heading,
       body: HOME_HERO.body,
       cta: HOME_HERO.cta,
-      videoUrl: HOME_HERO.videoUrl,
+      videoUrl: await importVideo(payload, HOME_HERO.videoUrl),
       poster: posterId,
     }
     console.log('  + hero')
@@ -111,7 +112,7 @@ const run = async () => {
           comingSoon: Boolean(item.comingSoon),
           image: await importMedia(payload, item.imageSrc, item.imageAlt),
           link: { label: 'More Details', href: item.href },
-          videoUrl: item.videoSrc ?? null,
+          videoUrl: item.videoSrc ? await importVideo(payload, item.videoSrc) : null,
         }))
       ),
     }

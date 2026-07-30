@@ -1,21 +1,20 @@
 import type { Field } from 'payload'
 
 /**
- * A background or showcase video.
+ * A background or showcase film.
  *
- * Videos are static files on Cloudflare R2, not Payload uploads — they are
- * large, they change rarely, and pushing a 50 MB file through the admin panel
- * is a poor experience. So this is a plain text path with a preview player
- * appended beneath the input, letting the editor confirm they picked the right
- * clip without leaving the page.
+ * This is an upload relationship to the Videos collection, so an editor can
+ * either pick an existing film or upload a new file and have it replace the
+ * old one everywhere that film is used.
  *
- * `afterInput` rather than a custom Field component: this way Payload still
- * renders the label, description, validation and error states itself, instead
- * of us reimplementing all of that.
+ * It was previously a plain text path with a preview player attached. That let
+ * someone re-point a section at a film that already existed but gave no way to
+ * add one, which is the thing people actually want to do. Payload's upload
+ * control shows the current file, its size, and a Choose/Upload button.
  */
 export const videoField = ({
-  name = 'videoUrl',
-  label = 'Video',
+  name = 'video',
+  label = 'Film',
   required = false,
   description,
 }: {
@@ -25,13 +24,14 @@ export const videoField = ({
   description?: string
 } = {}): Field => ({
   name,
-  type: 'text',
+  type: 'upload',
+  relationTo: 'videos',
   label,
   required,
   admin: {
     description:
       description ??
-      'Plays muted on a loop, with no sound. Path such as /assets/videos/g200-showcase.mp4.',
+      'Plays muted on a loop, with no sound. Upload a new file to replace it, or choose one already in the library.',
     components: {
       afterInput: [
         {
@@ -40,13 +40,5 @@ export const videoField = ({
         },
       ],
     },
-  },
-  validate: (value: unknown) => {
-    if (!value) return required ? 'Choose a video.' : true
-    if (typeof value !== 'string') return 'Must be text.'
-    const ok = value.startsWith('https://') || value.startsWith('/assets/videos/')
-    return ok
-      ? true
-      : 'Use a path starting /assets/videos/ or a full https:// address. A typo here leaves the section black.'
   },
 })

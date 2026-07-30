@@ -5,6 +5,7 @@ import { getPayload } from "payload";
 
 import config from "@/payload.config";
 import { JETS, type Jet, type JetImage } from "@/lib/fleet";
+import { uploadUrl } from "@/lib/cms/resolve";
 
 /**
  * Aircraft, mapped back into the Jet shape the fleet components already
@@ -45,15 +46,15 @@ const toJet = (doc: any): Jet => ({
   })),
   hero: {
     image: img(doc.heroImage),
-    ...(doc.heroVideoUrl
-      ? { video: { src: doc.heroVideoUrl, poster: img(doc.heroImage).src } }
+    ...(uploadUrl(doc.heroVideoUrl)
+      ? { video: { src: uploadUrl(doc.heroVideoUrl)!, poster: img(doc.heroImage).src } }
       : {}),
   },
   gallery: (doc.gallery ?? []).map((g: any) => img(g.image, g.span)),
-  ...(doc.verticalVideo?.url
+  ...(uploadUrl(doc.verticalVideo?.url)
     ? {
         verticalVideo: {
-          src: doc.verticalVideo.url,
+          src: uploadUrl(doc.verticalVideo.url)!,
           poster: img(doc.verticalVideo.poster).src,
           heading: doc.verticalVideo.heading ?? "",
           caption: doc.verticalVideo.caption ?? "",

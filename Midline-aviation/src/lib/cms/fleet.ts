@@ -5,6 +5,7 @@ import { getPayload } from "payload";
 
 import config from "@/payload.config";
 import { FLEET_PAGE } from "@/lib/fleet-page-content";
+import { uploadUrl } from "@/lib/cms/resolve";
 
 const text = (v: unknown, f: string) => (typeof v === "string" && v.trim() ? v : f);
 const img = (v: unknown, f: { src: string; alt: string }) =>
@@ -21,7 +22,7 @@ export const getFleetPageContent = async () => {
     hero: {
       heading: text(g?.hero?.heading, FLEET_PAGE.hero.heading),
       body: text(g?.hero?.body, FLEET_PAGE.hero.body),
-      videoUrl: text(g?.hero?.videoUrl, FLEET_PAGE.hero.videoUrl),
+      videoUrl: uploadUrl(g?.hero?.videoUrl) ?? FLEET_PAGE.hero.videoUrl,
       poster: img(g?.hero?.poster, FLEET_PAGE.hero.poster),
     },
     interior: {

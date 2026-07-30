@@ -1,6 +1,8 @@
 import "server-only";
 
 import { draftMode } from "next/headers";
+
+import { uploadUrl } from "@/lib/cms/resolve";
 import { getPayload } from "payload";
 
 import config from "@/payload.config";
@@ -117,7 +119,7 @@ export const getHomeContent = async (): Promise<HomeContent> => {
         imageSrc: imageFrom(card.image, { src: "", alt: "" }).src,
         imageAlt: imageFrom(card.image, { src: "", alt: "" }).alt,
         href: text(card.link?.href, "/fleet"),
-        videoSrc: typeof card.videoUrl === "string" && card.videoUrl ? card.videoUrl : undefined,
+        videoSrc: uploadUrl(card.videoUrl) ?? undefined,
       }))
     : HOME_AIRCRAFT;
 
@@ -149,7 +151,7 @@ export const getHomeContent = async (): Promise<HomeContent> => {
       },
       body: text(hero.body, HOME_HERO.body),
       cta: linkFrom(hero.cta, HOME_HERO.cta),
-      videoUrl: text(hero.videoUrl, HOME_HERO.videoUrl),
+      videoUrl: uploadUrl(hero.videoUrl) ?? HOME_HERO.videoUrl,
       poster: imageFrom(hero.poster, HOME_HERO.poster),
     },
     ctaBanner: {

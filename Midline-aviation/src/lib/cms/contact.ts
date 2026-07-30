@@ -5,6 +5,7 @@ import { getPayload } from "payload";
 
 import config from "@/payload.config";
 import { CONTACT_CONTENT, type ContactContent } from "@/lib/contact-content";
+import { uploadUrl } from "@/lib/cms/resolve";
 
 export type ContactPageContent = ContactContent & { isDraft: boolean };
 
@@ -31,7 +32,7 @@ export const getContactContent = async (): Promise<ContactPageContent> => {
     eyebrow: text(hero.eyebrow, CONTACT_CONTENT.eyebrow),
     heading: text(hero.heading, CONTACT_CONTENT.heading),
     body: text(hero.body, CONTACT_CONTENT.body),
-    videoUrl: text(hero.videoUrl, CONTACT_CONTENT.videoUrl),
+    videoUrl: uploadUrl(hero.videoUrl) ?? CONTACT_CONTENT.videoUrl,
     poster:
       poster && typeof poster === "object" && typeof poster.url === "string"
         ? { src: poster.url, alt: text(poster.alt, CONTACT_CONTENT.poster.alt) }

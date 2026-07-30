@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 import config from '../../src/payload.config.js'
 import { FLEET_PAGE } from '../../src/lib/fleet-page-content.js'
 import { importMedia } from './lib/media.mjs'
+import { importVideo } from './lib/video.mjs'
 
 const force = process.argv.includes('--force')
 
@@ -18,7 +19,7 @@ const run = async () => {
       hero: {
         heading: FLEET_PAGE.hero.heading,
         body: FLEET_PAGE.hero.body,
-        videoUrl: FLEET_PAGE.hero.videoUrl,
+        videoUrl: await importVideo(payload, FLEET_PAGE.hero.videoUrl),
         poster: await importMedia(payload, FLEET_PAGE.hero.poster.src, FLEET_PAGE.hero.poster.alt),
       },
       comparison: FLEET_PAGE.comparison,

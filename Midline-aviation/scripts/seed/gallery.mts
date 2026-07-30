@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 import config from '../../src/payload.config.js'
 import { GALLERY_ITEMS } from '../../src/lib/gallery-content.js'
 import { importMedia } from './lib/media.mjs'
+import { importVideo } from './lib/video.mjs'
 
 const run = async () => {
   const payload = await getPayload({ config })
@@ -28,7 +29,7 @@ const run = async () => {
         kind: isVideo ? 'video' : 'image',
         ...(isVideo
           ? {
-              videoUrl: item.src,
+              videoUrl: await importVideo(payload, item.src),
               poster: await importMedia(payload, item.poster!, item.alt),
             }
           : { image: await importMedia(payload, item.src, item.alt) }),

@@ -2,6 +2,7 @@ import { getPayload } from 'payload'
 import config from '../../src/payload.config.js'
 import { JETS } from '../../src/lib/fleet.js'
 import { importMedia } from './lib/media.mjs'
+import { importVideo } from './lib/video.mjs'
 
 const run = async () => {
   const payload = await getPayload({ config })
@@ -38,7 +39,7 @@ const run = async () => {
           displayValue: s.displayValue ?? null,
         })),
         heroImage: await importMedia(payload, jet.hero.image.src, jet.hero.image.alt),
-        heroVideoUrl: jet.hero.video?.src ?? null,
+        heroVideoUrl: jet.hero.video?.src ? await importVideo(payload, jet.hero.video.src) : null,
         gallery: await Promise.all(
           jet.gallery.map(async (image) => ({
             image: await importMedia(payload, image.src, image.alt),
@@ -48,7 +49,7 @@ const run = async () => {
         ...(jet.verticalVideo
           ? {
               verticalVideo: {
-                url: jet.verticalVideo.src,
+                url: await importVideo(payload, jet.verticalVideo.src),
                 poster: await importMedia(
                   payload,
                   jet.verticalVideo.poster,
