@@ -1,9 +1,16 @@
 "use client";
 
-import type { FormEvent } from "react";
+import type { FormEvent, KeyboardEvent } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AlertTriangle, CheckCircle2, X } from "lucide-react";
+
+import { useAirportSuggest } from "@/hooks/useAirportSuggest";
+import {
+  formatSelectionValue,
+  type AirportSelection,
+  type SuggestionItem,
+} from "@/lib/airports";
 
 const AIRCRAFT_OPTIONS = [
   { code: "T7-MID", manufacturer: "Gulfstream", category: "Heavy", maxPax: 13 },
@@ -15,225 +22,21 @@ type TripType = "one-way" | "round-trip";
 type AirportField = "departure" | "arrival";
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
-type Airport = {
-  name: string;
-  city: string;
-  country: string;
-  code: string;
-  /** Sourced from privateairports.json — surfaced ahead of scheduled-service airports. */
-  isPrivate: boolean;
-  lat?: number;
-  lon?: number;
-};
-
-const MAX_AIRPORT_SUGGESTIONS = 5;
-
-// Nudges private-charter airports ahead of scheduled-service ones without
-// letting a weak/coincidental private match bury a strong general match —
-// e.g. searching "jfk" shouldn't lose the real JFK (an exact code match,
-// score 120) behind "Kagoshima" (ICAO RJFK, only a substring match, score 75)
-// just because the latter happens to be tagged private. The boost is sized
-// to bridge the ~5-point gaps between adjacent match tiers (see
-// scoreAirportMatch) so private airports win ties and near-ties, but a
-// two-tier-weaker private match still can't outrank a strong general one.
-const PRIVATE_MATCH_BOOST = 6;
-
-const normalizeText = (value: string) => value.trim().toLowerCase();
-
-// airports.json describes country as an ISO 3166-1 alpha-2 code;
-// privateairports.json already uses a full name. Resolve both to a full name
-// so search, display, and country-matching stay uniform across sources.
-const regionDisplayNames =
-  typeof Intl !== "undefined" && "DisplayNames" in Intl
-    ? new Intl.DisplayNames(["en"], { type: "region" })
-    : null;
-
-const resolveCountryName = (rawCountry: string) => {
-  const trimmed = rawCountry.trim();
-  if (!trimmed) return "";
-  if (regionDisplayNames && /^[A-Za-z]{2}$/.test(trimmed)) {
-    try {
-      const resolved = regionDisplayNames.of(trimmed.toUpperCase());
-      if (resolved) return resolved;
-    } catch {
-      // Unrecognized region code — fall through to the raw value.
-    }
+// What the booking email needs to identify the chosen airport (or metro-area
+// "Any airport" pick, where ops chooses the exact field later).
+const selectionPayload = (selection: AirportSelection | null) => {
+  if (!selection) return null;
+  if (selection.kind === "metro") {
+    return {
+      flexible: true,
+      metro: selection.ma.name,
+      country: selection.ma.country,
+      main_ap: selection.ma.main_ap,
+    };
   }
-  return trimmed;
+  const { code, icao, iata, name, city, country, lat, lon } = selection.ap;
+  return { flexible: false, code, icao, iata, name, city, country, lat, lon };
 };
-
-const parseAirportRecord = (item: unknown, fallbackCode = ""): Airport | null => {
-  if (!item || typeof item !== "object") return null;
-
-  const airport = item as Record<string, unknown>;
-  const name = typeof airport.name === "string" ? airport.name : "";
-  const cityFromItem = typeof airport.city === "string" ? airport.city : "";
-  const municipality = typeof airport.municipality === "string" ? airport.municipality : "";
-  // Remote strips often have no municipality — fall back to the airport name
-  // so every field still renders as "<place>, <country> (<code>)".
-  const city = cityFromItem || municipality || name;
-  const countryFromItem = typeof airport.country === "string" ? airport.country : "";
-  const codeFromItem = typeof airport.code === "string" ? airport.code : "";
-  const iata = typeof airport.iata === "string" ? airport.iata : "";
-  const icao = typeof airport.icao === "string" ? airport.icao : "";
-  // Prefer the passenger-facing IATA code; fall back to ICAO for strips without one.
-  const code = codeFromItem || iata || icao || fallbackCode;
-  const lat = typeof airport.lat === "number" ? airport.lat : undefined;
-  const lon = typeof airport.lon === "number" ? airport.lon : undefined;
-  const country = resolveCountryName(countryFromItem);
-
-  if (!name || !city || !country || !code) return null;
-
-  return {
-    name,
-    city,
-    country,
-    code: code.toUpperCase(),
-    isPrivate: false,
-    lat,
-    lon,
-  };
-};
-
-// privateairports.json (scraped private-charter airport directory) ships a
-// flat {slug, code, name, city, region, country, url, source} record — no
-// lat/lon, and country is already a full name.
-const parsePrivateAirportRecord = (item: unknown): Airport | null => {
-  if (!item || typeof item !== "object") return null;
-
-  const airport = item as Record<string, unknown>;
-  const name = typeof airport.name === "string" ? airport.name : "";
-  const city = typeof airport.city === "string" ? airport.city : name;
-  const code = typeof airport.code === "string" ? airport.code : "";
-  const country = resolveCountryName(typeof airport.country === "string" ? airport.country : "");
-
-  if (!name || !city || !country || !code) return null;
-
-  return {
-    name,
-    city,
-    country,
-    code: code.toUpperCase(),
-    isPrivate: true,
-  };
-};
-
-// The same physical airport can be listed in both sources — keep the
-// private-charter record when codes collide, since that's the version we
-// want surfaced first.
-const mergeAirportSources = (generalAirports: Airport[], privateAirports: Airport[]) => {
-  const merged = new Map<string, Airport>();
-  for (const airport of generalAirports) merged.set(airport.code, airport);
-  for (const airport of privateAirports) merged.set(airport.code, airport);
-  return Array.from(merged.values());
-};
-
-const EARTH_RADIUS_KM = 6371;
-const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
-
-const haversineDistanceKm = (lat1: number, lon1: number, lat2: number, lon2: number) => {
-  const dLat = toRadians(lat2 - lat1);
-  const dLon = toRadians(lon2 - lon1);
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) * Math.sin(dLon / 2) ** 2;
-  return 2 * EARTH_RADIUS_KM * Math.asin(Math.sqrt(a));
-};
-
-// Resolves a browser geolocation fix (GPS or network-provider positioning —
-// whichever the device settles fastest) to a country via nearest-airport
-// lookup against the coordinates airports.json ships. privateairports.json
-// has no lat/lon, so those records are skipped in this scan.
-const findNearestAirportCountry = (lat: number, lon: number, airports: Airport[]) => {
-  let nearestCountry: string | null = null;
-  let nearestDistanceKm = Infinity;
-
-  for (const airport of airports) {
-    if (typeof airport.lat !== "number" || typeof airport.lon !== "number") continue;
-    const distanceKm = haversineDistanceKm(lat, lon, airport.lat, airport.lon);
-    if (distanceKm < nearestDistanceKm) {
-      nearestDistanceKm = distanceKm;
-      nearestCountry = airport.country;
-    }
-  }
-
-  return nearestCountry;
-};
-
-const scoreAirportMatch = (airport: Airport, query: string) => {
-  const normalizedQuery = normalizeText(query);
-  if (!normalizedQuery) return -1;
-
-  const code = normalizeText(airport.code);
-  const city = normalizeText(airport.city);
-  const country = normalizeText(airport.country);
-  const name = normalizeText(airport.name);
-
-  if (code === normalizedQuery) return 120;
-  if (city === normalizedQuery) return 110;
-  if (country === normalizedQuery) return 100;
-  if (code.startsWith(normalizedQuery)) return 95;
-  if (city.startsWith(normalizedQuery)) return 90;
-  if (name.startsWith(normalizedQuery)) return 85;
-  if (country.startsWith(normalizedQuery)) return 80;
-  if (code.includes(normalizedQuery)) return 75;
-  if (city.includes(normalizedQuery)) return 70;
-  if (name.includes(normalizedQuery)) return 65;
-  if (country.includes(normalizedQuery)) return 60;
-
-  return -1;
-};
-
-const buildAirportSuggestions = (query: string, airports: Airport[], homeCountry: string | null) => {
-  const normalizedQuery = normalizeText(query);
-
-  // No query yet — lead with airports in the traveler's detected country
-  // (private-charter strips first) instead of showing nothing.
-  if (normalizedQuery.length < 2) {
-    if (!homeCountry) return [];
-
-    const normalizedHomeCountry = normalizeText(homeCountry);
-    return airports
-      .filter((airport) => normalizeText(airport.country) === normalizedHomeCountry)
-      .sort(
-        (left, right) =>
-          Number(right.isPrivate) - Number(left.isPrivate) || left.city.localeCompare(right.city)
-      )
-      .slice(0, MAX_AIRPORT_SUGGESTIONS);
-  }
-
-  const scoredMatches = airports
-    .map((airport) => ({ airport, score: scoreAirportMatch(airport, normalizedQuery) }))
-    .filter((item) => item.score >= 0);
-
-  if (scoredMatches.length === 0) return [];
-
-  // Private-charter airports get a ranking boost — enough to lead on ties and
-  // near-ties — but relevance score still governs overall order, so a strong
-  // general match beats a weak private one instead of always losing to it.
-  const effectiveScore = (item: (typeof scoredMatches)[number]) =>
-    item.score + (item.airport.isPrivate ? PRIVATE_MATCH_BOOST : 0);
-
-  scoredMatches.sort(
-    (left, right) =>
-      effectiveScore(right) - effectiveScore(left) || left.airport.city.localeCompare(right.airport.city)
-  );
-
-  const seenCodes = new Set<string>();
-  const suggestions: Airport[] = [];
-
-  for (const item of scoredMatches) {
-    const code = item.airport.code.toUpperCase();
-    if (seenCodes.has(code)) continue;
-    seenCodes.add(code);
-    suggestions.push(item.airport);
-    if (suggestions.length === MAX_AIRPORT_SUGGESTIONS) break;
-  }
-
-  return suggestions;
-};
-
-const formatAirportFieldValue = (airport: Airport) => `${airport.city}, ${airport.country} (${airport.code})`;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^[+()\d\s.-]{7,20}$/;
@@ -428,7 +231,7 @@ function DatePickerField({ value, onChange, placeholder, minDateValue }: DatePic
       }
     };
 
-    const closeOnEscape = (event: KeyboardEvent) => {
+    const closeOnEscape = (event: globalThis.KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsOpen(false);
       }
@@ -611,7 +414,7 @@ function TimePickerField({ value, onChange, placeholder }: TimePickerFieldProps)
       }
     };
 
-    const closeOnEscape = (event: KeyboardEvent) => {
+    const closeOnEscape = (event: globalThis.KeyboardEvent) => {
       if (event.key === "Escape") {
         setIsOpen(false);
       }
@@ -703,8 +506,10 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
   const [tripType, setTripType] = useState<TripType>("one-way");
   const [departureCity, setDepartureCity] = useState("");
   const [arrivalCity, setArrivalCity] = useState("");
-  const [airportOptions, setAirportOptions] = useState<Airport[]>([]);
+  const [departureSelection, setDepartureSelection] = useState<AirportSelection | null>(null);
+  const [arrivalSelection, setArrivalSelection] = useState<AirportSelection | null>(null);
   const [activeAirportField, setActiveAirportField] = useState<AirportField | null>(null);
+  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const [paxCount, setPaxCount] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [departureTime, setDepartureTime] = useState("");
@@ -718,6 +523,11 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
   const [submitMessage, setSubmitMessage] = useState("");
   const [toastMounted, setToastMounted] = useState(false);
+
+  // One suggest session per field — mirrors VistaJet's widget, where each
+  // input keeps its own debounced query against the suggest endpoint.
+  const departureSuggest = useAirportSuggest();
+  const arrivalSuggest = useAirportSuggest();
 
   // Portal target only exists client-side.
   useEffect(() => {
@@ -753,149 +563,187 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
       : "";
   const paxIsInvalid = paxHasInvalidFormat || paxUnderMinimum || paxOverGlobalLimit || paxOverSelectedLimit;
 
-  // Defer the large airports.json / privateairports.json fetches until the user
-  // actually focuses an airport input — avoids blocking the main thread on page load.
-  const airportsLoadedRef = useRef(false);
-  const [homeCountry, setHomeCountry] = useState<string | null>(null);
+  const suggestFor = (field: AirportField) =>
+    field === "departure" ? departureSuggest : arrivalSuggest;
+  const cityFor = (field: AirportField) => (field === "departure" ? departureCity : arrivalCity);
 
-  // Fetches a country name from a keyless IP-geolocation endpoint, reading it
-  // from whichever response field that provider uses. Returns null on any
-  // failure (offline, blocked, rate-limited, timed out) so the caller can try
-  // the next provider in the chain.
-  const fetchCountryFromIpProvider = async (url: string, countryField: string) => {
-    const controller = new AbortController();
-    const timeoutId = window.setTimeout(() => controller.abort(), 4000);
+  const handleAirportInputChange = (field: AirportField, value: string) => {
+    if (field === "departure") {
+      setDepartureCity(value);
+      setDepartureSelection(null);
+    } else {
+      setArrivalCity(value);
+      setArrivalSelection(null);
+    }
+    setActiveSuggestionIndex(-1);
+    suggestFor(field).search(value);
+  };
 
-    try {
-      const response = await fetch(url, { signal: controller.signal });
-      if (!response.ok) return null;
-
-      const payload = (await response.json()) as Record<string, unknown>;
-      const countryName = payload[countryField];
-      return typeof countryName === "string" && countryName.length > 0 ? countryName : null;
-    } catch {
-      return null;
-    } finally {
-      window.clearTimeout(timeoutId);
+  const handleAirportFocus = (field: AirportField) => {
+    setActiveAirportField(field);
+    setActiveSuggestionIndex(-1);
+    const current = cityFor(field).trim();
+    if (current.length < 2) {
+      suggestFor(field).loadPopular();
+    } else {
+      suggestFor(field).search(current);
     }
   };
 
-  // Fallback when browser geolocation is denied, unavailable, or the device
-  // has no geolocation API at all: resolve the visitor's approximate country
-  // from their public IP via free, keyless lookups. Tries two independent
-  // providers in sequence (either can be rate-limited on a shared IP) before
-  // giving up. Best-effort only — failure just leaves suggestions as they
-  // were; nothing is surfaced to the user.
-  const resolveHomeCountryByIp = async () => {
-    const country =
-      (await fetchCountryFromIpProvider("https://ipapi.co/json/", "country_name")) ??
-      (await fetchCountryFromIpProvider("https://get.geojs.io/v1/ip/geo.json", "country"));
-
-    if (country) setHomeCountry(country);
-  };
-
-  // Browser geolocation (GPS or network-provider positioning — whichever the
-  // device resolves fastest) — used only to lead the empty-query suggestion
-  // list with the traveler's own country. Falls back to IP-based lookup on
-  // denial/failure; never blocks the form either way.
-  const resolveHomeCountry = (airports: Airport[]) => {
-    if (typeof navigator === "undefined" || !navigator.geolocation) {
-      void resolveHomeCountryByIp();
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const country = findNearestAirportCountry(
-          position.coords.latitude,
-          position.coords.longitude,
-          airports
-        );
-        if (country) {
-          setHomeCountry(country);
-        } else {
-          void resolveHomeCountryByIp();
-        }
-      },
-      () => {
-        // Permission denied or position unavailable — fall back to IP-based lookup.
-        void resolveHomeCountryByIp();
-      },
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 }
-    );
-  };
-
-  const loadAirportsOnce = async () => {
-    if (airportsLoadedRef.current) return;
-    airportsLoadedRef.current = true;
-
-    try {
-      const [generalResponse, privateResponse] = await Promise.all([
-        fetch("/data/airports.json"),
-        fetch("/privateairports.json"),
-      ]);
-
-      let generalAirports: Airport[] = [];
-      if (generalResponse.ok) {
-        const payload = (await generalResponse.json()) as unknown;
-
-        if (Array.isArray(payload)) {
-          generalAirports = payload
-            .map((item) => parseAirportRecord(item))
-            .filter((airport): airport is Airport => airport !== null);
-        } else if (payload && typeof payload === "object") {
-          generalAirports = Object.entries(payload)
-            .map(([fallbackCode, item]) => parseAirportRecord(item, fallbackCode))
-            .filter((airport): airport is Airport => airport !== null);
-        }
-      }
-
-      let privateAirports: Airport[] = [];
-      if (privateResponse.ok) {
-        const payload = (await privateResponse.json()) as unknown;
-        const rawList =
-          payload && typeof payload === "object" && Array.isArray((payload as Record<string, unknown>).airports)
-            ? ((payload as Record<string, unknown>).airports as unknown[])
-            : [];
-
-        privateAirports = rawList
-          .map((item) => parsePrivateAirportRecord(item))
-          .filter((airport): airport is Airport => airport !== null);
-      }
-
-      const merged = mergeAirportSources(generalAirports, privateAirports);
-      setAirportOptions(merged);
-      resolveHomeCountry(merged);
-    } catch (error) {
-      console.error("Failed to load airport options:", error);
-    }
-  };
-
-  const departureSuggestions = useMemo(
-    () => buildAirportSuggestions(departureCity, airportOptions, homeCountry),
-    [departureCity, airportOptions, homeCountry]
-  );
-  const arrivalSuggestions = useMemo(
-    () => buildAirportSuggestions(arrivalCity, airportOptions, homeCountry),
-    [arrivalCity, airportOptions, homeCountry]
-  );
-
-  const handleAirportSelect = (field: AirportField, airport: Airport) => {
-    const nextValue = formatAirportFieldValue(airport);
+  const handleSuggestionSelect = (field: AirportField, item: SuggestionItem) => {
+    // Picking a metro header ("Any airport") records the metro without
+    // committing to a specific field — mirroring VistaJet's top row; ops
+    // resolves it to the metro's main_ap (or better) later.
+    const selection: AirportSelection =
+      item.type === "airport" || item.type === "airport-nested"
+        ? { kind: "airport", ap: item.ap }
+        : { kind: "metro", ma: item.ma };
+    const nextValue = formatSelectionValue(selection);
 
     if (field === "departure") {
       setDepartureCity(nextValue);
+      setDepartureSelection(selection);
     } else {
       setArrivalCity(nextValue);
+      setArrivalSelection(selection);
     }
 
     setActiveAirportField(null);
+    setActiveSuggestionIndex(-1);
+  };
+
+  const handleAirportKeyDown = (field: AirportField, event: KeyboardEvent<HTMLInputElement>) => {
+    const { items } = suggestFor(field);
+    const isOpen = activeAirportField === field && items.length > 0;
+
+    if (event.key === "Escape") {
+      setActiveAirportField(null);
+      setActiveSuggestionIndex(-1);
+      return;
+    }
+    if (!isOpen) return;
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      setActiveSuggestionIndex((current) => (current + 1) % items.length);
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      setActiveSuggestionIndex((current) => (current <= 0 ? items.length - 1 : current - 1));
+    } else if (event.key === "Enter" && activeSuggestionIndex >= 0) {
+      event.preventDefault();
+      handleSuggestionSelect(field, items[activeSuggestionIndex]);
+    }
   };
 
   const closeSuggestionsAfterBlur = (field: AirportField) => {
     window.setTimeout(() => {
       setActiveAirportField((currentField) => (currentField === field ? null : currentField));
     }, 100);
+  };
+
+  // Row template mirrors XO's grouped listbox: metro header rows ("Any
+  // airport"), the metro's members as indented nested rows, then flat
+  // non-metro matches — all pre-ordered by groupAirports().
+  const renderSuggestionList = (field: AirportField) => {
+    const { items, loading, isEmpty } = suggestFor(field);
+    if (!loading && !isEmpty && items.length === 0) return null;
+
+    return (
+      <ul
+        id={`${field}-airport-listbox`}
+        role="listbox"
+        aria-label={`${field === "departure" ? "Departure" : "Arrival"} airport suggestions`}
+        className="absolute left-0 right-0 z-50 mt-1 max-h-72 overflow-y-auto border border-hairline bg-white"
+      >
+        {loading && items.length === 0 && (
+          <li className="px-3 py-2 text-xs text-ink-muted">Searching airports…</li>
+        )}
+        {isEmpty && !loading && (
+          <li className="px-3 py-2 text-xs text-ink-muted">No airports found.</li>
+        )}
+        {items.map((item, index) => {
+          const isMetro = item.type === "metropolitan-area" || item.type === "metropolitan-area-with-airports";
+          const isActive = index === activeSuggestionIndex;
+          const key = isMetro
+            ? `metro-${item.ma.metropolitan_area_id}`
+            : `${item.ap.code}-${item.ap.name}`;
+
+          return (
+            <li key={key} role="option" aria-selected={isActive} id={`${field}-airport-option-${index}`}>
+              <button
+                type="button"
+                tabIndex={-1}
+                onMouseDown={(event) => {
+                  event.preventDefault();
+                  handleSuggestionSelect(field, item);
+                }}
+                onMouseEnter={() => setActiveSuggestionIndex(index)}
+                className={`w-full px-3 py-2 text-left normal-case hover:bg-surface-1 ${
+                  isActive ? "bg-surface-1" : ""
+                } ${item.type === "airport-nested" ? "border-l-2 border-hairline pl-6" : ""}`}
+              >
+                {isMetro ? (
+                  <>
+                    <span className="block truncate text-sm font-semibold text-ink">
+                      {item.ma.name}, {item.ma.country}
+                    </span>
+                    <span className="block truncate text-xs font-medium text-ibm-blue">Any airport</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="flex items-center gap-2">
+                      <span className="block truncate text-sm font-medium text-ink">
+                        {item.ap.name}
+                      </span>
+                      {item.ap.isPrivate && (
+                        <span className="shrink-0 border border-ibm-blue px-1.5 py-0.5 text-[10px] font-medium text-ibm-blue">
+                          Private
+                        </span>
+                      )}
+                    </span>
+                    <span className="block truncate text-xs text-ink-muted">
+                      {item.ap.code}, {item.ap.city}
+                      {item.type === "airport-nested" ? "" : `, ${item.ap.country}`}
+                    </span>
+                  </>
+                )}
+              </button>
+            </li>
+          );
+        })}
+      </ul>
+    );
+  };
+
+  const renderAirportInput = (field: AirportField, placeholder: string) => {
+    const isOpen = activeAirportField === field;
+
+    return (
+      <div className="relative">
+        <input
+          type="text"
+          placeholder={placeholder}
+          value={cityFor(field)}
+          role="combobox"
+          aria-expanded={isOpen}
+          aria-controls={`${field}-airport-listbox`}
+          aria-autocomplete="list"
+          aria-activedescendant={
+            isOpen && activeSuggestionIndex >= 0
+              ? `${field}-airport-option-${activeSuggestionIndex}`
+              : undefined
+          }
+          onChange={(event) => handleAirportInputChange(field, event.target.value)}
+          onFocus={() => handleAirportFocus(field)}
+          onBlur={() => closeSuggestionsAfterBlur(field)}
+          onKeyDown={(event) => handleAirportKeyDown(field, event)}
+          className="h-11 w-full border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
+          autoComplete="off"
+          required
+        />
+        {isOpen && renderSuggestionList(field)}
+      </div>
+    );
   };
 
   const departureDateIsValid = parseIsoDate(departureDate.trim()) !== null;
@@ -906,9 +754,11 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
   const emailIsValid = EMAIL_PATTERN.test(emailAddress.trim());
   const phoneIsValid = PHONE_PATTERN.test(phoneNumber.trim());
 
+  // Airports must be picked from the suggestion list — free-typed text no
+  // longer qualifies (it used to lose the airport identity anyway).
   const primaryDetailsComplete =
-    departureCity.trim().length > 0 &&
-    arrivalCity.trim().length > 0 &&
+    departureSelection !== null &&
+    arrivalSelection !== null &&
     departureDateIsValid &&
     departureTimeIsValid &&
     (!isRoundTrip || (returnDateIsValid && returnTimeIsValid && returnDateIsAfterDeparture));
@@ -938,7 +788,11 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
 
     if (!canSubmit) {
       setSubmitStatus("error");
-      setSubmitMessage("Please complete every required field with a valid email and phone number.");
+      setSubmitMessage(
+        departureSelection === null || arrivalSelection === null
+          ? "Please pick your departure and arrival airports from the suggestion list."
+          : "Please complete every required field with a valid email and phone number."
+      );
       return;
     }
 
@@ -954,6 +808,8 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
           tripType,
           departureCity: departureCity.trim(),
           arrivalCity: arrivalCity.trim(),
+          departureAirport: selectionPayload(departureSelection),
+          arrivalAirport: selectionPayload(arrivalSelection),
           departureDate: departureDate.trim(),
           departureTime: departureTime.trim(),
           returnDate: isRoundTrip ? returnDate.trim() : "",
@@ -1024,88 +880,8 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
         </div>
 
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Departure City, Country or Airport Code"
-              value={departureCity}
-              onChange={(event) => setDepartureCity(event.target.value)}
-              onFocus={() => { void loadAirportsOnce(); setActiveAirportField("departure"); }}
-              onBlur={() => closeSuggestionsAfterBlur("departure")}
-              className="h-11 w-full border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
-              autoComplete="off"
-              required
-            />
-            {activeAirportField === "departure" && departureSuggestions.length > 0 && (
-              <ul className="absolute left-0 right-0 z-50 mt-1 overflow-hidden border border-hairline bg-white">
-                {departureSuggestions.map((airport) => (
-                  <li key={`${airport.code}-${airport.name}`}>
-                    <button
-                      type="button"
-                      onMouseDown={(event) => {
-                        event.preventDefault();
-                        handleAirportSelect("departure", airport);
-                      }}
-                      className="w-full px-3 py-2 text-left normal-case hover:bg-surface-1 focus:bg-surface-1"
-                    >
-                      <span className="flex items-center gap-2">
-                        <span className="block truncate text-sm font-medium text-ink">
-                          {airport.city}, {airport.country} ({airport.code})
-                        </span>
-                        {airport.isPrivate && (
-                          <span className="shrink-0 border border-ibm-blue px-1.5 py-0.5 text-[10px] font-medium text-ibm-blue">
-                            Private
-                          </span>
-                        )}
-                      </span>
-                      <span className="block truncate text-xs text-ink-muted">{airport.name}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Arrival City, Country or Airport Code"
-              value={arrivalCity}
-              onChange={(event) => setArrivalCity(event.target.value)}
-              onFocus={() => { void loadAirportsOnce(); setActiveAirportField("arrival"); }}
-              onBlur={() => closeSuggestionsAfterBlur("arrival")}
-              className="h-11 w-full border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
-              autoComplete="off"
-              required
-            />
-            {activeAirportField === "arrival" && arrivalSuggestions.length > 0 && (
-              <ul className="absolute left-0 right-0 z-50 mt-1 overflow-hidden border border-hairline bg-white">
-                {arrivalSuggestions.map((airport) => (
-                  <li key={`${airport.code}-${airport.name}`}>
-                    <button
-                      type="button"
-                      onMouseDown={(event) => {
-                        event.preventDefault();
-                        handleAirportSelect("arrival", airport);
-                      }}
-                      className="w-full px-3 py-2 text-left normal-case hover:bg-surface-1 focus:bg-surface-1"
-                    >
-                      <span className="flex items-center gap-2">
-                        <span className="block truncate text-sm font-medium text-ink">
-                          {airport.city}, {airport.country} ({airport.code})
-                        </span>
-                        {airport.isPrivate && (
-                          <span className="shrink-0 border border-ibm-blue px-1.5 py-0.5 text-[10px] font-medium text-ibm-blue">
-                            Private
-                          </span>
-                        )}
-                      </span>
-                      <span className="block truncate text-xs text-ink-muted">{airport.name}</span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+          {renderAirportInput("departure", "Departure City, Country or Airport Code")}
+          {renderAirportInput("arrival", "Arrival City, Country or Airport Code")}
           <DatePickerField value={departureDate} onChange={setDepartureDate} placeholder="Departure Date" />
           <TimePickerField value={departureTime} onChange={setDepartureTime} placeholder="Departure Time" />
         </div>

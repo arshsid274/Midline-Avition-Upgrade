@@ -7,82 +7,13 @@ import useEmblaCarousel from "embla-carousel-react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { POPULAR_DESTINATIONS, type DestinationCard } from "@/lib/home-content";
 
-type DestinationCard = {
-  id: string;
-  name: string;
-  imageSrc: string;
-  imageAlt: string;
-  href: string;
-};
-
-const POPULAR_DESTINATIONS: DestinationCard[] = [
-  {
-    id: "london",
-    name: "London",
-    imageSrc: "/assets/images/frequent-travel-destinations/london.webp",
-    imageAlt: "London skyline along the Thames",
-    href: "/contact",
-  },
-  {
-    id: "paris",
-    name: "Paris",
-    imageSrc: "/assets/images/frequent-travel-destinations/paris.webp",
-    imageAlt: "Paris cityscape with the Eiffel Tower",
-    href: "/contact",
-  },
-  {
-    id: "maldives",
-    name: "Maldives",
-    imageSrc: "/assets/images/frequent-travel-destinations/maldives.webp",
-    imageAlt: "Maldives island resort from above",
-    href: "/contact",
-  },
-  {
-    id: "singapore",
-    name: "Singapore",
-    imageSrc: "/assets/images/frequent-travel-destinations/singapore.webp",
-    imageAlt: "Singapore skyline and waterfront",
-    href: "/contact",
-  },
-  {
-    id: "turkey",
-    name: "Turkey",
-    imageSrc: "/assets/images/frequent-travel-destinations/turkey.webp",
-    imageAlt: "Historic skyline of Istanbul, Turkey",
-    href: "/contact",
-  },
-  {
-    id: "madrid",
-    name: "Madrid",
-    imageSrc: "/assets/images/frequent-travel-destinations/madrid.webp",
-    imageAlt: "Madrid city architecture at golden hour",
-    href: "/contact",
-  },
-  {
-    id: "uzbekistan",
-    name: "Uzbekistan",
-    imageSrc: "/assets/images/frequent-travel-destinations/uzbekistan.webp",
-    imageAlt: "Historic architecture of Uzbekistan",
-    href: "/contact",
-  },
-  {
-    id: "mumbai",
-    name: "Mumbai",
-    imageSrc: "/assets/images/frequent-travel-destinations/mumbai.webp",
-    imageAlt: "Mumbai skyline along Marine Drive",
-    href: "/contact",
-  },
-  {
-    id: "chennai",
-    name: "Chennai",
-    imageSrc: "/assets/images/frequent-travel-destinations/chennai.webp",
-    imageAlt: "Chennai cityscape and coastline",
-    href: "/contact",
-  },
-];
-
-export default function PopularDestinationsCarousel() {
+export default function PopularDestinationsCarousel({
+  cards = POPULAR_DESTINATIONS,
+}: {
+  cards?: DestinationCard[];
+} = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const textBlockRef = useRef<HTMLDivElement>(null);
   const carouselBlockRef = useRef<HTMLDivElement>(null);
@@ -226,7 +157,7 @@ export default function PopularDestinationsCarousel() {
               aria-label="Frequent travel destinations"
               className="-ml-3 flex cursor-grab active:cursor-grabbing sm:-ml-4"
             >
-              {POPULAR_DESTINATIONS.map((destination) => (
+              {cards.map((destination) => (
                 <article
                   key={destination.id}
                   role="listitem"

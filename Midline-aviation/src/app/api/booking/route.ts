@@ -5,6 +5,8 @@ type BookingPayload = {
   tripType?: unknown;
   departureCity?: unknown;
   arrivalCity?: unknown;
+  departureAirport?: unknown;
+  arrivalAirport?: unknown;
   departureDate?: unknown;
   departureTime?: unknown;
   returnDate?: unknown;
@@ -24,6 +26,34 @@ const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 const TIME_PATTERN = /^\d{2}:\d{2}$/;
 
 const cleanString = (value: unknown) => (typeof value === "string" ? value.trim() : "");
+
+// Structured selection sent by the booking form's airport suggest — either a
+// concrete airport ({code, icao, iata, ...}) or a metro-area "Any airport"
+// pick ({flexible: true, metro, main_ap}). Rendered into one detail string
+// for the operations email; absent/malformed payloads degrade to "".
+const describeAirportSelection = (value: unknown) => {
+  if (!value || typeof value !== "object") return "";
+  const selection = value as Record<string, unknown>;
+
+  if (selection.flexible === true) {
+    const metro = cleanString(selection.metro);
+    const mainAp = cleanString(selection.main_ap);
+    if (!metro) return "";
+    return `Any airport in ${metro}${mainAp ? ` (suggested: ${mainAp})` : ""}`;
+  }
+
+  const name = cleanString(selection.name);
+  const code = cleanString(selection.code);
+  const icao = cleanString(selection.icao);
+  const iata = cleanString(selection.iata);
+  if (!name && !code) return "";
+
+  const codes = [...new Set([iata, icao, code].filter(Boolean))].join("/");
+  const lat = typeof selection.lat === "number" ? selection.lat.toFixed(4) : "";
+  const lon = typeof selection.lon === "number" ? selection.lon.toFixed(4) : "";
+  const coordinates = lat && lon ? ` [${lat}, ${lon}]` : "";
+  return `${name}${codes ? ` (${codes})` : ""}${coordinates}`;
+};
 
 const escapeHtml = (value: string) =>
   value
@@ -98,10 +128,15 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Email service is not configured yet." }, { status: 500 });
   }
 
+  const departureAirportDetails = describeAirportSelection(payload.departureAirport);
+  const arrivalAirportDetails = describeAirportSelection(payload.arrivalAirport);
+
   const rows = [
     ["Trip Type", tripType === "round-trip" ? "Round Trip" : "One Way"],
     ["Departure", departureCity],
+    ["Departure Airport", departureAirportDetails],
     ["Arrival", arrivalCity],
+    ["Arrival Airport", arrivalAirportDetails],
     ["Departure Date", departureDate],
     ["Departure Time", departureTime],
     ["Return Date", isRoundTrip ? returnDate : "Not applicable"],

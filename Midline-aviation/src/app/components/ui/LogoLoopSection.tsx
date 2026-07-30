@@ -5,25 +5,32 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { LogoItem } from "./LogoLoop";
 import LogoLoop from "./LogoLoop";
-import { enabledAccreditations } from "@/lib/accreditations";
+import type { AccreditationLogo } from "@/lib/cms/accreditations";
 
-// Only credentials with `enabled: true` in src/lib/accreditations.ts are shown —
-// unverified logos ship disabled there and can be switched on without touching this file.
+type LogoLoopSectionProps = {
+  /** Enabled accreditations, fetched by the Server Component that renders this. */
+  logos: AccreditationLogo[];
+};
+
+// Only credentials marked enabled in the CMS are passed in — unverified logos sit
+// in the admin panel switched off and can be turned on without a deploy.
 // Logos sit on white hairline-bordered tiles so every mark stays legible.
 // Every chip and inner logo box is a FIXED size, and each mark scales to fill it
 // with object-contain — so wide, squat, and square logos all read the same size.
-const accreditationLogos: LogoItem[] = enabledAccreditations.map(({ src, name }) => ({
-  node: (
-    <span className="flex h-24 w-[220px] items-center justify-center border border-hairline bg-white sm:h-28 sm:w-[250px]">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={src} alt={name} loading="lazy" className="h-14 w-[170px] object-contain sm:h-16 sm:w-[195px]" />
-    </span>
-  ),
-  title: name,
-  ariaLabel: name,
-}));
+export default function LogoLoopSection({ logos }: LogoLoopSectionProps) {
+  // Built inside render, not at module scope: a module-scope array is evaluated
+  // at import time, which no amount of prop-passing can reach.
+  const accreditationLogos: LogoItem[] = logos.map(({ src, name }) => ({
+    node: (
+      <span className="flex h-24 w-[220px] items-center justify-center border border-hairline bg-white sm:h-28 sm:w-[250px]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={src} alt={name} loading="lazy" className="h-14 w-[170px] object-contain sm:h-16 sm:w-[195px]" />
+      </span>
+    ),
+    title: name,
+    ariaLabel: name,
+  }));
 
-export default function LogoLoopSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
   const loopRef = useRef<HTMLDivElement>(null);

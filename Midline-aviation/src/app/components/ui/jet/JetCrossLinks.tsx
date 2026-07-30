@@ -1,11 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { JETS, type Jet } from "@/lib/fleet";
+import { type Jet } from "@/lib/fleet";
 import Reveal from "@/app/components/motion/Reveal";
 
-export default function JetCrossLinks({ jet }: { jet: Jet }) {
-  const siblings = JETS.filter((candidate) => candidate.slug !== jet.slug);
+export default function JetCrossLinks({ jet, fleet }: { jet: Jet; fleet: Jet[] }) {
+  const siblings = fleet.filter((candidate) => candidate.slug !== jet.slug);
 
   return (
     <section aria-label="Explore the rest of the fleet" className="bg-white py-16 sm:py-20">

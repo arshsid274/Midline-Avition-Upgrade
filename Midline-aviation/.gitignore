@@ -45,3 +45,12 @@ next-env.d.ts
 public/assets/images/T7-MID*
 public/assets/images/T7-MIDA*
 public/assets/images/T7-MIDB*
+
+# Payload SQLite database (never web-served, never committed)
+/data
+
+# Payload local upload staging (superseded by R2 once configured)
+/media
+
+# Payload video uploads (local disk fallback; R2 in production)
+/videos

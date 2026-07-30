@@ -1,12 +1,13 @@
 import Image from "next/image";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
+import { SERVICE_HEROES, type ServiceHero } from "@/lib/service-content";
 
-export default function AircraftManagementHeroSection() {
+export default function AircraftManagementHeroSection({ hero = SERVICE_HEROES["management-page"] }: { hero?: ServiceHero } = {}) {
   return (
     <section className="relative isolate h-[calc(100svh-72px)] w-full overflow-hidden md:h-[calc(100svh-84px)]">
       <Image
-        src="/assets/images/aircraft/management-hero.webp"
+        src={hero.image.src}
         alt="Gulfstream G200 T7-MIDA under management, seen from the Midline FBO lounge"
         fill
         sizes="100vw"
@@ -27,7 +28,7 @@ export default function AircraftManagementHeroSection() {
           data-reveal-item
           className="inline-flex items-center gap-2 border border-white/30 bg-black/50 px-4 py-1.5 text-sm text-white"
         >
-          Elite Aircraft Management
+          {hero.eyebrow}
         </p>
 
         <SplitHeading
@@ -45,7 +46,7 @@ export default function AircraftManagementHeroSection() {
           data-reveal-item
           className="mt-5 max-w-3xl text-sm leading-relaxed text-white/88 sm:text-base md:text-lg"
         >
-          Comprehensive aircraft management services tailored to operational excellence, safety, and your schedule.
+          {hero.body}
         </p>
 
         <div data-reveal-item className="mt-8 flex flex-col items-center gap-3 sm:flex-row">

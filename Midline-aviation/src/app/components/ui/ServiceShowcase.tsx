@@ -5,44 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-type ShowcaseItem = {
-  id: string;
-  title: string;
-  subtitle: string;
-  description: string;
-  href: string;
-  ctaLabel: string;
-  imageSrc: string;
-  imageAlt: string;
-  reverse?: boolean;
-};
-
-const showcaseItems: ShowcaseItem[] = [
-  {
-    id: "private-charter",
-    title: "Private Charter",
-    subtitle: "Elite travel management",
-    description:
-      "Indulge in seamless luxury with our VIP private charter service, where we manage every detail from A to Z, creating an exclusive journey tailored to perfection just for you.",
-    href: "/services/aircraft-charter",
-    ctaLabel: "Explore Charter",
-    imageSrc: "/assets/images/aircraft/g450-red-carpet.webp",
-    imageAlt: "Red carpet rolled out to a waiting private charter jet",
-  },
-  {
-    id: "concierge-service",
-    title: "Concierge Service",
-    subtitle: "VIP luxury and prestigious experience",
-    description:
-      "Benefit from the power of access provided by Midline Concierge. From luxury hotel reservations and entertainment to the finest yachts and villas around the globe.",
-    href: "/contact",
-    ctaLabel: "Contact Concierge",
-    imageSrc: "/assets/images/aircraft/concierge.webp",
-    imageAlt: "Luxury concierge arrival with chauffeur and luggage handling",
-    reverse: true,
-  },
-];
+import { SHOWCASE_ITEMS, type ShowcaseItem } from "@/lib/home-content";
 
 function ShowcasePanel({ item }: { item: ShowcaseItem }) {
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -175,7 +138,13 @@ function ShowcasePanel({ item }: { item: ShowcaseItem }) {
   );
 }
 
-export default function ServiceShowcase() {
+export default function ServiceShowcase({
+  items = SHOWCASE_ITEMS,
+  heading,
+}: {
+  items?: ShowcaseItem[];
+  heading?: string;
+} = {}) {
   return (
     <section
       aria-labelledby="service-showcase-heading"
@@ -190,7 +159,7 @@ export default function ServiceShowcase() {
         </h2>
 
         <div className="mt-10 space-y-20 lg:mt-14 lg:space-y-28">
-          {showcaseItems.map((item) => (
+          {items.map((item) => (
             <ShowcasePanel key={item.id} item={item} />
           ))}
         </div>

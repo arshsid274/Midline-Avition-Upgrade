@@ -3,48 +3,11 @@
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { leadershipMembers, type LeadershipMember } from "@/lib/about-content";
 
-interface LeadershipMember {
-  name: string;
-  title: string;
-  bio: string;
-  imageSrc: string;
-  objectPosition: string;
-}
 
-const leadershipMembers: LeadershipMember[] = [
-  {
-    name: "Phill",
-    title: "Chief Executive Officer",
-    bio: "With over 20 years in global air transport, Phill leads Midline with a focus on operational clarity and exceptional client experience.",
-    imageSrc: "/assets/images/Team/phill.jpg",
-    objectPosition: "center 15%",
-  },
-  {
-    name: "Ryan",
-    title: "Head of Partnerships",
-    bio: "A finance and commercial strategy lead, Ryan ensures that every collaboration advances mission-ready aviation and long-term growth.",
-    imageSrc: "/assets/images/Team/ryan.jpg",
-    objectPosition: "center 15%",
-  },
-  {
-    name: "Shar",
-    title: "Director of Flight Operations",
-    bio: "Shar brings leadership from elite flight teams to elevate our scheduling, safety oversight, and precision-driven service delivery.",
-    imageSrc: "/assets/images/Team/shar.jpg",
-    objectPosition: "center 15%",
-  },
-  {
-    name: "Amanda",
-    title: "Head of Client Experience",
-    bio: "Amanda ensures every client interaction reflects Midline's commitment to seamless, personalised service from first inquiry to final landing.",
-    imageSrc: "/assets/images/Team/amanda.jpg",
-    objectPosition: "center 10%",
-  },
-];
 
 const GAP   = 12;             // px gap between cards
-const total = leadershipMembers.length;
 
 /**
  * Responsive layout derived from the measured strip width:
@@ -58,7 +21,14 @@ const layoutFor = (w: number) => {
   return { visible, panelW, photoW };
 };
 
-export default function ContactLeadershipSection() {
+export default function ContactLeadershipSection({
+  members = leadershipMembers,
+}: {
+  members?: LeadershipMember[];
+} = {}) {
+  // Derived inside the component: at module scope this ran at import time,
+  // before `members` could be passed in.
+  const total = members.length;
   const [active, setActive] = useState<number | null>(null);
   const [offset, setOffset] = useState(0);
   const [layout, setLayout] = useState({ visible: 4, panelW: 240, photoW: 0 });
@@ -188,7 +158,7 @@ export default function ContactLeadershipSection() {
             transition: "transform 0.55s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         >
-          {leadershipMembers.map((member, i) => {
+          {members.map((member, i) => {
             const isActive = active === i;
 
             return (

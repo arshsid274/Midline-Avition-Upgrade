@@ -6,51 +6,7 @@ import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CardBody, CardContainer, CardItem } from "./ThreeDCard";
-
-type AircraftCard = {
-  id: string;
-  name: string;
-  registration: string;
-  description: string;
-  comingSoon?: boolean;
-  imageSrc: string;
-  imageAlt: string;
-  href: string;
-  videoSrc?: string;
-};
-
-const HOME_AIRCRAFT: AircraftCard[] = [
-  {
-    id: "legacy-650",
-    name: "Embraer Legacy 650",
-    registration: "T7-MIDB",
-    description:
-      "The flagship of luxury aviation delivers ultra-long-range performance, cutting-edge design, and unmatched speed. The Embraer Legacy 650 redefines private air travel with elegance and power.",
-    imageSrc: "/assets/images/aircraft/legacy650-exterior-2.webp",
-    imageAlt: "Embraer Legacy 650 (T7-MIDB) on the tarmac",
-    href: "/fleet/embraer-legacy-650",
-  },
-  {
-    id: "g450",
-    name: "Gulfstream G450",
-    registration: "T7-MID",
-    description:
-      "A long-range business jet known for its advanced technology, quiet cabin, and superior reliability. Perfect for intercontinental travel with unmatched comfort and safety.",
-    imageSrc: "/assets/images/aircraft/g450-exterior.webp",
-    imageAlt: "Gulfstream G450 (T7-MID) on the tarmac",
-    href: "/fleet/gulfstream-g450",
-  },
-  {
-    id: "g200",
-    name: "Gulfstream G200",
-    registration: "T7-MIDA",
-    description:
-      "A versatile midsize jet offering exceptional comfort and performance for regional and medium-haul flights. The G200 combines spacious seating with impressive range and efficiency.",
-    imageSrc: "/assets/images/aircraft/g200-exterior.webp",
-    imageAlt: "Gulfstream G200 (T7-MIDA) on the tarmac",
-    href: "/fleet/gulfstream-g200",
-  },
-];
+import { HOME_AIRCRAFT, type AircraftCard } from "@/lib/home-content";
 
 function HoverVideoCard({ aircraft }: { aircraft: AircraftCard }) {
   const [hovered, setHovered] = useState(false);
@@ -108,7 +64,11 @@ function HoverVideoCard({ aircraft }: { aircraft: AircraftCard }) {
   );
 }
 
-export default function HomeAircraftCards() {
+export default function HomeAircraftCards({
+  cards = HOME_AIRCRAFT,
+}: {
+  cards?: AircraftCard[];
+} = {}) {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
 
@@ -210,7 +170,7 @@ export default function HomeAircraftCards() {
         </header>
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {HOME_AIRCRAFT.map((aircraft) => (
+          {cards.map((aircraft) => (
             <CardContainer key={aircraft.id} className="h-full w-full" containerClassName="h-full w-full py-0">
               <CardBody
                 data-aircraft-card
