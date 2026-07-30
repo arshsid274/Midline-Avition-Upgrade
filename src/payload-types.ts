@@ -247,6 +247,7 @@ export interface Media {
    * Original /assets path this image was imported from. Set by the seed script and used to make re-runs idempotent — do not edit.
    */
   sourcePath?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -285,6 +286,7 @@ export interface Video {
    * Original /assets path this film was imported from. Set by the seed script and used to keep re-runs idempotent — do not edit.
    */
   sourcePath?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -585,6 +587,7 @@ export interface GalleryItemsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   sourcePath?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -618,6 +621,7 @@ export interface MediaSelect<T extends boolean = true> {
 export interface VideosSelect<T extends boolean = true> {
   title?: T;
   sourcePath?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
