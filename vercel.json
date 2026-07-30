@@ -1,8 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "buildCommand": "npm run migrate && npm run build",
-  "regions": ["fra1"],
+  "buildCommand": "npm run migrate:build && npm run build",
+  "regions": [
+    "fra1"
+  ],
   "functions": {
     "src/app/(payload)/**": {
       "maxDuration": 60

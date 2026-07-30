@@ -29,7 +29,8 @@
     "seed:fleet": "payload run scripts/seed/fleet-page.mts",
     "seed:legal": "payload run scripts/seed/legal-pages.mts",
     "seed:videos": "payload run scripts/seed/videos.mts",
-    "provision": "node --experimental-strip-types scripts/seed/provision.mts"
+    "provision": "node --experimental-strip-types scripts/seed/provision.mts",
+    "migrate:build": "node scripts/migrate-if-configured.mjs"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
