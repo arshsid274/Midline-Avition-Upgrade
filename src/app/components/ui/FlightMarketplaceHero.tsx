@@ -8,29 +8,8 @@ import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight, Plane, Users } from "lucide-react";
 import gsap from "gsap";
 import { WorldMap } from "./WorldMap";
+import { MARKETPLACE, type JetVisualKey, type MarketplaceContent } from "@/lib/home-content";
 
-const JET_VISUALS = {
-  "gulfstream-heavy": {
-    exteriorSrc: "/assets/images/aircraft/g450-exterior.webp",
-    exteriorAlt: "Gulfstream G450 T7-MID on the ramp",
-    interiorSrc: "/assets/images/aircraft/g450-cabin-wide.webp",
-    interiorAlt: "Gulfstream G450 luxury cabin interior",
-  },
-  "gulfstream-mid-size": {
-    exteriorSrc: "/assets/images/aircraft/g200-exterior.webp",
-    exteriorAlt: "Gulfstream G200 T7-MIDA on the tarmac",
-    interiorSrc: "/assets/images/aircraft/g200-cabin.webp",
-    interiorAlt: "Gulfstream G200 cabin interior",
-  },
-  "embraer-heavy": {
-    exteriorSrc: "/assets/images/aircraft/legacy650-exterior.webp",
-    exteriorAlt: "Embraer Legacy 650 T7-MIDB on the tarmac",
-    interiorSrc: "/assets/images/aircraft/legacy650-cabin-real.webp",
-    interiorAlt: "Embraer Legacy 650 interior cabin",
-  },
-} as const;
-
-type JetVisualKey = keyof typeof JET_VISUALS;
 
 export const JET_DATA = [
   {
@@ -255,19 +234,36 @@ type JetDeal = (typeof JET_DATA)[number];
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
 
-const getJetVisuals = (visualKey: string) => {
-  if (visualKey in JET_VISUALS) {
-    return JET_VISUALS[visualKey as JetVisualKey];
-  }
-  return JET_VISUALS["gulfstream-heavy"];
+/**
+ * Photographs for a route's aircraft, looked up by the CMS `aircraft` key.
+ *
+ * Falls back to the first entry rather than throwing: an editor can delete a
+ * row, and a missing photograph must not take down the map.
+ */
+const makeGetJetVisuals = (visuals: MarketplaceContent["jetVisuals"]) => (visualKey: string) => {
+  const match = visuals.find((v) => v.aircraft === (visualKey as JetVisualKey));
+  const chosen = match ?? visuals[0] ?? MARKETPLACE.jetVisuals[0];
+  return {
+    exteriorSrc: chosen.exterior.src,
+    exteriorAlt: chosen.exterior.alt,
+    interiorSrc: chosen.interior.src,
+    interiorAlt: chosen.interior.alt,
+  };
 };
 
 const FlightCard = React.memo(function FlightCard({
   deal,
   isActive,
+  getJetVisuals,
 }: {
   deal: JetDeal;
   isActive: boolean;
+  getJetVisuals: (visualKey: string) => {
+    exteriorSrc: string;
+    exteriorAlt: string;
+    interiorSrc: string;
+    interiorAlt: string;
+  };
 }) {
   const routeTrackRef = React.useRef<HTMLDivElement>(null);
   const planeRef = React.useRef<HTMLDivElement>(null);
@@ -435,7 +431,15 @@ const FlightCard = React.memo(function FlightCard({
 
 FlightCard.displayName = "FlightCard";
 
-export default function FlightMarketplaceHero() {
+export default function FlightMarketplaceHero({
+  content = MARKETPLACE,
+}: {
+  content?: MarketplaceContent;
+} = {}) {
+  const getJetVisuals = useMemo(
+    () => makeGetJetVisuals(content.jetVisuals),
+    [content.jetVisuals]
+  );
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
@@ -505,16 +509,15 @@ export default function FlightMarketplaceHero() {
 
       <div className="relative z-10 mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8">
         <header className="mb-8 sm:mb-10 lg:mb-12">
-          <p className="text-sm text-ink-muted">Live Marketplace</p>
+          <p className="text-sm text-ink-muted">{content.eyebrow}</p>
           <h2
             id="flight-marketplace-heading"
             className="mt-3 max-w-3xl text-2xl font-light tracking-tight text-ink sm:text-3xl md:text-4xl"
           >
-            Regional private jet routes, split view booking and map intelligence
+            {content.heading}
           </h2>
           <p className="mt-3 max-w-3xl text-sm text-ink-muted sm:text-base">
-            View active route deals in the carousel and follow each selected route on the interactive map,
-            optimized for short-to-mid-range regional flights.
+            {content.intro}
           </p>
           <p className="sr-only" aria-live="polite">
             Active marketplace route: {activeDeal.fromCity} ({activeDeal.fromICAO}) to {activeDeal.toCity} (
@@ -551,7 +554,7 @@ export default function FlightMarketplaceHero() {
                     className="flex cursor-grab active:cursor-grabbing"
                   >
                     {JET_DATA.map((deal, index) => (
-                      <FlightCard key={deal.id} deal={deal} isActive={index === selectedIndex} />
+                      <FlightCard key={deal.id} deal={deal} isActive={index === selectedIndex} getJetVisuals={getJetVisuals} />
                     ))}
                   </div>
                 </div>

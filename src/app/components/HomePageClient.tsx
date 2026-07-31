@@ -40,7 +40,7 @@ export default function HomePageClient({ home, accreditationLogos }: HomePageCli
       <HeroBookingForm revealFromBelow />
       <ServicesShowcase items={home.showcase.items} heading={home.showcase.heading} />
       <PopularDestinationsCarousel cards={home.destinations.cards} />
-      <TripsMapView />
+      <TripsMapView content={home.marketplace} />
       <LogoLoopSection logos={accreditationLogos} />
       <HomeAircraftCards cards={home.fleet.cards} />
       <HomeCtaBanner content={home.ctaBanner} />

@@ -16,6 +16,9 @@ import {
   type DestinationCard,
   type HeroContent,
   type ShowcaseItem,
+  MARKETPLACE,
+  type JetVisualKey,
+  type MarketplaceContent,
 } from "@/lib/home-content";
 
 export type HomeContent = {
@@ -23,6 +26,7 @@ export type HomeContent = {
   showcase: { heading: string; items: ShowcaseItem[] };
   destinations: { heading: string; cards: DestinationCard[] };
   accreditationsHeading: string;
+  marketplace: MarketplaceContent;
   fleet: { eyebrow: string; heading: string; cards: AircraftCard[] };
   ctaBanner: CtaBannerContent;
   /** True when rendering unpublished content, so the page can show a banner. */
@@ -124,8 +128,41 @@ export const getHomeContent = async (): Promise<HomeContent> => {
       }))
     : HOME_AIRCRAFT;
 
+  /**
+   * Two photographs per aircraft, joined back to the route data in code by the
+   * `aircraft` key. Matching on title would break when someone renames an
+   * aircraft and matching on row order would break when they reorder — both
+   * silently, by pairing the wrong photographs with the wrong routes.
+   *
+   * A row missing either photograph is dropped rather than rendered: next/image
+   * throws on an empty src, and on a static page that fails the whole build.
+   */
+  const jetVisuals = Array.isArray(global?.marketplace?.jetVisuals)
+    ? global.marketplace.jetVisuals
+        .map((row: any) => {
+          const exterior = imageFrom(row?.exterior, { src: "", alt: "" });
+          const interior = imageFrom(row?.interior, { src: "", alt: "" });
+          if (!row?.aircraft || !exterior.src || !interior.src) return null;
+          return {
+            aircraft: row.aircraft as JetVisualKey,
+            title: text(row.title, ""),
+            exterior,
+            interior,
+          };
+        })
+        .filter(Boolean)
+    : [];
+
+  const mk = global?.marketplace;
+
   return {
     isDraft: draft,
+    marketplace: {
+      eyebrow: text(mk?.eyebrow, MARKETPLACE.eyebrow),
+      heading: text(mk?.heading, MARKETPLACE.heading),
+      intro: text(mk?.intro, MARKETPLACE.intro),
+      jetVisuals: jetVisuals.length ? jetVisuals : MARKETPLACE.jetVisuals,
+    },
     showcase: {
       heading: text(global?.showcase?.heading, "Discover Midline"),
       items: showcasePanels,
