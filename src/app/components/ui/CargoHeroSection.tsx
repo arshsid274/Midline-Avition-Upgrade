@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Package, ArrowRight } from "lucide-react";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
@@ -9,7 +10,7 @@ export default function CargoHeroSection({ hero = SERVICE_HEROES["cargo-page"] }
     <section className="relative isolate h-[calc(100svh-72px)] w-full overflow-hidden md:h-[calc(100svh-84px)]">
       <Image
         src={hero.image.src}
-        alt="Gulfstream G450 T7-MID on the ramp at night under apron floodlights, ready for cargo operations"
+        alt={hero.image.alt}
         fill
         sizes="100vw"
         className="object-cover object-center hero-kenburns"
@@ -45,9 +46,14 @@ export default function CargoHeroSection({ hero = SERVICE_HEROES["cargo-page"] }
             delay={0.25}
             className="font-display mt-5 text-4xl font-light leading-[1.06] tracking-[-0.02em] sm:text-5xl md:text-[3.6rem]"
           >
-            Reliable Air Cargo
-            <br />
-            <span className="text-ibm-blue">Solutions</span> For Business
+            {hero.heading}
+            {hero.headingAccent ? (
+              <>
+                <br />
+                <span className="text-ibm-blue">{hero.headingAccent}</span>
+              </>
+            ) : null}
+            {hero.headingRest}
           </SplitHeading>
 
           {/* Body */}
@@ -55,8 +61,7 @@ export default function CargoHeroSection({ hero = SERVICE_HEROES["cargo-page"] }
             data-reveal-item
             className="mt-5 max-w-[34rem] text-sm leading-relaxed text-white/78 sm:text-base"
           >
-            Experience seamless global logistics with Midline Aviation&rsquo;s end-to-end cargo network. Precision
-            handling, real-time tracking, and guaranteed delivery windows for every shipment.
+            {hero.body}
           </p>
 
           {/* Stats row */}
@@ -64,11 +69,7 @@ export default function CargoHeroSection({ hero = SERVICE_HEROES["cargo-page"] }
             data-reveal-item
             className="mt-7 flex flex-wrap items-center gap-6 border-t border-white/14 pt-6"
           >
-            {[
-              { value: "180+", label: "Destinations" },
-              { value: "99.4%", label: "On-Time Rate" },
-              { value: "24/7", label: "Operations" },
-            ].map((stat) => (
+            {(hero.stats ?? []).map((stat) => (
               <div key={stat.label}>
                 <p className="text-2xl font-light text-ibm-blue">{stat.value}</p>
                 <p className="text-xs text-inverse-ink-muted">{stat.label}</p>
@@ -78,19 +79,24 @@ export default function CargoHeroSection({ hero = SERVICE_HEROES["cargo-page"] }
 
           {/* CTAs */}
           <div data-reveal-item className="mt-7 flex flex-col gap-3 sm:flex-row">
-            <button
-              type="button"
-              className="inline-flex min-h-11 items-center justify-center gap-2 bg-ibm-blue px-6 py-3 text-sm font-normal text-white transition-colors hover:bg-ibm-blue-hover"
-            >
-              Explore Services
-              <ArrowRight className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              className="inline-flex min-h-11 items-center justify-center border border-white px-6 py-3 text-sm font-normal text-white transition-colors hover:bg-white hover:text-ink"
-            >
-              Track Shipment
-            </button>
+            {/* Were <button> elements with no destination — real links now. */}
+            {hero.primary?.href ? (
+              <Link
+                href={hero.primary.href}
+                className="inline-flex min-h-11 items-center justify-center gap-2 bg-ibm-blue px-6 py-3 text-sm font-normal text-white transition-colors hover:bg-ibm-blue-hover"
+              >
+                {hero.primary.label}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            ) : null}
+            {hero.secondary?.href ? (
+              <Link
+                href={hero.secondary.href}
+                className="inline-flex min-h-11 items-center justify-center border border-white px-6 py-3 text-sm font-normal text-white transition-colors hover:bg-white hover:text-ink"
+              >
+                {hero.secondary.label}
+              </Link>
+            ) : null}
           </div>
         </Reveal>
       </div>

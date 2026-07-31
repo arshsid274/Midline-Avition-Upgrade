@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
 import { SERVICE_HEROES, type ServiceHero } from "@/lib/service-content";
@@ -8,7 +9,7 @@ export default function AircraftManagementHeroSection({ hero = SERVICE_HEROES["m
     <section className="relative isolate h-[calc(100svh-72px)] w-full overflow-hidden md:h-[calc(100svh-84px)]">
       <Image
         src={hero.image.src}
-        alt="Gulfstream G200 T7-MIDA under management, seen from the Midline FBO lounge"
+        alt={hero.image.alt}
         fill
         sizes="100vw"
         className="object-cover object-center hero-kenburns"
@@ -38,8 +39,14 @@ export default function AircraftManagementHeroSection({ hero = SERVICE_HEROES["m
           delay={0.25}
           className="font-display mt-5 text-4xl font-light leading-[1.08] tracking-[-0.02em] text-white sm:text-5xl md:text-6xl"
         >
-          Expert Care for Your Aircraft,{" "}
-          <span className="bg-white px-2 py-0.5 text-ink">Peace of Mind</span> for You
+          {hero.heading}
+          {hero.headingAccent ? (
+            <>
+              {" "}
+              <span className="bg-white px-2 py-0.5 text-ink">{hero.headingAccent}</span>
+            </>
+          ) : null}
+          {hero.headingRest}
         </SplitHeading>
 
         <p
@@ -49,19 +56,28 @@ export default function AircraftManagementHeroSection({ hero = SERVICE_HEROES["m
           {hero.body}
         </p>
 
+        {/*
+          These were <button> elements with no handler and no destination —
+          they looked like calls to action and did nothing when clicked. Now
+          real links, with their labels and targets coming from the CMS.
+        */}
         <div data-reveal-item className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
-          <button
-            type="button"
-            className="inline-flex min-h-11 items-center justify-center bg-ibm-blue px-6 py-3 text-sm font-normal text-white transition-colors hover:bg-ibm-blue-hover"
-          >
-            Explore Our Fleet
-          </button>
-          <button
-            type="button"
-            className="inline-flex min-h-11 items-center justify-center border border-white px-6 py-3 text-sm font-normal text-white transition-colors hover:bg-white/10"
-          >
-            Review Safety Protocols
-          </button>
+          {hero.primary?.href ? (
+            <Link
+              href={hero.primary.href}
+              className="inline-flex min-h-11 items-center justify-center bg-ibm-blue px-6 py-3 text-sm font-normal text-white transition-colors hover:bg-ibm-blue-hover"
+            >
+              {hero.primary.label}
+            </Link>
+          ) : null}
+          {hero.secondary?.href ? (
+            <Link
+              href={hero.secondary.href}
+              className="inline-flex min-h-11 items-center justify-center border border-white px-6 py-3 text-sm font-normal text-white transition-colors hover:bg-white/10"
+            >
+              {hero.secondary.label}
+            </Link>
+          ) : null}
         </div>
       </Reveal>
     </section>

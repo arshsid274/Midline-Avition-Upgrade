@@ -9,7 +9,7 @@ export default function AircraftCharterHeroComponent({ hero = SERVICE_HEROES["ch
     <section className="relative flex min-h-[88svh] items-center justify-center overflow-hidden">
       <Image
         src={hero.image.src}
-        alt="Gulfstream G200 private jet cabin prepared for charter"
+        alt={hero.image.alt}
         fill
         priority
         sizes="100vw"
@@ -35,9 +35,14 @@ export default function AircraftCharterHeroComponent({ hero = SERVICE_HEROES["ch
           {hero.body}
         </p>
         <div data-reveal-item className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-          <Link href="/fleet" className="midline-btn-primary w-full px-10 py-4 text-center text-sm sm:w-auto">
-            Explore Our Fleet
-          </Link>
+          {hero.primary?.href ? (
+            <Link
+              href={hero.primary.href}
+              className="midline-btn-primary w-full px-10 py-4 text-center text-sm sm:w-auto"
+            >
+              {hero.primary.label}
+            </Link>
+          ) : null}
         </div>
       </Reveal>
     </section>

@@ -26,12 +26,19 @@ const capabilities = [
 const TICKER_ITEMS = Array.from({ length: 8 });
 
 export default function MROComingSoon({ hero = SERVICE_HEROES["mro-page"] }: { hero?: ServiceHero } = {}) {
+  // The scrolling band repeats the headline. Derived rather than duplicated, so
+  // editing the headline cannot leave the ticker saying something else.
+  const tickerText = [hero.heading, hero.headingAccent, hero.headingRest]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+
   return (
     <section className="relative isolate flex min-h-[calc(100svh-72px)] w-full flex-col overflow-hidden md:min-h-[calc(100svh-84px)]">
       {/* Real T7-MID ground-handling photography, slow Ken-Burns drift */}
       <Image
         src={hero.image.src}
-        alt="Gulfstream G450 head-on during ground handling at the Midline facility"
+        alt={hero.image.alt}
         fill
         sizes="100vw"
         className="object-cover object-center hero-kenburns"
@@ -58,16 +65,19 @@ export default function MROComingSoon({ hero = SERVICE_HEROES["mro-page"] }: { h
           delay={0.2}
           className="font-display mt-7 text-6xl font-light leading-[0.98] tracking-[-0.03em] text-white sm:text-8xl lg:text-9xl"
         >
-          Coming <span className="italic text-ibm-blue">Soon</span>
+          {hero.heading}
+          {hero.headingAccent ? (
+            <> <span className="italic text-ibm-blue">{hero.headingAccent}</span></>
+          ) : null}
+          {hero.headingRest}
         </SplitHeading>
 
         <Reveal as="div" on="load" variant="fade-up" delay={0.6}>
           <p className="font-display mx-auto mt-6 max-w-2xl text-xl font-normal leading-snug text-white/85 sm:text-2xl">
-            Our certified Maintenance, Repair &amp; Overhaul facility is in final preparation.
+            {hero.body}
           </p>
           <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/68 sm:text-base">
-            The same precision that flies the Midline fleet — OEM-aligned procedures, full
-            traceability, and a 24/7 AOG desk — arriving at Dubai World Central.
+            {hero.bodySecondary}
           </p>
         </Reveal>
 
@@ -99,22 +109,26 @@ export default function MROComingSoon({ hero = SERVICE_HEROES["mro-page"] }: { h
 
         <Reveal as="div" on="load" variant="fade-up" delay={1.2} className="mt-10">
           <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <Link
-              href="/contact"
-              className="inline-flex min-h-11 items-center justify-center gap-2 bg-ibm-blue px-6 py-3 text-sm font-normal uppercase tracking-wide text-white transition-colors hover:bg-ibm-blue-hover active:scale-[0.98]"
-            >
-              Get Notified at Launch
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/fleet"
-              className="inline-flex min-h-11 items-center justify-center border border-white px-6 py-3 text-sm font-normal uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-ink active:scale-[0.98]"
-            >
-              Explore the Fleet
-            </Link>
+            {hero.primary?.href ? (
+              <Link
+                href={hero.primary.href}
+                className="inline-flex min-h-11 items-center justify-center gap-2 bg-ibm-blue px-6 py-3 text-sm font-normal uppercase tracking-wide text-white transition-colors hover:bg-ibm-blue-hover active:scale-[0.98]"
+              >
+                {hero.primary.label}
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            ) : null}
+            {hero.secondary?.href ? (
+              <Link
+                href={hero.secondary.href}
+                className="inline-flex min-h-11 items-center justify-center border border-white px-6 py-3 text-sm font-normal uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-ink active:scale-[0.98]"
+              >
+                {hero.secondary.label}
+              </Link>
+            ) : null}
           </div>
           <p className="mt-6 text-xs text-white/50">
-            Certified engineers · OEM-aligned procedures · Dubai World Central
+            {hero.footnote}
           </p>
         </Reveal>
       </div>

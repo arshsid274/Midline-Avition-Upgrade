@@ -80,7 +80,10 @@ export const getServicePage = async (
       eyebrow: text(hero.eyebrow, heroFallback.eyebrow),
       heading: text(hero.heading, heroFallback.heading),
       headingAccent: text(hero.headingAccent, heroFallback.headingAccent ?? ""),
+      headingRest: text(hero.headingRest, heroFallback.headingRest ?? ""),
       body: text(hero.body, heroFallback.body),
+      bodySecondary: text(hero.bodySecondary, heroFallback.bodySecondary ?? ""),
+      footnote: text(hero.footnote, heroFallback.footnote ?? ""),
       image:
         heroImage && typeof heroImage === "object" && typeof heroImage.url === "string"
           ? { src: heroImage.url, alt: text(heroImage.alt, heroFallback.image.alt) }

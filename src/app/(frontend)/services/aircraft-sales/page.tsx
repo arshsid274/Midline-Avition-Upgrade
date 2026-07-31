@@ -16,7 +16,7 @@ import {
 import { buildBreadcrumbSchema, buildPageMetadata, buildServiceSchema } from "@/lib/seo";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
-import { getServiceHero } from "@/lib/cms/service";
+import { getServicePage } from "@/lib/cms/service";
 
 export const revalidate = false;
 
@@ -94,7 +94,7 @@ const services = [
 ] as const;
 
 export default async function AircraftSalesPage() {
-  const hero = await getServiceHero("sales-page");
+  const { hero } = await getServicePage("sales-page");
 
   return (
     <main className="midline-page bg-white text-ink">
@@ -111,7 +111,7 @@ export default async function AircraftSalesPage() {
       <section className="relative min-h-[calc(100svh-72px)] overflow-hidden md:min-h-[calc(100svh-84px)]">
         <Image
           src={hero.image.src}
-          alt="Clients walking to the Gulfstream G200 T7-MIDA on the Midline ramp"
+          alt={hero.image.alt}
           fill
           sizes="100vw"
           className="object-cover hero-kenburns"
@@ -129,7 +129,7 @@ export default async function AircraftSalesPage() {
             delay={0.1}
             className="max-w-4xl"
           >
-            <p data-reveal-item className="text-sm text-inverse-ink-muted">Aircraft Sales</p>
+            <p data-reveal-item className="text-sm text-inverse-ink-muted">{hero.eyebrow}</p>
             <SplitHeading
               as="h1"
               mode="lcp"
@@ -137,26 +137,33 @@ export default async function AircraftSalesPage() {
               delay={0.25}
               className="font-display mt-4 text-4xl font-light leading-[1.05] text-white sm:text-5xl md:text-6xl lg:text-7xl"
             >
-              Aircraft Sales & Acquisition
+              {hero.heading}
+              {hero.headingAccent ? (
+                <> <span className="text-ibm-blue">{hero.headingAccent}</span></>
+              ) : null}
+              {hero.headingRest}
             </SplitHeading>
             <p data-reveal-item className="mt-5 max-w-2xl text-base leading-8 text-white/86 sm:text-lg">
-              In-house brokerage and acquisition advisory for clients looking to buy, sell, lease, or reposition premium
-              business and commercial aircraft.
+              {hero.body}
             </p>
             <div data-reveal-item className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center gap-2 bg-ibm-blue px-5 py-3 text-sm font-normal uppercase tracking-wide text-white transition-[background-color,transform] duration-150 ease-out hover:bg-ibm-blue-hover active:scale-[0.98]"
-              >
-                Start a Confidential Inquiry
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link
-                href="/fleet"
-                className="inline-flex items-center justify-center border border-white px-5 py-3 text-sm font-normal uppercase tracking-wide text-white transition-[background-color,transform] duration-150 ease-out hover:bg-white/10 active:scale-[0.98]"
-              >
-                View Fleet
-              </Link>
+              {hero.primary?.href ? (
+                <Link
+                  href={hero.primary.href}
+                  className="inline-flex items-center justify-center gap-2 bg-ibm-blue px-5 py-3 text-sm font-normal uppercase tracking-wide text-white transition-[background-color,transform] duration-150 ease-out hover:bg-ibm-blue-hover active:scale-[0.98]"
+                >
+                  {hero.primary.label}
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              ) : null}
+              {hero.secondary?.href ? (
+                <Link
+                  href={hero.secondary.href}
+                  className="inline-flex items-center justify-center border border-white px-5 py-3 text-sm font-normal uppercase tracking-wide text-white transition-[background-color,transform] duration-150 ease-out hover:bg-white/10 active:scale-[0.98]"
+                >
+                  {hero.secondary.label}
+                </Link>
+              ) : null}
             </div>
           </Reveal>
         </div>
