@@ -3,7 +3,7 @@ import { buildBreadcrumbSchema, buildPageMetadata, buildServiceSchema } from "@/
 import CargoHeroSection from "@/app/components/ui/CargoHeroSection";
 import CargoWhyChooseSection from "@/app/components/ui/CargoWhyChooseSection";
 import CargoCapabilitiesSection from "@/app/components/ui/CargoCapabilitiesSection";
-import { getServiceHero } from "@/lib/cms/service";
+import { getServicePage } from "@/lib/cms/service";
 
 export const revalidate = false;
 
@@ -30,7 +30,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
 ]);
 
 export default async function CargoTransportPage() {
-  const hero = await getServiceHero("cargo-page");
+  const { hero, features, showcase } = await getServicePage("cargo-page");
 
   return (
     <>
@@ -46,8 +46,8 @@ export default async function CargoTransportPage() {
       />
       <main>
         <CargoHeroSection hero={hero} />
-        <CargoWhyChooseSection />
-        <CargoCapabilitiesSection />
+        <CargoWhyChooseSection content={features} />
+        <CargoCapabilitiesSection content={showcase} />
       </main>
     </>
   );

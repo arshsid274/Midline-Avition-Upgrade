@@ -1,55 +1,41 @@
-import { Globe, ShieldCheck, SlidersHorizontal } from "lucide-react";
 import Reveal from "@/app/components/motion/Reveal";
+import { iconFor } from "@/lib/icons";
+import { SERVICE_FEATURES, type FeatureCard, type ServiceSection } from "@/lib/service-content";
 
-const advantages = [
-  {
-    icon: Globe,
-    title: "Global Reach",
-    description:
-      "An interconnected logistics network spanning over 180 destinations across six continents — ensuring your cargo moves without borders.",
-    points: ["Multi-hub routing", "Regional partner network", "Customs clearance support"],
-    featured: false,
-  },
-  {
-    icon: ShieldCheck,
-    title: "Unmatched Security",
-    description:
-      "Industry-leading cargo security protocols from point of origin to final delivery. Full chain-of-custody tracking and tamper-evident packaging.",
-    points: ["End-to-end chain of custody", "24/7 real-time tracking", "Certified secure handling"],
-    featured: true,
-  },
-  {
-    icon: SlidersHorizontal,
-    title: "Customized Solutions",
-    description:
-      "Bespoke logistics configurations designed around your cargo type, timeline, and compliance requirements. No two shipments are the same.",
-    points: ["Temperature-sensitive cargo", "Oversized & heavy lift", "Hazmat certified handling"],
-    featured: false,
-  },
-];
+const FALLBACK = SERVICE_FEATURES["cargo-page"] as ServiceSection<FeatureCard>;
 
-export default function CargoWhyChooseSection() {
+/**
+ * The three cards with bullet points.
+ *
+ * `featured` outlines a card and adds a note beneath it. It is a content
+ * decision — which advantage to lead with — so it lives in the CMS, while what
+ * "featured" looks like stays here.
+ */
+export default function CargoWhyChooseSection({
+  content = FALLBACK,
+}: {
+  content?: ServiceSection<FeatureCard>;
+} = {}) {
   return (
     <section className="bg-inverse-canvas py-16 sm:py-20 lg:py-24">
       <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <Reveal as="div" variant="fade-up" className="mx-auto mb-12 max-w-2xl text-center sm:mb-14">
-          <p className="text-sm text-inverse-ink-muted">Core Advantages</p>
+          <p className="text-sm text-inverse-ink-muted">{content.eyebrow}</p>
           <h2
             className="font-display mt-3 text-3xl font-light tracking-[-0.02em] text-white sm:text-4xl lg:text-[2.6rem]"
           >
-            Why Choose Midline Cargo?
+            {content.heading}
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-inverse-ink-muted sm:text-base">
-            Built on decades of aviation expertise, our cargo division delivers reliability, security, and precision on
-            every route we operate.
+            {content.intro}
           </p>
         </Reveal>
 
         {/* Cards grid */}
         <Reveal as="div" variant="stagger" stagger={0.12} className="grid gap-5 md:grid-cols-3">
-          {advantages.map((item) => {
-            const Icon = item.icon;
+          {content.cards.map((item) => {
+            const Icon = iconFor(item.icon);
             return (
               <article
                 key={item.title}
@@ -72,7 +58,7 @@ export default function CargoWhyChooseSection() {
                 <p className="relative mt-2.5 text-sm leading-relaxed text-inverse-ink-muted">{item.description}</p>
 
                 <ul className="relative mt-5 space-y-2.5">
-                  {item.points.map((point) => (
+                  {(item.points ?? []).map((point) => (
                     <li key={point} className="flex items-start gap-2.5 text-sm text-inverse-ink-muted">
                       <span aria-hidden className="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-ibm-blue" />
                       <span>{point}</span>

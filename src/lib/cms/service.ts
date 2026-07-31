@@ -4,12 +4,21 @@ import { draftMode } from "next/headers";
 
 import { tryGetPayload } from "@/lib/cms/payload";
 import {
+  SERVICE_CHIPS,
+  SERVICE_CLOSINGS,
   SERVICE_FEATURES,
   SERVICE_HEROES,
+  SERVICE_INTROS,
   SERVICE_SHOWCASES,
+  SERVICE_STANDARDS,
   type FeatureCard,
+  type ServiceChips,
+  type ServiceClosing,
   type ServiceHero,
+  type ServiceIntro,
   type ServiceSection,
+  type ServiceSlug,
+  type ServiceStandards,
   type ShowcaseCard,
 } from "@/lib/service-content";
 import type { IconName } from "@/lib/icon-names";
@@ -25,6 +34,12 @@ export type ServicePageContent = {
   hero: ServiceHero;
   features: ServiceSection<FeatureCard>;
   showcase: ServiceSection<ShowcaseCard>;
+  /** Only management renders this; undefined elsewhere. */
+  standards?: ServiceStandards;
+  /** Only sales renders these; undefined elsewhere. */
+  intro?: ServiceIntro;
+  chips?: ServiceChips;
+  closing?: ServiceClosing;
 };
 
 /**
@@ -41,7 +56,7 @@ export type ServicePageContent = {
  * empty band on a live marketing page.
  */
 export const getServicePage = async (
-  slug: keyof typeof SERVICE_HEROES
+  slug: ServiceSlug
 ): Promise<ServicePageContent> => {
   const heroFallback = SERVICE_HEROES[slug];
   const featuresFallback = SERVICE_FEATURES[slug];
@@ -72,8 +87,29 @@ export const getServicePage = async (
       intro: text(raw?.intro, base.intro ?? ""),
       // An empty array means "nothing has been entered", not "show nothing".
       cards: cards.length ? cards : base.cards,
+      stats: (raw?.stats ?? []).length
+        ? raw.stats.map((v: any) => ({ value: text(v.value, ""), label: text(v.label, "") }))
+        : base.stats,
     };
   };
+
+  const imageOr = (raw: any, fallback: { src: string; alt: string }) =>
+    raw && typeof raw === "object" && typeof raw.url === "string"
+      ? { src: raw.url, alt: text(raw.alt, fallback.alt) }
+      : fallback;
+
+  const featureCard = (card: any): FeatureCard | null =>
+    card?.title
+      ? {
+          title: card.title,
+          description: text(card.description, ""),
+          icon: (card.icon ?? undefined) as IconName | undefined,
+          points: Array.isArray(card.points)
+            ? card.points.map((p: any) => text(p?.text, "")).filter(Boolean)
+            : undefined,
+          ...(typeof card.featured === "boolean" ? { featured: card.featured } : {}),
+        }
+      : null;
 
   return {
     hero: {
@@ -95,18 +131,7 @@ export const getServicePage = async (
         : heroFallback.stats,
     },
 
-    features: section<FeatureCard>(g?.features, featuresFallback, (card) =>
-      card?.title
-        ? {
-            title: card.title,
-            description: text(card.description, ""),
-            icon: (card.icon ?? undefined) as IconName | undefined,
-            points: Array.isArray(card.points)
-              ? card.points.map((p: any) => text(p?.text, "")).filter(Boolean)
-              : undefined,
-          }
-        : null
-    ),
+    features: section<FeatureCard>(g?.features, featuresFallback, featureCard),
 
     showcase: section<ShowcaseCard>(g?.showcase, showcaseFallback, (card) => {
       // A card with no picture is dropped: next/image throws on an empty src,
@@ -119,8 +144,72 @@ export const getServicePage = async (
         description: text(card.description, ""),
         image: { src, alt: text(img.alt, card.title) },
         link: link(card.link),
+        badge: text(card.badge, ""),
+        icon: (card.icon ?? undefined) as IconName | undefined,
       };
     }),
+
+    standards: (() => {
+      const base = SERVICE_STANDARDS[slug];
+      if (!base) return undefined;
+      const d = g?.standards ?? {};
+      const cards = Array.isArray(d.cards)
+        ? (d.cards.map(featureCard).filter(Boolean) as FeatureCard[])
+        : [];
+      return {
+        eyebrow: text(d.eyebrow, base.eyebrow),
+        heading: text(d.heading, base.heading),
+        headingAccent: text(d.headingAccent, base.headingAccent ?? ""),
+        intro: text(d.intro, base.intro),
+        cards: cards.length ? cards : base.cards,
+        image: imageOr(d.image, base.image),
+        figureValue: text(d.figureValue, base.figureValue),
+        figureLabel: text(d.figureLabel, base.figureLabel),
+      };
+    })(),
+
+    intro: (() => {
+      const base = SERVICE_INTROS[slug];
+      if (!base) return undefined;
+      const d = g?.intro ?? {};
+      const paragraphs = Array.isArray(d.paragraphs)
+        ? d.paragraphs.map((p: any) => text(p?.text, "")).filter(Boolean)
+        : [];
+      return {
+        eyebrow: text(d.eyebrow, base.eyebrow),
+        heading: text(d.heading, base.heading),
+        paragraphs: paragraphs.length ? paragraphs : base.paragraphs,
+      };
+    })(),
+
+    chips: (() => {
+      const base = SERVICE_CHIPS[slug];
+      if (!base) return undefined;
+      const d = g?.services ?? {};
+      const chips = Array.isArray(d.chips)
+        ? d.chips
+            .filter((c: any) => c?.label)
+            .map((c: any) => ({ label: c.label as string, icon: (c.icon ?? undefined) as IconName | undefined }))
+        : [];
+      return {
+        eyebrow: text(d.eyebrow, base.eyebrow),
+        heading: text(d.heading, base.heading),
+        intro: text(d.intro, base.intro),
+        chips: chips.length ? chips : base.chips,
+      };
+    })(),
+
+    closing: (() => {
+      const base = SERVICE_CLOSINGS[slug];
+      if (!base) return undefined;
+      const d = g?.closing ?? {};
+      return {
+        eyebrow: text(d.eyebrow, base.eyebrow),
+        heading: text(d.heading, base.heading),
+        body: text(d.body, base.body),
+        cta: link(d.cta, base.cta),
+      };
+    })(),
   };
 };
 
@@ -129,5 +218,5 @@ export const getServicePage = async (
  * Delegates so there is one mapper, not two that can disagree.
  */
 export const getServiceHero = async (
-  slug: keyof typeof SERVICE_HEROES
+  slug: ServiceSlug
 ): Promise<ServiceHero> => (await getServicePage(slug)).hero;

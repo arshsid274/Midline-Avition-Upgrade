@@ -4,7 +4,7 @@ import AircraftManagementHeroSection from "@/app/components/ui/AircraftManagemen
 import AircraftManagementStandardsSection from "@/app/components/ui/AircraftManagementStandardsSection";
 import AircraftManagementSafetyCardsSection from "@/app/components/ui/AircraftManagementSafetyCardsSection";
 import AircraftManagementFleetSection from "@/app/components/ui/AircraftManagementFleetSection";
-import { getServiceHero } from "@/lib/cms/service";
+import { getServicePage } from "@/lib/cms/service";
 
 export const revalidate = false;
 
@@ -31,7 +31,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
 ]);
 
 export default async function AircraftManagementPage() {
-  const hero = await getServiceHero("management-page");
+  const { hero, standards, features, showcase } = await getServicePage("management-page");
 
   return (
     <>
@@ -47,9 +47,9 @@ export default async function AircraftManagementPage() {
       />
       <main className="midline-page">
         <AircraftManagementHeroSection hero={hero} />
-        <AircraftManagementStandardsSection />
-        <AircraftManagementSafetyCardsSection />
-        <AircraftManagementFleetSection />
+        <AircraftManagementStandardsSection content={standards} />
+        <AircraftManagementSafetyCardsSection content={features} />
+        <AircraftManagementFleetSection content={showcase} />
       </main>
     </>
   );
