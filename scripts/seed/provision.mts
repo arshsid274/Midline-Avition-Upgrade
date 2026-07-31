@@ -56,17 +56,47 @@ if (missing.length) {
 }
 
 const usingR2 = R2.every((key) => process.env[key])
+const usingUploadthing = Boolean(process.env.UPLOADTHING_TOKEN)
+// UploadThing wins when both are set, matching the precedence in payload.config.ts.
+const storage = usingUploadthing
+  ? 'UploadThing'
+  : usingR2
+    ? `R2 bucket ${process.env.R2_BUCKET}`
+    : 'local disk'
 const isRemoteDb = (process.env.DATABASE_URI ?? '').startsWith('libsql://')
 
-console.log(`Database : ${isRemoteDb ? 'remote (Turso)' : 'local file'}`)
-console.log(`Storage  : ${usingR2 ? `R2 bucket ${process.env.R2_BUCKET}` : 'local disk'}`)
+/**
+ * Force NODE_ENV=production for a remote database, so Drizzle's schema `push`
+ * stays off — payload.config.ts gates it on exactly this.
+ *
+ * Without it, every `payload run` below calls getPayload(), which on a dev
+ * NODE_ENV runs pushDevSchema against whatever DATABASE_URI points at. That is
+ * the correct behaviour locally and a serious one remotely: push rebuilds
+ * tables in place (SQLite cannot ALTER a column, so it creates __new_x, copies,
+ * drops, renames). A rebuild that fails halfway leaves an orphaned __new_ table
+ * and a batch -1 "dev" row in payload_migrations, and that row makes the next
+ * `payload migrate` stop and ask whether to risk data loss — which, on a
+ * non-interactive stdin, silently answers no and skips migrations entirely.
+ *
+ * Migrations are the only thing that should ever alter a remote schema.
+ */
+if (isRemoteDb && process.env.NODE_ENV !== 'production') {
+  // NODE_ENV is typed readonly, but this must be set before any child process
+  // spawns — they inherit it, and it is what keeps `push` off in their configs.
+  ;(process.env as Record<string, string | undefined>).NODE_ENV = 'production'
+  console.log('NODE_ENV  : forced to production (schema push disabled for a remote database)')
+}
 
-if (isRemoteDb && !usingR2) {
+console.log(`Database : ${isRemoteDb ? 'remote (Turso)' : 'local file'}`)
+console.log(`Storage  : ${storage}`)
+
+if (isRemoteDb && !usingR2 && !usingUploadthing) {
   console.error(
     '\nRefusing to continue: the database is remote but storage is local.\n' +
       'Files would be written to this machine while the database records URLs a\n' +
       'serverless host cannot serve — every image and film would 404 in production.\n' +
-      'Set the four R2_* variables, or point DATABASE_URI at a local file.'
+      'Set UPLOADTHING_TOKEN or the four R2_* variables, or point DATABASE_URI\n' +
+      'at a local file.'
   )
   process.exit(1)
 }

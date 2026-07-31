@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url'
 
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { uploadthingStorage } from '@payloadcms/storage-uploadthing'
 import { buildConfig } from 'payload'
 import sharp from 'sharp'
 
@@ -104,6 +105,55 @@ export default buildConfig({
 
   plugins: [
     /**
+     * Where uploaded files live. Three supported arrangements, chosen by which
+     * environment variables are present — no code change to move between them:
+     *
+     *   UPLOADTHING_TOKEN set  →  UploadThing   free tier, no card, 2 GB
+     *   R2_BUCKET set          →  Cloudflare R2 free tier, card required, 10 GB
+     *   neither                →  local disk    cPanel, a VPS, or development
+     *
+     * The local case is not a fallback, it is the correct answer on any host
+     * with a persistent writable filesystem. Object storage is only required
+     * because serverless platforms discard their disk between requests — which
+     * is also why every free serverless host needs one of the two above.
+     *
+     * Exactly one adapter is ever active: each is gated on its own variable,
+     * and UploadThing is checked first so setting its token wins outright.
+     */
+    uploadthingStorage({
+      enabled: Boolean(process.env.UPLOADTHING_TOKEN),
+      collections: {
+        // No prefix keys here — UploadThing addresses files by opaque key and
+        // does not support path prefixes the way S3 does.
+        //
+        // disablePayloadAccessControl makes stored URLs point straight at
+        // UploadThing's CDN instead of being proxied through Payload's own
+        // /payload-api/<collection>/file/<name> route.
+        //
+        // The proxy is the default and it is the wrong default here. Every
+        // request for a file would execute a serverless function that fetches
+        // from UploadThing and streams the response back. For images that is
+        // merely wasteful — next/image caches optimised output for 30 days, so
+        // the function runs rarely. For the 41 films it is a real defect:
+        // video playback issues HTTP range requests, and satisfying those from
+        // a function means cold starts, a 60-second execution ceiling, and
+        // every byte billed as function bandwidth.
+        //
+        // Nothing is lost by disabling it. These are public marketing assets
+        // with `read: () => true` — there is no access control to enforce.
+        [Media.slug]: { disablePayloadAccessControl: true },
+        [Videos.slug]: { disablePayloadAccessControl: true },
+      },
+      // Same reason as R2 below: films exceed Vercel's 4.5 MB body cap and must
+      // go browser → UploadThing rather than through a serverless function.
+      clientUploads: true,
+      options: {
+        token: process.env.UPLOADTHING_TOKEN || '',
+        acl: 'public-read',
+      },
+    }),
+
+    /**
      * Files go to Cloudflare R2 via its S3-compatible API.
      *
      * NOT @payloadcms/storage-r2 — that adapter takes a Cloudflare Workers
@@ -112,7 +162,7 @@ export default buildConfig({
      * for Node hosts and is what keeps this deployable anywhere.
      */
     s3Storage({
-      enabled: Boolean(process.env.R2_BUCKET),
+      enabled: Boolean(process.env.R2_BUCKET) && !process.env.UPLOADTHING_TOKEN,
       collections: {
         [Media.slug]: { prefix: 'media' },
         [Videos.slug]: { prefix: 'videos' },

@@ -1,9 +1,36 @@
 import type { NextConfig } from "next";
 import { withPayload } from "@payloadcms/next/withPayload";
 
-// Cloudflare R2 custom domain serving CMS-managed images. Left unset locally,
+// The host serving CMS-managed images — an R2 custom domain, or an UploadThing
+// app subdomain (https://<APP_ID>.ufs.sh). Left unset locally and on cPanel,
 // where uploads fall back to Payload's own file route.
 const mediaHost = process.env.NEXT_PUBLIC_MEDIA_URL;
+
+/**
+ * next/image returns 400 for any host absent from remotePatterns, and because
+ * that happens inside the optimizer it shows up as a broken image with no
+ * server error — the single most confusing failure mode in this project.
+ *
+ * Prefer the exact host. But if UploadThing is configured and NEXT_PUBLIC_MEDIA_URL
+ * was not set, allow its wildcard rather than silently breaking every photograph:
+ * UploadThing's own guidance is to pin <APP_ID>.ufs.sh, so this is the looser of
+ * the two and setting the variable is still the right thing to do.
+ */
+const imageHosts = [
+  ...(mediaHost ? [new URL(`${mediaHost}/**`)] : []),
+  // @payloadcms/storage-uploadthing builds URLs as https://utfs.io/f/<key> —
+  // hardcoded in its generateURL.js, with no option to change it and no access
+  // to the file key from generateFileURL. UploadThing's own docs prefer
+  // <APP_ID>.ufs.sh and call utfs.io legacy, so allow both: utfs.io is what is
+  // served today, ufs.sh is what a future adapter release would emit. Getting
+  // this wrong means next/image returns 400 for every photograph on the site.
+  ...(process.env.UPLOADTHING_TOKEN
+    ? [
+        { protocol: "https" as const, hostname: "utfs.io", pathname: "/f/**" },
+        { protocol: "https" as const, hostname: "**.ufs.sh", pathname: "/f/**" },
+      ]
+    : []),
+];
 
 const nextConfig: NextConfig = {
   // Gzip all server responses
@@ -30,10 +57,7 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     // Cache optimised images for 30 days on the server (default is 60 s)
     minimumCacheTTL: 2592000,
-    // Images served from R2 must be allow-listed or next/image returns 400.
-    // This is the single most likely failure when migrating a surface, and it
-    // is invisible on pages that use a raw <img> instead of next/image.
-    remotePatterns: mediaHost ? [new URL(`${mediaHost}/**`)] : [],
+    remotePatterns: imageHosts,
   },
 
   // ── Long-lived cache headers for static public/ assets ───────────────────
