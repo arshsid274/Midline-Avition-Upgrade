@@ -108,6 +108,44 @@ export const cardArray = ({
   ],
 })
 
+/**
+ * A short labelled item — a name and a pictogram, nothing more.
+ *
+ * Deliberately not cardArray with withImage/withLink off: that would still give
+ * every row a `description` textarea, and nine service names each carrying an
+ * unused paragraph field is a worse editing experience than nine one-line rows.
+ * A list of names should look like a list of names.
+ */
+export const chipArray = ({
+  name = 'chips',
+  label = 'Items',
+  labelSingular = 'Item',
+  description,
+  extraFields = [],
+}: {
+  name?: string
+  label?: string
+  labelSingular?: string
+  description?: string
+  extraFields?: Field[]
+} = {}): Field => ({
+  name,
+  type: 'array',
+  label,
+  labels: { singular: labelSingular, plural: label },
+  admin: {
+    description,
+    initCollapsed: false,
+    components: {
+      RowLabel: '@/payload/components/RowLabel#ChipRowLabel',
+    },
+  },
+  fields: [
+    { name: 'label', type: 'text', label: 'Text', required: true },
+    ...extraFields,
+  ],
+})
+
 /** value + label pairs, e.g. "1200+ / Global Destinations". */
 export const statArray = ({
   name = 'stats',

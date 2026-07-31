@@ -176,6 +176,22 @@ export const HomePage: GlobalConfig = {
                   },
                   fields: [
                     { name: 'title', type: 'text', label: 'Aircraft name', required: true },
+                    {
+                      // The join back to the route data in code. Matching on
+                      // title would break the moment someone renames an
+                      // aircraft, and matching on row order would break the
+                      // moment they reorder — both silently, by showing the
+                      // wrong photographs against the wrong routes.
+                      name: 'aircraft',
+                      type: 'select',
+                      label: 'Which aircraft these photos are of',
+                      required: true,
+                      options: [
+                        { label: 'Gulfstream G450 (heavy)', value: 'gulfstream-heavy' },
+                        { label: 'Gulfstream G200 (mid size)', value: 'gulfstream-mid-size' },
+                        { label: 'Embraer Legacy 650 (heavy)', value: 'embraer-heavy' },
+                      ],
+                    },
                     imageField({ name: 'exterior', label: 'Outside photo' }),
                     imageField({ name: 'interior', label: 'Cabin photo' }),
                   ],

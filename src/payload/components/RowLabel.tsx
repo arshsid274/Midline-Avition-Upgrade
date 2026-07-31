@@ -14,6 +14,11 @@ export const CardRowLabel = () => {
   return <span>{label || `Card ${(rowNumber ?? 0) + 1}`}</span>
 }
 
+export const ChipRowLabel = () => {
+  const { data, rowNumber } = useRowLabel<{ label?: string }>()
+  return <span>{data?.label || `Item ${(rowNumber ?? 0) + 1}`}</span>
+}
+
 export const StatRowLabel = () => {
   const { data, rowNumber } = useRowLabel<{ value?: string; label?: string }>()
   if (data?.value || data?.label) {

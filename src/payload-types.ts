@@ -799,6 +799,7 @@ export interface HomePage {
     jetVisuals?:
       | {
           title: string;
+          aircraft: 'gulfstream-heavy' | 'gulfstream-mid-size' | 'embraer-heavy';
           exterior?: (number | null) | Media;
           interior?: (number | null) | Media;
           id?: string | null;
@@ -1000,7 +1001,14 @@ export interface CharterPage {
   hero?: {
     eyebrow?: string | null;
     heading?: string | null;
+    /**
+     * Shown in this page’s accent style. Leave empty for a plain headline.
+     */
     headingAccent?: string | null;
+    /**
+     * Leave empty if the headline ends at the highlighted words.
+     */
+    headingRest?: string | null;
     body?: string | null;
     image?: (number | null) | Media;
     primary?: {
@@ -1026,6 +1034,36 @@ export interface CharterPage {
       | {
           title: string;
           description?: string | null;
+          /**
+           * The small symbol above the title.
+           */
+          icon?:
+            | (
+                | 'calendar-clock'
+                | 'sofa'
+                | 'shield-check'
+                | 'concierge-bell'
+                | 'globe'
+                | 'globe-2'
+                | 'line-chart'
+                | 'shield'
+                | 'wallet'
+                | 'wrench'
+                | 'check-circle'
+                | 'sliders'
+                | 'arrow-up-right'
+                | 'search'
+                | 'handshake'
+                | 'plane'
+                | 'badge-check'
+                | 'sparkles'
+                | 'banknote'
+                | 'clipboard-check'
+                | 'file-search'
+                | 'cog'
+                | 'shield-alert'
+              )
+            | null;
           points?:
             | {
                 text: string;
@@ -1055,18 +1093,6 @@ export interface CharterPage {
           id?: string | null;
         }[]
       | null;
-  };
-  closing?: {
-    eyebrow?: string | null;
-    heading?: string | null;
-    body?: string | null;
-    cta?: {
-      label?: string | null;
-      /**
-       * e.g. /contact, /#book-your-flight, or a full https:// address.
-       */
-      href?: string | null;
-    };
   };
   _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
@@ -1083,7 +1109,14 @@ export interface ManagementPage {
   hero?: {
     eyebrow?: string | null;
     heading?: string | null;
+    /**
+     * Shown in this page’s accent style. Leave empty for a plain headline.
+     */
     headingAccent?: string | null;
+    /**
+     * Leave empty if the headline ends at the highlighted words.
+     */
+    headingRest?: string | null;
     body?: string | null;
     image?: (number | null) | Media;
     primary?: {
@@ -1101,6 +1134,52 @@ export interface ManagementPage {
       href?: string | null;
     };
   };
+  standards?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    headingAccent?: string | null;
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          /**
+           * The small symbol above the title.
+           */
+          icon?:
+            | (
+                | 'calendar-clock'
+                | 'sofa'
+                | 'shield-check'
+                | 'concierge-bell'
+                | 'globe'
+                | 'globe-2'
+                | 'line-chart'
+                | 'shield'
+                | 'wallet'
+                | 'wrench'
+                | 'check-circle'
+                | 'sliders'
+                | 'arrow-up-right'
+                | 'search'
+                | 'handshake'
+                | 'plane'
+                | 'badge-check'
+                | 'sparkles'
+                | 'banknote'
+                | 'clipboard-check'
+                | 'file-search'
+                | 'cog'
+                | 'shield-alert'
+              )
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+    image?: (number | null) | Media;
+    figureValue?: string | null;
+    figureLabel?: string | null;
+  };
   features?: {
     eyebrow?: string | null;
     heading?: string | null;
@@ -1109,6 +1188,36 @@ export interface ManagementPage {
       | {
           title: string;
           description?: string | null;
+          /**
+           * The small symbol above the title.
+           */
+          icon?:
+            | (
+                | 'calendar-clock'
+                | 'sofa'
+                | 'shield-check'
+                | 'concierge-bell'
+                | 'globe'
+                | 'globe-2'
+                | 'line-chart'
+                | 'shield'
+                | 'wallet'
+                | 'wrench'
+                | 'check-circle'
+                | 'sliders'
+                | 'arrow-up-right'
+                | 'search'
+                | 'handshake'
+                | 'plane'
+                | 'badge-check'
+                | 'sparkles'
+                | 'banknote'
+                | 'clipboard-check'
+                | 'file-search'
+                | 'cog'
+                | 'shield-alert'
+              )
+            | null;
           points?:
             | {
                 text: string;
@@ -1135,6 +1244,7 @@ export interface ManagementPage {
              */
             href?: string | null;
           };
+          badge?: string | null;
           id?: string | null;
         }[]
       | null;
@@ -1154,7 +1264,14 @@ export interface SalesPage {
   hero?: {
     eyebrow?: string | null;
     heading?: string | null;
+    /**
+     * Shown in this page’s accent style. Leave empty for a plain headline.
+     */
     headingAccent?: string | null;
+    /**
+     * Leave empty if the headline ends at the highlighted words.
+     */
+    headingRest?: string | null;
     body?: string | null;
     image?: (number | null) | Media;
     primary?: {
@@ -1172,6 +1289,16 @@ export interface SalesPage {
       href?: string | null;
     };
   };
+  intro?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    paragraphs?:
+      | {
+          text: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
   showcase?: {
     eyebrow?: string | null;
     heading?: string | null;
@@ -1188,6 +1315,78 @@ export interface SalesPage {
              */
             href?: string | null;
           };
+          badge?: string | null;
+          /**
+           * The small symbol above the title.
+           */
+          icon?:
+            | (
+                | 'calendar-clock'
+                | 'sofa'
+                | 'shield-check'
+                | 'concierge-bell'
+                | 'globe'
+                | 'globe-2'
+                | 'line-chart'
+                | 'shield'
+                | 'wallet'
+                | 'wrench'
+                | 'check-circle'
+                | 'sliders'
+                | 'arrow-up-right'
+                | 'search'
+                | 'handshake'
+                | 'plane'
+                | 'badge-check'
+                | 'sparkles'
+                | 'banknote'
+                | 'clipboard-check'
+                | 'file-search'
+                | 'cog'
+                | 'shield-alert'
+              )
+            | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  services?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    chips?:
+      | {
+          label: string;
+          /**
+           * The small symbol above the title.
+           */
+          icon?:
+            | (
+                | 'calendar-clock'
+                | 'sofa'
+                | 'shield-check'
+                | 'concierge-bell'
+                | 'globe'
+                | 'globe-2'
+                | 'line-chart'
+                | 'shield'
+                | 'wallet'
+                | 'wrench'
+                | 'check-circle'
+                | 'sliders'
+                | 'arrow-up-right'
+                | 'search'
+                | 'handshake'
+                | 'plane'
+                | 'badge-check'
+                | 'sparkles'
+                | 'banknote'
+                | 'clipboard-check'
+                | 'file-search'
+                | 'cog'
+                | 'shield-alert'
+              )
+            | null;
           id?: string | null;
         }[]
       | null;
@@ -1219,7 +1418,14 @@ export interface CargoPage {
   hero?: {
     eyebrow?: string | null;
     heading?: string | null;
+    /**
+     * Shown in this page’s accent style. Leave empty for a plain headline.
+     */
     headingAccent?: string | null;
+    /**
+     * Leave empty if the headline ends at the highlighted words.
+     */
+    headingRest?: string | null;
     body?: string | null;
     image?: (number | null) | Media;
     primary?: {
@@ -1255,12 +1461,46 @@ export interface CargoPage {
       | {
           title: string;
           description?: string | null;
+          /**
+           * The small symbol above the title.
+           */
+          icon?:
+            | (
+                | 'calendar-clock'
+                | 'sofa'
+                | 'shield-check'
+                | 'concierge-bell'
+                | 'globe'
+                | 'globe-2'
+                | 'line-chart'
+                | 'shield'
+                | 'wallet'
+                | 'wrench'
+                | 'check-circle'
+                | 'sliders'
+                | 'arrow-up-right'
+                | 'search'
+                | 'handshake'
+                | 'plane'
+                | 'badge-check'
+                | 'sparkles'
+                | 'banknote'
+                | 'clipboard-check'
+                | 'file-search'
+                | 'cog'
+                | 'shield-alert'
+              )
+            | null;
           points?:
             | {
                 text: string;
                 id?: string | null;
               }[]
             | null;
+          /**
+           * Outlines the card and adds the “Industry-leading standard” note.
+           */
+          featured?: boolean | null;
           id?: string | null;
         }[]
       | null;
@@ -1281,6 +1521,17 @@ export interface CargoPage {
              */
             href?: string | null;
           };
+          badge?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    /**
+     * The four figures under the cards.
+     */
+    stats?:
+      | {
+          value: string;
+          label: string;
           id?: string | null;
         }[]
       | null;
@@ -1300,8 +1551,20 @@ export interface MroPage {
   hero?: {
     eyebrow?: string | null;
     heading?: string | null;
+    /**
+     * Shown in this page’s accent style. Leave empty for a plain headline.
+     */
     headingAccent?: string | null;
+    /**
+     * Leave empty if the headline ends at the highlighted words.
+     */
+    headingRest?: string | null;
     body?: string | null;
+    bodySecondary?: string | null;
+    /**
+     * e.g. “Certified engineers · OEM-aligned procedures”.
+     */
+    footnote?: string | null;
     image?: (number | null) | Media;
     primary?: {
       label?: string | null;
@@ -1326,6 +1589,36 @@ export interface MroPage {
       | {
           title: string;
           description?: string | null;
+          /**
+           * The small symbol above the title.
+           */
+          icon?:
+            | (
+                | 'calendar-clock'
+                | 'sofa'
+                | 'shield-check'
+                | 'concierge-bell'
+                | 'globe'
+                | 'globe-2'
+                | 'line-chart'
+                | 'shield'
+                | 'wallet'
+                | 'wrench'
+                | 'check-circle'
+                | 'sliders'
+                | 'arrow-up-right'
+                | 'search'
+                | 'handshake'
+                | 'plane'
+                | 'badge-check'
+                | 'sparkles'
+                | 'banknote'
+                | 'clipboard-check'
+                | 'file-search'
+                | 'cog'
+                | 'shield-alert'
+              )
+            | null;
           points?:
             | {
                 text: string;
@@ -1596,6 +1889,7 @@ export interface HomePageSelect<T extends boolean = true> {
           | T
           | {
               title?: T;
+              aircraft?: T;
               exterior?: T;
               interior?: T;
               id?: T;
@@ -1789,6 +2083,7 @@ export interface CharterPageSelect<T extends boolean = true> {
         eyebrow?: T;
         heading?: T;
         headingAccent?: T;
+        headingRest?: T;
         body?: T;
         image?: T;
         primary?:
@@ -1815,6 +2110,7 @@ export interface CharterPageSelect<T extends boolean = true> {
           | {
               title?: T;
               description?: T;
+              icon?: T;
               points?:
                 | T
                 | {
@@ -1843,19 +2139,6 @@ export interface CharterPageSelect<T extends boolean = true> {
                     href?: T;
                   };
               id?: T;
-            };
-      };
-  closing?:
-    | T
-    | {
-        eyebrow?: T;
-        heading?: T;
-        body?: T;
-        cta?:
-          | T
-          | {
-              label?: T;
-              href?: T;
             };
       };
   _status?: T;
@@ -1874,6 +2157,7 @@ export interface ManagementPageSelect<T extends boolean = true> {
         eyebrow?: T;
         heading?: T;
         headingAccent?: T;
+        headingRest?: T;
         body?: T;
         image?: T;
         primary?:
@@ -1889,6 +2173,25 @@ export interface ManagementPageSelect<T extends boolean = true> {
               href?: T;
             };
       };
+  standards?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        headingAccent?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              icon?: T;
+              id?: T;
+            };
+        image?: T;
+        figureValue?: T;
+        figureLabel?: T;
+      };
   features?:
     | T
     | {
@@ -1900,6 +2203,7 @@ export interface ManagementPageSelect<T extends boolean = true> {
           | {
               title?: T;
               description?: T;
+              icon?: T;
               points?:
                 | T
                 | {
@@ -1927,6 +2231,7 @@ export interface ManagementPageSelect<T extends boolean = true> {
                     label?: T;
                     href?: T;
                   };
+              badge?: T;
               id?: T;
             };
       };
@@ -1946,6 +2251,7 @@ export interface SalesPageSelect<T extends boolean = true> {
         eyebrow?: T;
         heading?: T;
         headingAccent?: T;
+        headingRest?: T;
         body?: T;
         image?: T;
         primary?:
@@ -1959,6 +2265,18 @@ export interface SalesPageSelect<T extends boolean = true> {
           | {
               label?: T;
               href?: T;
+            };
+      };
+  intro?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        paragraphs?:
+          | T
+          | {
+              text?: T;
+              id?: T;
             };
       };
   showcase?:
@@ -1979,6 +2297,22 @@ export interface SalesPageSelect<T extends boolean = true> {
                     label?: T;
                     href?: T;
                   };
+              badge?: T;
+              icon?: T;
+              id?: T;
+            };
+      };
+  services?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        chips?:
+          | T
+          | {
+              label?: T;
+              icon?: T;
               id?: T;
             };
       };
@@ -2011,6 +2345,7 @@ export interface CargoPageSelect<T extends boolean = true> {
         eyebrow?: T;
         heading?: T;
         headingAccent?: T;
+        headingRest?: T;
         body?: T;
         image?: T;
         primary?:
@@ -2044,12 +2379,14 @@ export interface CargoPageSelect<T extends boolean = true> {
           | {
               title?: T;
               description?: T;
+              icon?: T;
               points?:
                 | T
                 | {
                     text?: T;
                     id?: T;
                   };
+              featured?: T;
               id?: T;
             };
       };
@@ -2071,6 +2408,14 @@ export interface CargoPageSelect<T extends boolean = true> {
                     label?: T;
                     href?: T;
                   };
+              badge?: T;
+              id?: T;
+            };
+        stats?:
+          | T
+          | {
+              value?: T;
+              label?: T;
               id?: T;
             };
       };
@@ -2090,7 +2435,10 @@ export interface MroPageSelect<T extends boolean = true> {
         eyebrow?: T;
         heading?: T;
         headingAccent?: T;
+        headingRest?: T;
         body?: T;
+        bodySecondary?: T;
+        footnote?: T;
         image?: T;
         primary?:
           | T
@@ -2116,6 +2464,7 @@ export interface MroPageSelect<T extends boolean = true> {
           | {
               title?: T;
               description?: T;
+              icon?: T;
               points?:
                 | T
                 | {
