@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { buildBreadcrumbSchema, buildPageMetadata, buildServiceSchema } from "@/lib/seo";
 import MROComingSoon from "@/app/components/ui/MROComingSoon";
-import { getServiceHero } from "@/lib/cms/service";
+import { getServicePage } from "@/lib/cms/service";
 
 export const revalidate = false;
 
@@ -28,7 +28,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
 ]);
 
 export default async function MROPage() {
-  const hero = await getServiceHero("mro-page");
+  const { hero, features } = await getServicePage("mro-page");
 
   return (
     <>
@@ -43,7 +43,7 @@ export default async function MROPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <main className="midline-page">
-        <MROComingSoon hero={hero} />
+        <MROComingSoon hero={hero} capabilities={features} />
       </main>
     </>
   );

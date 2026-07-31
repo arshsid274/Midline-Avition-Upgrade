@@ -17,6 +17,7 @@ import { buildBreadcrumbSchema, buildPageMetadata, buildServiceSchema } from "@/
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
 import { getServicePage } from "@/lib/cms/service";
+import { iconFor } from "@/lib/icons";
 
 export const revalidate = false;
 
@@ -42,59 +43,8 @@ const breadcrumbSchema = buildBreadcrumbSchema([
   { name: "Aircraft Sales", path: "/services/aircraft-sales" },
 ]);
 
-const advisorySections = [
-  {
-    title: "Buying an Aircraft",
-    kicker: "Acquisition Advisory",
-    image: "/assets/images/aircraft/g450-nose.webp",
-    alt: "Gulfstream G450 head-on, prepared for a client aircraft acquisition",
-    body: [
-      "Midline Aviation combines trusted global market access with hands-on technical guidance to source aircraft aligned with your mission profile, budget, and operating expectations.",
-      "Our team supports shortlisting, valuation, negotiation, pre-purchase inspection coordination, closing, delivery, and post-acquisition readiness.",
-    ],
-    icon: Search,
-    reverse: false,
-  },
-  {
-    title: "Selling an Aircraft",
-    kicker: "Disposition Strategy",
-    image: "/assets/images/aircraft/g450-exterior.webp",
-    alt: "Gulfstream G450 on the ramp, positioned for a premium sales campaign",
-    body: [
-      "Selling an aircraft requires more than a listing. We shape the market story, qualify serious buyers, protect confidentiality, and manage the process through negotiation and final handover.",
-      "From valuation guidance to targeted exposure, Midline Aviation helps position your aircraft for a confident, transparent transaction.",
-    ],
-    icon: Handshake,
-    reverse: true,
-  },
-  {
-    title: "Commercial Aircraft & Leasing",
-    kicker: "Flexible Ownership",
-    image: "/assets/images/aircraft/g200-exterior.webp",
-    alt: "Gulfstream G200 supporting commercial aircraft and leasing services",
-    body: [
-      "For commercial and corporate operators, we assist with aircraft purchase, sale, lease placement, and market representation across a global network.",
-      "Our advisory model is built for flexibility, helping clients evaluate operational needs, ownership structure, aircraft availability, and long-term value.",
-    ],
-    icon: Plane,
-    reverse: false,
-  },
-] as const;
-
-const services = [
-  { label: "Aircraft sales and acquisitions", icon: BadgeCheck },
-  { label: "Aircraft leasing services", icon: Plane },
-  { label: "Aircraft marketing", icon: Sparkles },
-  { label: "Aircraft financing", icon: Banknote },
-  { label: "Ownership structuring", icon: ShieldCheck },
-  { label: "Pre-purchase inspections", icon: ClipboardCheck },
-  { label: "Market research and valuation", icon: FileSearch },
-  { label: "Negotiation and closing support", icon: Handshake },
-  { label: "Post-sale transition planning", icon: BadgeCheck },
-] as const;
-
 export default async function AircraftSalesPage() {
-  const { hero } = await getServicePage("sales-page");
+  const { hero, intro, showcase, chips, closing } = await getServicePage("sales-page");
 
   return (
     <main className="midline-page bg-white text-ink">
@@ -177,26 +127,22 @@ export default async function AircraftSalesPage() {
           className="mx-auto grid w-full max-w-[1180px] gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-start"
         >
           <div data-reveal-item>
-            <p className="text-sm text-ink-muted">Market Guidance</p>
+            <p className="text-sm text-ink-muted">{intro?.eyebrow}</p>
             <h2 className="font-display mt-3 text-3xl font-light text-ink sm:text-5xl">
-              A guided path through every aircraft transaction.
+              {intro?.heading}
             </h2>
           </div>
           <div data-reveal-item className="space-y-5 text-base leading-8 text-ink-muted sm:text-lg">
-            <p>
-              We provide comprehensive support through each phase of the sale and acquisition process, including market
-              research, sourcing, valuation, buyer qualification, purchasing support, and delivery coordination.
-            </p>
-            <p>
-              Our aviation specialists bring practical experience across OEMs, cabin classes, ownership models, and
-              operating requirements so clients can move with clarity instead of guesswork.
-            </p>
-          </div>
+              {(intro?.paragraphs ?? []).map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
         </Reveal>
       </section>
 
-      {advisorySections.map((section, index) => {
-        const Icon = section.icon;
+      {showcase.cards.map((section, index) => {
+        const Icon = iconFor(section.icon);
+        const reverse = index % 2 === 1;
         return (
           <section
             key={section.title}
@@ -209,25 +155,25 @@ export default async function AircraftSalesPage() {
             >
               <Reveal
                 as="div"
-                variant={section.reverse ? "fade-right" : "fade-left"}
-                className={`lg:col-span-5 ${section.reverse ? "lg:col-start-8 lg:order-2" : "lg:col-start-2"}`}
+                variant={reverse ? "fade-right" : "fade-left"}
+                className={`lg:col-span-5 ${reverse ? "lg:col-start-8 lg:order-2" : "lg:col-start-2"}`}
               >
                 <div className="inline-flex h-11 w-11 items-center justify-center bg-ink text-white">
                   <Icon className="h-5 w-5" />
                 </div>
-                <p className="mt-6 text-sm text-ink-muted">{section.kicker}</p>
+                <p className="mt-6 text-sm text-ink-muted">{section.badge}</p>
                 <h2 className="font-display mt-3 text-3xl font-light text-ink sm:text-4xl">
                   {section.title}
                 </h2>
                 <div className="mt-6 h-px w-12 bg-ibm-blue" />
                 <div className="mt-7 space-y-5 text-base leading-7 text-ink-muted">
-                  {section.body.map((paragraph) => (
+                  {(section.description ?? "").split("\n\n").filter(Boolean).map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>
                   ))}
                 </div>
               </Reveal>
 
-              <div className={`lg:col-span-6 ${section.reverse ? "lg:order-1" : ""}`}>
+              <div className={`lg:col-span-6 ${reverse ? "lg:order-1" : ""}`}>
                 <Reveal
                   as="figure"
                   variant="clip-wipe"
@@ -235,8 +181,8 @@ export default async function AircraftSalesPage() {
                   className="relative aspect-[1.55] overflow-hidden border border-hairline bg-surface-1"
                 >
                   <Image
-                    src={section.image}
-                    alt={section.alt}
+                    src={section.image.src}
+                    alt={section.image.alt}
                     fill
                     sizes="(max-width: 1024px) 100vw, 52vw"
                     className="object-cover transition-transform duration-500 ease-out hover:scale-[1.035]"
@@ -251,13 +197,12 @@ export default async function AircraftSalesPage() {
       <section className="bg-white px-4 py-16 sm:px-6 sm:py-20 lg:px-16">
         <div className="mx-auto w-full max-w-[1180px]">
           <Reveal as="div" variant="fade-up" className="mx-auto max-w-3xl text-center">
-            <p className="text-sm text-ink-muted">Comprehensive Services</p>
+            <p className="text-sm text-ink-muted">{chips?.eyebrow}</p>
             <h2 className="font-display mt-3 text-3xl font-light text-ink sm:text-5xl">
-              One advisory team from first review to final handover.
+              {chips?.heading}
             </h2>
             <p className="mt-5 text-base leading-8 text-ink-muted">
-              Midline Aviation supports new and current aircraft owners with the specialist services needed for a
-              confident transaction.
+              {chips?.intro}
             </p>
           </Reveal>
 
@@ -267,8 +212,8 @@ export default async function AircraftSalesPage() {
             stagger={0.08}
             className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
           >
-            {services.map((service) => {
-              const Icon = service.icon;
+            {(chips?.chips ?? []).map((service) => {
+              const Icon = iconFor(service.icon);
               return (
                 <div
                   key={service.label}
@@ -293,22 +238,23 @@ export default async function AircraftSalesPage() {
           className="mx-auto flex w-full max-w-[1180px] flex-col items-start gap-8 border border-inverse-surface-1 bg-inverse-canvas p-7 sm:p-10 lg:flex-row lg:items-center lg:justify-between lg:p-12"
         >
           <div className="max-w-xl">
-            <p className="text-sm text-inverse-ink-muted">Contact Us</p>
+            <p className="text-sm text-inverse-ink-muted">{closing?.eyebrow}</p>
             <h2 className="font-display mt-3 text-3xl font-light text-white sm:text-4xl">
-              Discuss your next aircraft move.
+              {closing?.heading}
             </h2>
             <p className="mt-4 text-base leading-7 text-inverse-ink-muted">
-              Our aviation advisory team handles buying, selling, and leasing conversations with discretion and
-              qualified next actions.
+                {closing?.body}
             </p>
           </div>
-          <Link
-            href="/contact"
+          {closing?.cta?.href ? (
+            <Link
+              href={closing.cta.href}
             className="inline-flex shrink-0 items-center justify-center gap-2 bg-ibm-blue px-7 py-4 text-sm font-normal uppercase tracking-wide text-white transition-[background-color,transform] duration-150 ease-out hover:bg-ibm-blue-hover active:scale-[0.98]"
-          >
-            Contact Our Team
-            <ArrowRight className="h-4 w-4" />
-          </Link>
+            >
+              {closing.cta.label}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          ) : null}
         </Reveal>
       </section>
     </main>

@@ -1,31 +1,28 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ClipboardCheck, Cog, ShieldAlert } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
-import { SERVICE_HEROES, type ServiceHero } from "@/lib/service-content";
+import { iconFor } from "@/lib/icons";
+import {
+  SERVICE_FEATURES,
+  type FeatureCard,
+  type ServiceHero,
+  type ServiceSection,
+  SERVICE_HEROES,
+} from "@/lib/service-content";
 
-const capabilities = [
-  {
-    title: "Maintenance",
-    description: "Scheduled line and base programs by certified teams.",
-    icon: ClipboardCheck,
-  },
-  {
-    title: "Repair",
-    description: "Component and systems repair with full traceability.",
-    icon: Cog,
-  },
-  {
-    title: "Overhaul",
-    description: "Lifecycle programs focused on value and reliability.",
-    icon: ShieldAlert,
-  },
-];
+const MRO_CAPABILITIES = SERVICE_FEATURES["mro-page"] as ServiceSection<FeatureCard>;
 
 const TICKER_ITEMS = Array.from({ length: 8 });
 
-export default function MROComingSoon({ hero = SERVICE_HEROES["mro-page"] }: { hero?: ServiceHero } = {}) {
+export default function MROComingSoon({
+  hero = SERVICE_HEROES["mro-page"],
+  capabilities = MRO_CAPABILITIES,
+}: {
+  hero?: ServiceHero;
+  capabilities?: ServiceSection<FeatureCard>;
+} = {}) {
   // The scrolling band repeats the headline. Derived rather than duplicated, so
   // editing the headline cannot leave the ticker saying something else.
   const tickerText = [hero.heading, hero.headingAccent, hero.headingRest]
@@ -89,8 +86,8 @@ export default function MROComingSoon({ hero = SERVICE_HEROES["mro-page"] }: { h
           delay={0.85}
           className="mx-auto mt-10 grid w-full max-w-[42rem] gap-3 sm:grid-cols-3"
         >
-          {capabilities.map((capability) => {
-            const Icon = capability.icon;
+          {capabilities.cards.map((capability) => {
+            const Icon = iconFor(capability.icon);
             return (
               <li
                 key={capability.title}
