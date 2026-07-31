@@ -1,6 +1,7 @@
 import type { Field, GlobalConfig } from 'payload'
 
 import { cardArray, imageField, sectionHeader, statArray } from '../payload/fields/section'
+import { iconField } from '../payload/fields/icon'
 import { linkField } from '../payload/fields/link'
 import { revalidateGlobalPublished } from '../payload/hooks/revalidate'
 import { GLOBAL_ROUTES, buildPreviewURL } from '../payload/preview/routes'
@@ -78,6 +79,10 @@ export const makeServicePage = ({
                     withImage: false,
                     withLink: false,
                     extraFields: [
+                      // These cards are rendered with a pictogram, not a photo,
+                      // so the icon takes the place cardArray's image would
+                      // normally occupy.
+                      iconField(),
                       {
                         name: 'points',
                         type: 'array',

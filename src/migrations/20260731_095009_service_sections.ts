@@ -1,0 +1,43 @@
+import { MigrateUpArgs, MigrateDownArgs, sql } from '@payloadcms/db-sqlite'
+
+export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
+  await db.run(sql`ALTER TABLE \`charter_page_features_cards\` ADD \`icon\` text;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v_version_features_cards\` ADD \`icon\` text;`)
+  await db.run(sql`ALTER TABLE \`management_page_features_cards\` ADD \`icon\` text;`)
+  await db.run(sql`ALTER TABLE \`_management_page_v_version_features_cards\` ADD \`icon\` text;`)
+  await db.run(sql`ALTER TABLE \`cargo_page_features_cards\` ADD \`icon\` text;`)
+  await db.run(sql`ALTER TABLE \`_cargo_page_v_version_features_cards\` ADD \`icon\` text;`)
+  await db.run(sql`ALTER TABLE \`mro_page_features_cards\` ADD \`icon\` text;`)
+  await db.run(sql`ALTER TABLE \`_mro_page_v_version_features_cards\` ADD \`icon\` text;`)
+  await db.run(sql`ALTER TABLE \`charter_page\` DROP COLUMN \`closing_eyebrow\`;`)
+  await db.run(sql`ALTER TABLE \`charter_page\` DROP COLUMN \`closing_heading\`;`)
+  await db.run(sql`ALTER TABLE \`charter_page\` DROP COLUMN \`closing_body\`;`)
+  await db.run(sql`ALTER TABLE \`charter_page\` DROP COLUMN \`closing_cta_label\`;`)
+  await db.run(sql`ALTER TABLE \`charter_page\` DROP COLUMN \`closing_cta_href\`;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v\` DROP COLUMN \`version_closing_eyebrow\`;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v\` DROP COLUMN \`version_closing_heading\`;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v\` DROP COLUMN \`version_closing_body\`;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v\` DROP COLUMN \`version_closing_cta_label\`;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v\` DROP COLUMN \`version_closing_cta_href\`;`)
+}
+
+export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
+  await db.run(sql`ALTER TABLE \`charter_page\` ADD \`closing_eyebrow\` text;`)
+  await db.run(sql`ALTER TABLE \`charter_page\` ADD \`closing_heading\` text;`)
+  await db.run(sql`ALTER TABLE \`charter_page\` ADD \`closing_body\` text;`)
+  await db.run(sql`ALTER TABLE \`charter_page\` ADD \`closing_cta_label\` text;`)
+  await db.run(sql`ALTER TABLE \`charter_page\` ADD \`closing_cta_href\` text;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v\` ADD \`version_closing_eyebrow\` text;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v\` ADD \`version_closing_heading\` text;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v\` ADD \`version_closing_body\` text;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v\` ADD \`version_closing_cta_label\` text;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v\` ADD \`version_closing_cta_href\` text;`)
+  await db.run(sql`ALTER TABLE \`charter_page_features_cards\` DROP COLUMN \`icon\`;`)
+  await db.run(sql`ALTER TABLE \`_charter_page_v_version_features_cards\` DROP COLUMN \`icon\`;`)
+  await db.run(sql`ALTER TABLE \`management_page_features_cards\` DROP COLUMN \`icon\`;`)
+  await db.run(sql`ALTER TABLE \`_management_page_v_version_features_cards\` DROP COLUMN \`icon\`;`)
+  await db.run(sql`ALTER TABLE \`cargo_page_features_cards\` DROP COLUMN \`icon\`;`)
+  await db.run(sql`ALTER TABLE \`_cargo_page_v_version_features_cards\` DROP COLUMN \`icon\`;`)
+  await db.run(sql`ALTER TABLE \`mro_page_features_cards\` DROP COLUMN \`icon\`;`)
+  await db.run(sql`ALTER TABLE \`_mro_page_v_version_features_cards\` DROP COLUMN \`icon\`;`)
+}

@@ -12,6 +12,10 @@ export const CharterPage = makeServicePage({
   featureCardsHelp: 'The row of reasons with icons.',
   imageCardsLabel: 'Bespoke travel categories',
   imageCardsHelp: 'The three tall picture cards.',
+  // The charter page renders no closing band, so the tab is removed rather than
+  // left in place. A control that looks editable and changes nothing is worse
+  // than an absent one — someone types into it and waits for a result.
+  withClosing: false,
 })
 
 export const ManagementPage = makeServicePage({

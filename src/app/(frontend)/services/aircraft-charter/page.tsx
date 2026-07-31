@@ -6,7 +6,7 @@ import CharterStepsComponent from "@/app/components/ui/CharterStepsComponent";
 import WhyChooseUsComponent from "@/app/components/ui/WhyChooseUsComponent";
 import BespokeTravelCategoriesComponent from "@/app/components/ui/BespokeTravelCategoriesComponent";
 import ClientTestimonialsComponent from "@/app/components/ui/ClientTestimonialsComponent";
-import { getServiceHero } from "@/lib/cms/service";
+import { getServicePage } from "@/lib/cms/service";
 
 export const revalidate = false;
 
@@ -33,7 +33,7 @@ const breadcrumbSchema = buildBreadcrumbSchema([
 ]);
 
 export default async function CharterPage() {
-  const hero = await getServiceHero("charter-page");
+  const { hero, features, showcase } = await getServicePage("charter-page");
 
   return (
     <>
@@ -51,8 +51,8 @@ export default async function CharterPage() {
         <AircraftCharterHeroComponent hero={hero} />
         <OurPhilosophyComponent />
         <CharterStepsComponent />
-        <WhyChooseUsComponent />
-        <BespokeTravelCategoriesComponent />
+        <WhyChooseUsComponent content={features} />
+        <BespokeTravelCategoriesComponent content={showcase} />
 
         <ClientTestimonialsComponent />
       </main>
