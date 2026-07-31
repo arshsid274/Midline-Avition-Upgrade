@@ -1,6 +1,6 @@
 import Reveal from "@/app/components/motion/Reveal";
 import { iconFor } from "@/lib/icons";
-import { SERVICE_FEATURES, type ServiceSection, type FeatureCard } from "@/lib/service-content";
+import { CHARTER_FEATURES, type ServiceSection, type FeatureCard } from "@/lib/service-content";
 
 /**
  * The row of reasons with pictograms on the charter page.
@@ -12,7 +12,7 @@ import { SERVICE_FEATURES, type ServiceSection, type FeatureCard } from "@/lib/s
  * arrive with no description and no icon; both are handled rather than assumed.
  */
 export default function WhyChooseUsComponent({
-  content = SERVICE_FEATURES["charter-page"],
+  content = CHARTER_FEATURES,
 }: {
   content?: ServiceSection<FeatureCard>;
 } = {}) {

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "@/app/components/motion/Reveal";
-import { SERVICE_SHOWCASES, type ServiceSection, type ShowcaseCard } from "@/lib/service-content";
+import { CHARTER_SHOWCASE, type ServiceSection, type ShowcaseCard } from "@/lib/service-content";
 
 /**
  * The three tall picture cards on the charter page.
@@ -15,7 +15,7 @@ import { SERVICE_SHOWCASES, type ServiceSection, type ShowcaseCard } from "@/lib
  * would otherwise take down the whole page.
  */
 export default function BespokeTravelCategoriesComponent({
-  content = SERVICE_SHOWCASES["charter-page"],
+  content = CHARTER_SHOWCASE,
 }: {
   content?: ServiceSection<ShowcaseCard>;
 } = {}) {

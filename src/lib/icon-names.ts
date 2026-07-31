@@ -29,6 +29,16 @@ export const ICON_NAMES = [
   'check-circle',
   'sliders',
   'arrow-up-right',
+  'search',
+  'handshake',
+  'plane',
+  'badge-check',
+  'sparkles',
+  'banknote',
+  'clipboard-check',
+  'file-search',
+  'cog',
+  'shield-alert',
 ] as const
 
 export type IconName = (typeof ICON_NAMES)[number]
@@ -48,4 +58,14 @@ export const ICON_OPTIONS: { label: string; value: IconName }[] = [
   { label: 'Tick in a circle / approved', value: 'check-circle' },
   { label: 'Sliders / bespoke', value: 'sliders' },
   { label: 'Arrow / link', value: 'arrow-up-right' },
+  { label: 'Magnifier / search', value: 'search' },
+  { label: 'Handshake / agreement', value: 'handshake' },
+  { label: 'Aeroplane', value: 'plane' },
+  { label: 'Badge with tick / certified', value: 'badge-check' },
+  { label: 'Sparkles / marketing', value: 'sparkles' },
+  { label: 'Banknote / financing', value: 'banknote' },
+  { label: 'Clipboard with tick / inspection', value: 'clipboard-check' },
+  { label: 'Document with magnifier / research', value: 'file-search' },
+  { label: 'Cog / repair', value: 'cog' },
+  { label: 'Shield with alert / overhaul', value: 'shield-alert' },
 ]

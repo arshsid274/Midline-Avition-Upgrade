@@ -4,6 +4,7 @@ import {
   SERVICE_FEATURES,
   SERVICE_HEROES,
   SERVICE_SHOWCASES,
+  type ServiceSlug,
 } from '../../src/lib/service-content.js'
 import { importMedia } from './lib/media.mjs'
 
@@ -12,7 +13,10 @@ const force = process.argv.includes('--force')
 const run = async () => {
   const payload = await getPayload({ config })
 
-  for (const [slug, hero] of Object.entries(SERVICE_HEROES)) {
+  // Object.entries widens keys to string; the records are keyed by ServiceSlug.
+  const entries = Object.entries(SERVICE_HEROES) as [ServiceSlug, (typeof SERVICE_HEROES)[ServiceSlug]][]
+
+  for (const [slug, hero] of entries) {
     const existing = (await payload.findGlobal({ slug: slug as any, depth: 0 })) as Record<
       string,
       any
