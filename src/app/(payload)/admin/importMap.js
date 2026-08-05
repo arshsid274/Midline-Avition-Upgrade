@@ -1,6 +1,10 @@
 import { SpecRowLabel as SpecRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
 import { VideoPreview as VideoPreview_d03cb3f2a72d7677ca4c53784843f315 } from '@/payload/components/VideoPreview'
 import { GalleryRowLabel as GalleryRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
+import { UsedOnField as UsedOnField_fba666c6490f778411f484b170ecef8d } from '@/payload/components/UsedOn'
+import { UsedOnCell as UsedOnCell_fba666c6490f778411f484b170ecef8d } from '@/payload/components/UsedOn'
+import { VideoPreviewField as VideoPreviewField_75fab473bc03f87da264c38d75de3b2d } from '@/payload/components/VideoThumb'
+import { VideoThumbCell as VideoThumbCell_75fab473bc03f87da264c38d75de3b2d } from '@/payload/components/VideoThumb'
 import { BookingFormNote as BookingFormNote_0d2eb9c49221adcd50eabb157db4d896 } from '@/payload/components/SectionNote'
 import { CardRowLabel as CardRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
 import { AccreditationsNote as AccreditationsNote_0d2eb9c49221adcd50eabb157db4d896 } from '@/payload/components/SectionNote'
@@ -24,6 +28,10 @@ export const importMap = {
   "@/payload/components/RowLabel#SpecRowLabel": SpecRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,
   "@/payload/components/VideoPreview#VideoPreview": VideoPreview_d03cb3f2a72d7677ca4c53784843f315,
   "@/payload/components/RowLabel#GalleryRowLabel": GalleryRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,
+  "@/payload/components/UsedOn#UsedOnField": UsedOnField_fba666c6490f778411f484b170ecef8d,
+  "@/payload/components/UsedOn#UsedOnCell": UsedOnCell_fba666c6490f778411f484b170ecef8d,
+  "@/payload/components/VideoThumb#VideoPreviewField": VideoPreviewField_75fab473bc03f87da264c38d75de3b2d,
+  "@/payload/components/VideoThumb#VideoThumbCell": VideoThumbCell_75fab473bc03f87da264c38d75de3b2d,
   "@/payload/components/SectionNote#BookingFormNote": BookingFormNote_0d2eb9c49221adcd50eabb157db4d896,
   "@/payload/components/RowLabel#CardRowLabel": CardRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,
   "@/payload/components/SectionNote#AccreditationsNote": AccreditationsNote_0d2eb9c49221adcd50eabb157db4d896,

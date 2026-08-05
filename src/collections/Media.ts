@@ -29,7 +29,9 @@ export const Media: CollectionConfig = {
   admin: {
     group: 'Media',
     useAsTitle: 'alt',
-    defaultColumns: ['alt', 'filename', 'sourcePath'],
+    // 'filename' is the column Payload renders the thumbnail in; 'usedOn' maps
+    // each photo to the pages that use it.
+    defaultColumns: ['filename', 'alt', 'usedOn'],
   },
   upload: {
     mimeTypes: ['image/*'],
@@ -42,6 +44,18 @@ export const Media: CollectionConfig = {
     afterDelete: [revalidateEverywhere],
   },
   fields: [
+    {
+      // Where this photo appears on the published site, with links — so an
+      // editor knows exactly what an upload-over-existing will change.
+      name: 'usedOn',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/payload/components/UsedOn#UsedOnField',
+          Cell: '@/payload/components/UsedOn#UsedOnCell',
+        },
+      },
+    },
     {
       name: 'alt',
       type: 'text',

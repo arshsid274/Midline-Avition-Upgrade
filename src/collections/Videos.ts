@@ -32,7 +32,9 @@ export const Videos: CollectionConfig = {
   admin: {
     group: 'Media',
     useAsTitle: 'title',
-    defaultColumns: ['title', 'filename', 'filesize'],
+    // 'preview' shows a first frame of each film; 'usedOn' maps it to the
+    // pages that play it.
+    defaultColumns: ['preview', 'title', 'usedOn', 'filename'],
     description:
       'Films used in page headers, aircraft pages and the gallery. Upload a new file over an existing entry to replace it everywhere it appears.',
   },
@@ -48,6 +50,29 @@ export const Videos: CollectionConfig = {
     afterDelete: [revalidateEverywhere],
   },
   fields: [
+    {
+      // The film itself, playable — sharp cannot thumbnail video, so without
+      // this the edit view identifies a 50 MB clip by filename alone.
+      name: 'preview',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/payload/components/VideoThumb#VideoPreviewField',
+          Cell: '@/payload/components/VideoThumb#VideoThumbCell',
+        },
+      },
+    },
+    {
+      // Where this film plays on the published site, with links.
+      name: 'usedOn',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/payload/components/UsedOn#UsedOnField',
+          Cell: '@/payload/components/UsedOn#UsedOnCell',
+        },
+      },
+    },
     {
       name: 'title',
       type: 'text',
