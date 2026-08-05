@@ -9,12 +9,15 @@ import {
   HOME_AIRCRAFT,
   HOME_CTA_BANNER,
   HOME_HERO,
+  HOME_SERVICES,
   POPULAR_DESTINATIONS,
   SHOWCASE_ITEMS,
   type AircraftCard,
   type CtaBannerContent,
   type DestinationCard,
   type HeroContent,
+  type ServiceGridCard,
+  type ServicesGridContent,
   type ShowcaseItem,
 } from "@/lib/home-content";
 
@@ -22,6 +25,7 @@ export type HomeContent = {
   hero: HeroContent;
   showcase: { heading: string; items: ShowcaseItem[] };
   destinations: { heading: string; cards: DestinationCard[] };
+  services: ServicesGridContent;
   accreditationsHeading: string;
   fleet: { eyebrow: string; heading: string; cards: AircraftCard[] };
   ctaBanner: CtaBannerContent;
@@ -110,6 +114,19 @@ export const getHomeContent = async (): Promise<HomeContent> => {
       }))
     : POPULAR_DESTINATIONS;
 
+  const serviceCards: ServiceGridCard[] = (global?.services?.cards ?? []).length
+    ? global.services.cards.map((card: any, index: number) => ({
+        id: `service-${index}`,
+        title: text(card.title, ""),
+        description: text(card.description, ""),
+        tag: text(card.tag, ""),
+        imageSrc: imageFrom(card.image, { src: "", alt: "" }).src,
+        imageAlt: imageFrom(card.image, { src: "", alt: "" }).alt,
+        href: text(card.link?.href, "/contact"),
+        ctaLabel: text(card.link?.label, "Learn more"),
+      }))
+    : HOME_SERVICES.cards;
+
   const fleetCards: AircraftCard[] = (global?.fleet?.cards ?? []).length
     ? global.fleet.cards.map((card: any, index: number) => ({
         id: `aircraft-${index}`,
@@ -133,6 +150,12 @@ export const getHomeContent = async (): Promise<HomeContent> => {
     destinations: {
       heading: text(global?.destinations?.heading, "Frequent travel destinations"),
       cards: destinationCards,
+    },
+    services: {
+      eyebrow: text(global?.services?.eyebrow, HOME_SERVICES.eyebrow),
+      heading: text(global?.services?.heading, HOME_SERVICES.heading),
+      intro: text(global?.services?.intro, HOME_SERVICES.intro),
+      cards: serviceCards,
     },
     accreditationsHeading: text(
       global?.accreditations?.heading,

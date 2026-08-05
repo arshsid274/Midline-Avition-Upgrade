@@ -196,6 +196,91 @@ export const POPULAR_DESTINATIONS: DestinationCard[] = [] = [
   },
 ];
 
+export type ServiceGridCard = {
+  id: string;
+  title: string;
+  description: string;
+  /** Small chip over the picture, e.g. "Coming Soon". Empty string = no chip. */
+  tag?: string;
+  imageSrc: string;
+  imageAlt: string;
+  href: string;
+  ctaLabel: string;
+};
+
+export type ServicesGridContent = {
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  cards: ServiceGridCard[];
+};
+
+/**
+ * The five service pages, surfaced as a grid on the home page. Copy is lifted
+ * from each page's own hero in src/lib/service-content.ts so the card a visitor
+ * clicks and the page they land on say the same thing.
+ */
+export const HOME_SERVICES: ServicesGridContent = {
+  eyebrow: "Our Services",
+  heading: "Complete Aviation Services",
+  intro:
+    "Charter, management, sales, cargo, and MRO — every discipline under one roof, available 24/7 from Dubai.",
+  cards: [
+    {
+      id: "aircraft-charter",
+      title: "Aircraft Charter",
+      description:
+        "We value your time and redefine the quality of travel with bespoke aviation solutions.",
+      imageSrc: "/assets/images/aircraft/g200-cabin.webp",
+      imageAlt: "Gulfstream G200 private jet cabin prepared for charter",
+      href: "/services/aircraft-charter",
+      ctaLabel: "Explore Charter",
+    },
+    {
+      id: "aircraft-management",
+      title: "Aircraft Management",
+      description:
+        "Comprehensive aircraft management services tailored to operational excellence, safety, and your schedule.",
+      imageSrc: "/assets/images/aircraft/management-hero.webp",
+      imageAlt: "Gulfstream G200 T7-MIDA under management, seen from the Midline FBO lounge",
+      href: "/services/aircraft-management",
+      ctaLabel: "Explore Management",
+    },
+    {
+      id: "aircraft-sales",
+      title: "Aircraft Sales & Acquisition",
+      description:
+        "In-house brokerage and acquisition advisory for clients looking to buy, sell, lease, or reposition premium business and commercial aircraft.",
+      imageSrc: "/assets/images/aircraft/sales-hero.webp",
+      imageAlt: "Clients walking to the Gulfstream G200 T7-MIDA on the Midline ramp",
+      href: "/services/aircraft-sales",
+      ctaLabel: "Explore Sales",
+    },
+    {
+      id: "cargo-transportation",
+      title: "Cargo Transportation",
+      description:
+        "Seamless global logistics through an end-to-end cargo network — precision handling, real-time tracking, and guaranteed delivery windows.",
+      imageSrc: "/assets/images/aircraft/cargo-hero.webp",
+      imageAlt:
+        "Gulfstream G450 T7-MID on the ramp at night under apron floodlights, ready for cargo operations",
+      href: "/services/cargo-transportation",
+      ctaLabel: "Explore Cargo",
+    },
+    {
+      id: "aircraft-mro",
+      title: "Aircraft MRO",
+      description:
+        "Our certified Maintenance, Repair & Overhaul facility is in final preparation — OEM-aligned procedures, full traceability, and a 24/7 AOG desk at Dubai World Central.",
+      tag: "Coming Soon",
+      imageSrc: "/assets/images/aircraft/g450-nose.webp",
+      imageAlt: "Gulfstream G450 head-on during ground handling at the Midline facility",
+      href: "/services/mro",
+      ctaLabel: "Preview MRO",
+    },
+  ],
+};
+
 export type AircraftCard = {
   id: string;
   name: string;

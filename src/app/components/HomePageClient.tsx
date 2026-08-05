@@ -16,6 +16,9 @@ const PopularDestinationsCarousel = dynamic(
     loading: () => null,
   }
 );
+const HomeServicesGrid = dynamic(() => import("@/app/components/ui/HomeServicesGrid"), {
+  loading: () => null,
+});
 const LogoLoopSection = dynamic(() => import("@/app/components/ui/LogoLoopSection"), {
   loading: () => null,
 });
@@ -37,6 +40,7 @@ export default function HomePageClient({ home, accreditationLogos }: HomePageCli
       <HeroBookingForm revealFromBelow />
       <ServicesShowcase items={home.showcase.items} heading={home.showcase.heading} />
       <PopularDestinationsCarousel cards={home.destinations.cards} />
+      <HomeServicesGrid content={home.services} />
       <LogoLoopSection logos={accreditationLogos} />
       <HomeAircraftCards cards={home.fleet.cards} />
       <HomeCtaBanner content={home.ctaBanner} />

@@ -7,6 +7,7 @@ import {
   HOME_AIRCRAFT,
   HOME_CTA_BANNER,
   HOME_HERO,
+  HOME_SERVICES,
   POPULAR_DESTINATIONS,
   SHOWCASE_ITEMS,
 } from '../../src/lib/home-content.js'
@@ -41,7 +42,33 @@ const run = async () => {
   const heroFilled = Boolean(existing?.hero?.heading?.line1)
   const ctaFilled = Boolean(existing?.ctaBanner?.heading)
 
+  /**
+   * Start from the sections already in the database, then let the blocks below
+   * overwrite the ones being (re)seeded.
+   *
+   * updateGlobal validates exactly the data it is handed — a skipped section is
+   * absent from the update, and its required fields (the hero video, for one)
+   * fail publish validation even though the stored document has them. That
+   * never bit while the seed only ran against a blank database, where every
+   * section is written in one shot; it surfaces the moment a new section is
+   * added to an already-seeded site. Read at depth 0, relationships are IDs,
+   * which is exactly the shape update expects back.
+   */
+  const SECTIONS = [
+    'hero',
+    'showcase',
+    'destinations',
+    'services',
+    'accreditations',
+    'fleet',
+    'ctaBanner',
+  ] as const
+
   const data: Record<string, unknown> = {}
+  let wrote = 0
+  for (const section of SECTIONS) {
+    if (existing?.[section] !== undefined) data[section] = existing[section]
+  }
 
   if (force || !heroFilled) {
     const posterId = await importMedia(payload, HOME_HERO.poster.src, HOME_HERO.poster.alt)
@@ -54,6 +81,7 @@ const run = async () => {
       poster: posterId,
     }
     console.log('  + hero')
+    wrote += 1
   } else {
     console.log('  = hero already has content, skipped (use --force to overwrite)')
   }
@@ -73,6 +101,7 @@ const run = async () => {
       ),
     }
     console.log(`  + discover midline (${SHOWCASE_ITEMS.length} panels)`)
+    wrote += 1
   } else {
     console.log('  = discover midline already has content, skipped')
   }
@@ -89,13 +118,36 @@ const run = async () => {
       ),
     }
     console.log(`  + destinations (${POPULAR_DESTINATIONS.length} cards)`)
+    wrote += 1
   } else {
     console.log('  = destinations already has content, skipped')
+  }
+
+  if (force || !existing?.services?.cards?.length) {
+    data.services = {
+      eyebrow: HOME_SERVICES.eyebrow,
+      heading: HOME_SERVICES.heading,
+      intro: HOME_SERVICES.intro,
+      cards: await Promise.all(
+        HOME_SERVICES.cards.map(async (item) => ({
+          title: item.title,
+          description: item.description,
+          tag: item.tag ?? '',
+          image: await importMedia(payload, item.imageSrc, item.imageAlt),
+          link: { label: item.ctaLabel, href: item.href },
+        }))
+      ),
+    }
+    console.log(`  + our services (${HOME_SERVICES.cards.length} cards)`)
+    wrote += 1
+  } else {
+    console.log('  = our services already has content, skipped')
   }
 
   if (force || !existing?.accreditations?.heading) {
     data.accreditations = { heading: 'Accreditations & Memberships' }
     console.log('  + accreditations strip')
+    wrote += 1
   } else {
     console.log('  = accreditations strip already has content, skipped')
   }
@@ -117,6 +169,7 @@ const run = async () => {
       ),
     }
     console.log(`  + our fleet (${HOME_AIRCRAFT.length} cards)`)
+    wrote += 1
   } else {
     console.log('  = our fleet already has content, skipped')
   }
@@ -129,11 +182,12 @@ const run = async () => {
       secondary: HOME_CTA_BANNER.secondary,
     }
     console.log('  + blue banner')
+    wrote += 1
   } else {
     console.log('  = blue banner already has content, skipped (use --force to overwrite)')
   }
 
-  if (Object.keys(data).length === 0) {
+  if (wrote === 0) {
     console.log('Nothing to write.')
     return
   }

@@ -154,8 +154,37 @@ export const HomePage: GlobalConfig = {
 
         // ── 4 ─────────────────────────────────────────────────────────────
         {
+          name: 'services',
+          label: '4 · Our Services',
+          description:
+            'The grid of service cards — one per service page. Each card links to its page.',
+          fields: [
+            ...sectionHeader(),
+            cardArray({
+              name: 'cards',
+              label: 'Service cards',
+              labelSingular: 'Service',
+              description: 'Drag to reorder. Five cards render as two large over three small.',
+              withImage: true,
+              withLink: true,
+              extraFields: [
+                {
+                  name: 'tag',
+                  type: 'text',
+                  label: 'Corner tag (optional)',
+                  admin: {
+                    description: 'Small chip on the picture, e.g. "Coming Soon". Leave empty for none.',
+                  },
+                },
+              ],
+            }),
+          ],
+        },
+
+        // ── 5 ─────────────────────────────────────────────────────────────
+        {
           name: 'accreditations',
-          label: '4 · Accreditations strip',
+          label: '5 · Accreditations strip',
           description: 'The scrolling row of industry logos.',
           fields: [
             { name: 'heading', type: 'text', label: 'Section headline' },
@@ -169,10 +198,10 @@ export const HomePage: GlobalConfig = {
           ],
         },
 
-        // ── 5 ─────────────────────────────────────────────────────────────
+        // ── 6 ─────────────────────────────────────────────────────────────
         {
           name: 'fleet',
-          label: '5 · Our Fleet',
+          label: '6 · Our Fleet',
           description: 'The three aircraft cards near the bottom of the page.',
           fields: [
             ...sectionHeader(),
@@ -201,10 +230,10 @@ export const HomePage: GlobalConfig = {
           ],
         },
 
-        // ── 6 ─────────────────────────────────────────────────────────────
+        // ── 7 ─────────────────────────────────────────────────────────────
         {
           name: 'ctaBanner',
-          label: '6 · Blue banner (bottom)',
+          label: '7 · Blue banner (bottom)',
           description:
             'The solid blue panel just above the footer, at the very bottom of the page.',
           fields: [

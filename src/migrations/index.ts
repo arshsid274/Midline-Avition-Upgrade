@@ -3,6 +3,7 @@ import * as migration_20260731_074350_uploadthing_key from './20260731_074350_up
 import * as migration_20260731_095009_service_sections from './20260731_095009_service_sections';
 import * as migration_20260731_120219_service_sections_complete from './20260731_120219_service_sections_complete';
 import * as migration_20260805_083047_remove_marketplace_section from './20260805_083047_remove_marketplace_section';
+import * as migration_20260805_085315_home_services_section from './20260805_085315_home_services_section';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20260805_083047_remove_marketplace_section.up,
     down: migration_20260805_083047_remove_marketplace_section.down,
-    name: '20260805_083047_remove_marketplace_section'
+    name: '20260805_083047_remove_marketplace_section',
+  },
+  {
+    up: migration_20260805_085315_home_services_section.up,
+    down: migration_20260805_085315_home_services_section.down,
+    name: '20260805_085315_home_services_section'
   },
 ];

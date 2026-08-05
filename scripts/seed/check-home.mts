@@ -8,9 +8,10 @@ const rows: [string, unknown][] = [
   ['1 hero',           g.hero?.heading?.line1],
   ['2 showcase',       `${g.showcase?.heading} (${g.showcase?.panels?.length ?? 0} panels)`],
   ['3 destinations',   `${g.destinations?.heading} (${g.destinations?.cards?.length ?? 0} cards)`],
-  ['4 accreditations', g.accreditations?.heading],
-  ['5 fleet',          `${g.fleet?.heading} (${g.fleet?.cards?.length ?? 0} cards)`],
-  ['6 cta banner',     g.ctaBanner?.heading],
+  ['4 services',       `${g.services?.heading} (${g.services?.cards?.length ?? 0} cards)`],
+  ['5 accreditations', g.accreditations?.heading],
+  ['6 fleet',          `${g.fleet?.heading} (${g.fleet?.cards?.length ?? 0} cards)`],
+  ['7 cta banner',     g.ctaBanner?.heading],
 ]
 for (const [k, v] of rows) console.log(`  ${k.padEnd(18)} ${v}`)
 const media = await payload.count({ collection: 'media' })

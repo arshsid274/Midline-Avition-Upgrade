@@ -779,6 +779,33 @@ export interface HomePage {
         }[]
       | null;
   };
+  services?: {
+    eyebrow?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    /**
+     * Drag to reorder. Five cards render as two large over three small.
+     */
+    cards?:
+      | {
+          title: string;
+          description?: string | null;
+          image?: (number | null) | Media;
+          link?: {
+            label?: string | null;
+            /**
+             * e.g. /contact, /#book-your-flight, or a full https:// address.
+             */
+            href?: string | null;
+          };
+          /**
+           * Small chip on the picture, e.g. "Coming Soon". Leave empty for none.
+           */
+          tag?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
   accreditations?: {
     heading?: string | null;
   };
@@ -1849,6 +1876,28 @@ export interface HomePageSelect<T extends boolean = true> {
                     label?: T;
                     href?: T;
                   };
+              id?: T;
+            };
+      };
+  services?:
+    | T
+    | {
+        eyebrow?: T;
+        heading?: T;
+        intro?: T;
+        cards?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+              link?:
+                | T
+                | {
+                    label?: T;
+                    href?: T;
+                  };
+              tag?: T;
               id?: T;
             };
       };
