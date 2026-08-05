@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CardBody, CardContainer, CardItem } from "./ThreeDCard";
 import { HOME_AIRCRAFT, type AircraftCard } from "@/lib/home-content";
 
 function HoverVideoCard({ aircraft }: { aircraft: AircraftCard }) {
@@ -171,58 +170,60 @@ export default function HomeAircraftCards({
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {cards.map((aircraft) => (
-            <CardContainer key={aircraft.id} className="h-full w-full" containerClassName="h-full w-full py-0">
-              <CardBody
-                data-aircraft-card
-                className="h-full border border-hairline bg-white p-4 transition-colors hover:bg-surface-1 sm:p-5"
-              >
-                <CardItem translateZ={50} className="w-full">
-                  {aircraft.videoSrc ? (
-                    <HoverVideoCard aircraft={aircraft} />
-                  ) : (
-                    <div className="relative aspect-[16/10] overflow-hidden">
-                      <Image
-                        src={aircraft.imageSrc}
-                        alt={aircraft.imageAlt}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                      <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
-                        <div className="inline-flex bg-ink px-3.5 py-2">
-                          <h3 className="text-[1.05rem] font-medium tracking-tight text-white">{aircraft.name}</h3>
-                        </div>
-                        <div className="inline-flex bg-ink px-3 py-2">
-                          <span className="font-mono text-xs font-medium text-white">{aircraft.registration}</span>
-                        </div>
-                      </div>
+            <article
+              key={aircraft.id}
+              data-aircraft-card
+              className="flex h-full flex-col border border-hairline bg-white p-4 transition-colors hover:bg-surface-1 sm:p-5"
+            >
+              {aircraft.videoSrc ? (
+                <HoverVideoCard aircraft={aircraft} />
+              ) : (
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={aircraft.imageSrc}
+                    alt={aircraft.imageAlt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                  <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
+                    <div className="inline-flex bg-ink px-3.5 py-2">
+                      <h3 className="text-[1.05rem] font-medium tracking-tight text-white">{aircraft.name}</h3>
                     </div>
-                  )}
-                </CardItem>
-
-                <div data-aircraft-text className="mt-4 space-y-4">
-                  <CardItem translateZ={28}>
-                    <p className="text-sm leading-relaxed text-ink-muted">{aircraft.description}</p>
-                  </CardItem>
-
-                  <CardItem translateZ={24}>
-                    <div className="inline-flex items-center border border-hairline bg-surface-1 px-3 py-1 text-xs font-medium text-ink">
-                      {aircraft.comingSoon ? "Coming Soon" : "Available Now"}
+                    <div className="inline-flex bg-ink px-3 py-2">
+                      <span className="font-mono text-xs font-medium text-white">{aircraft.registration}</span>
                     </div>
-                  </CardItem>
+                  </div>
+                </div>
+              )}
 
-                  <CardItem translateZ={20}>
+              {/*
+                flex-1 with mt-auto on the footer keeps the badge and button on
+                the same line across all three cards, whatever length the
+                descriptions run to. The 3D version could not do this: every
+                element sat on its own translateZ plane, so heights were
+                independent per card and the actions came out ragged.
+              */}
+              <div data-aircraft-text className="mt-4 flex flex-1 flex-col">
+                <p className="text-sm leading-relaxed text-ink-muted">{aircraft.description}</p>
+
+                <div className="mt-auto space-y-4 pt-4">
+                  <div className="inline-flex items-center border border-hairline bg-surface-1 px-3 py-1 text-xs font-medium text-ink">
+                    {aircraft.comingSoon ? "Coming Soon" : "Available Now"}
+                  </div>
+
+                  <div>
                     <Link
                       href={aircraft.href}
                       className="inline-flex items-center border border-ibm-blue bg-white px-4 py-2 text-sm text-ibm-blue uppercase tracking-wide transition hover:bg-ibm-blue hover:text-white"
                     >
                       More Details
                     </Link>
-                  </CardItem>
+                  </div>
                 </div>
-              </CardBody>
-            </CardContainer>
+              </div>
+            </article>
           ))}
         </div>
       </div>
