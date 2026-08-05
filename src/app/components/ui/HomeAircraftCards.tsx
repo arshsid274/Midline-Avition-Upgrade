@@ -26,7 +26,7 @@ function HoverVideoCard({ aircraft }: { aircraft: AircraftCard }) {
 
   return (
     <div
-      className="relative aspect-[16/10] overflow-hidden"
+      className="relative aspect-square overflow-hidden"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -178,7 +178,7 @@ export default function HomeAircraftCards({
               {aircraft.videoSrc ? (
                 <HoverVideoCard aircraft={aircraft} />
               ) : (
-                <div className="relative aspect-[16/10] overflow-hidden">
+                <div className="relative aspect-square overflow-hidden">
                   <Image
                     src={aircraft.imageSrc}
                     alt={aircraft.imageAlt}
