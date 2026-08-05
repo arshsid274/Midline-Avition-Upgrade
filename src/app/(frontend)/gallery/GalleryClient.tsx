@@ -153,11 +153,7 @@ export default function GalleryClient({
             const overlay = (
               <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <div className="p-4">
-                  <p className="text-xs text-white/70">
-                    {item.category}
-                    {/* Credits the source, so it is clear this is not our footage. */}
-                    {item.embed ? ` · ${item.embed.host}` : ""}
-                  </p>
+                  <p className="text-xs text-white/70">{item.category}</p>
                   <p className="mt-0.5 text-sm font-medium text-white">{item.caption}</p>
                 </div>
               </div>
@@ -168,26 +164,30 @@ export default function GalleryClient({
              * still), and the lightbox opens the original in place — GLightbox
              * plays YouTube and Vimeo natively via `data-source`.
              *
+             * Structured as a wrapper div rather than one anchor, because this
+             * tile carries two destinations: the lightbox, and the source page
+             * itself. An <a> cannot contain another <a>, so the lightbox target
+             * is a bare absolute layer and the source link sits above it. The
+             * overlay between them is pointer-events-none so a click anywhere
+             * else still reaches the lightbox underneath.
+             *
              * Plain <img>, not next/image: the host is whatever an editor
              * pasted, and next/image returns 400 for any host missing from
              * remotePatterns — a broken picture with nothing in the logs.
              */
             if (item.embed) {
               const isVideo = item.embed.kind === "video";
+              const sourceName =
+                item.embed.provider === "youtube"
+                  ? "YouTube"
+                  : item.embed.provider === "vimeo"
+                    ? "Vimeo"
+                    : item.embed.host;
+
               return (
-                <a
+                <div
                   key={item.embed.watchUrl}
-                  href={item.embed.watchUrl}
-                  aria-label={
-                    isVideo
-                      ? `Play video on ${item.embed.host}: ${item.alt}`
-                      : `View photo from ${item.embed.host}: ${item.alt}`
-                  }
-                  className={`${isVideo ? "glightbox-embed" : "glightbox"} group relative mb-5 block break-inside-avoid overflow-hidden bg-surface-1 ${aspect}`}
-                  data-gallery={isVideo ? "midline-gallery-embeds" : "midline-gallery"}
-                  data-description={item.caption}
-                  data-type={isVideo ? "video" : "image"}
-                  {...(isVideo ? { "data-source": item.embed.provider } : {})}
+                  className={`group relative mb-5 block break-inside-avoid overflow-hidden bg-surface-1 ${aspect}`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -196,16 +196,51 @@ export default function GalleryClient({
                     loading="lazy"
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                   />
+
+                  {/* Fills the tile: a click anywhere plays it in the lightbox. */}
+                  <a
+                    href={item.embed.watchUrl}
+                    aria-label={
+                      isVideo
+                        ? `Play video in a lightbox: ${item.alt}`
+                        : `View photo in a lightbox: ${item.alt}`
+                    }
+                    className={`${isVideo ? "glightbox-embed" : "glightbox"} absolute inset-0 z-[1] block`}
+                    data-gallery={isVideo ? "midline-gallery-embeds" : "midline-gallery"}
+                    data-description={item.caption}
+                    data-type={isVideo ? "video" : "image"}
+                    {...(isVideo ? { "data-source": item.embed.provider } : {})}
+                  />
+
                   {isVideo && (
                     <span
                       aria-hidden
-                      className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/55 text-white transition-transform duration-300 group-hover:scale-110"
+                      className="pointer-events-none absolute right-3 top-3 z-[2] flex h-8 w-8 items-center justify-center rounded-full bg-black/55 text-white transition-transform duration-300 group-hover:scale-110"
                     >
                       <Play className="ml-0.5 h-3.5 w-3.5 fill-current" />
                     </span>
                   )}
-                  {overlay}
-                </a>
+
+                  {/*
+                   * Caption and source. Transparent to clicks apart from the
+                   * link itself, so the lightbox layer beneath stays reachable.
+                   */}
+                  <div className="pointer-events-none absolute inset-0 z-[2] flex flex-col justify-end bg-gradient-to-t from-black/75 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-focus-within:opacity-100 group-hover:opacity-100">
+                    <div className="p-4">
+                      <p className="text-xs text-white/70">{item.category}</p>
+                      <p className="mt-0.5 text-sm font-medium text-white">{item.caption}</p>
+                      <a
+                        href={item.embed.watchUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        title={item.embed.watchUrl}
+                        className="pointer-events-auto mt-1.5 block truncate text-[11px] text-white/80 underline decoration-white/40 underline-offset-2 transition-colors hover:text-white hover:decoration-white focus-visible:text-white focus-visible:outline-none"
+                      >
+                        {sourceName} · {item.embed.watchUrl}
+                      </a>
+                    </div>
+                  </div>
+                </div>
               );
             }
 
