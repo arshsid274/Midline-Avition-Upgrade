@@ -106,7 +106,7 @@ export default function MidlineLogoLoader() {
           alignItems: "center",
           gap: "30px",
           position: "relative",
-          fontFamily: "var(--font-plex-sans), 'Helvetica Neue', Arial, sans-serif",
+          fontFamily: "var(--font-cinzel), Georgia, 'Times New Roman', serif",
         }}
         key={cycle}
       >
@@ -232,9 +232,9 @@ export default function MidlineLogoLoader() {
             className="ml-brand-name"
             style={{
               fontSize: 56,
-              fontWeight: 300,
+              fontWeight: 400,
               color: "#ffffff",
-              letterSpacing: "-1.5px",
+              letterSpacing: "0",
               lineHeight: 1,
             }}
           >

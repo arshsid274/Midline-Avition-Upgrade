@@ -7,11 +7,11 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   /* Midline type system (loaded in src/lib/fonts.ts, vars attached to <html>):
-     IBM Plex Sans carries display AND body per DESIGN-ibm.md — hierarchy is
-     size + weight (300 display / 400 body / 600 emphasis), never family change.
-     `font-display` is kept as an alias so existing markup stays valid. */
-  --font-sans: var(--font-plex-sans), "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --font-display: var(--font-plex-sans), "Helvetica Neue", Helvetica, Arial, sans-serif;
+     Cinzel carries the headlines, Montserrat Light the body. Hierarchy is now a
+     family change at the heading boundary, not only size and weight.
+     `font-display` remains the alias existing markup already uses. */
+  --font-sans: var(--font-montserrat), "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-display: var(--font-cinzel), Georgia, "Times New Roman", serif;
   --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Carbon palette (DESIGN-ibm.md) — exposed as Tailwind color utilities:
@@ -171,11 +171,12 @@
     @apply border-border outline-ring/50;
   }
 
-  /* Site-wide body voice: IBM Plex Sans (self-hosted via next/font, variable
+  /* Site-wide body voice: Montserrat Light (self-hosted via next/font, variable
      attached to <html> in layout.tsx). Referenced directly because the
      @theme inline block does not emit --font-sans to :root. */
   html {
-    font-family: var(--font-plex-sans), "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: var(--font-montserrat), "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 300;
   }
 
   body {
@@ -192,9 +193,25 @@
      need room to breathe — negative tracking under uppercase reads as
      collided). Explicit weight/tracking utilities on a heading still win
      (utilities layer beats this base-layer rule). */
+  /* Headlines are Cinzel. Set on the elements rather than relying on every
+     heading carrying `font-display` — most do not, and a heading that quietly
+     inherited the body face would be the kind of inconsistency nobody spots
+     until it is everywhere. */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-cinzel), Georgia, "Times New Roman", serif;
+  }
+
   h1,
   h2 {
-    font-weight: 300;
+    /* Cinzel has no weight below 400, so 300 here would render as 400 anyway
+       and, worse, invite the browser to synthesise a thin face. Stated
+       honestly instead. */
+    font-weight: 400;
     letter-spacing: 0.01em;
     text-transform: uppercase;
   }

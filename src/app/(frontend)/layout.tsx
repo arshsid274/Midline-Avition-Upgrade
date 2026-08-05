@@ -7,7 +7,7 @@ import WhatsAppButton from "@/app/components/ui/WhatsAppButton";
 import ChatWidget from "@/app/components/ui/ChatWidget";
 import CookieConsent from "@/app/components/ui/CookieConsent";
 import DraftBanner from "@/app/components/cms/DraftBanner";
-import { ibmPlexSans, ibmPlexMono } from "@/lib/fonts";
+import { cinzel, montserrat, ibmPlexMono } from "@/lib/fonts";
 import {
   BRAND_THEME_COLOR,
   CONTACT_EMAIL,
@@ -139,7 +139,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${ibmPlexSans.variable} ${ibmPlexMono.variable}`}
+      className={`${montserrat.variable} ${cinzel.variable} ${ibmPlexMono.variable}`}
     >
       <body className="min-h-screen bg-background pt-[72px] md:pt-[84px]">
         {/* Flags that JS is active so the reveal CSS gate can hide-then-animate elements.
