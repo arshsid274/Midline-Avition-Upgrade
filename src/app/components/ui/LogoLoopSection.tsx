@@ -15,8 +15,15 @@ type LogoLoopSectionProps = {
 // Only credentials marked enabled in the CMS are passed in — unverified logos sit
 // in the admin panel switched off and can be turned on without a deploy.
 // Logos sit on white hairline-bordered tiles so every mark stays legible.
+//
 // Every chip and inner logo box is a FIXED size, and each mark scales to fill it
-// with object-contain — so wide, squat, and square logos all read the same size.
+// with object-contain. That only equalises the marks if each source file is
+// cropped to its ink: object-contain fits the image *canvas*, so a logo exported
+// with transparent padding baked in renders proportionally smaller than one
+// exported tight. NBAA's mark once covered 8% of its canvas and came out 52x11px
+// beside AOPA at 98x63px. scripts/normalize-accreditation-logos.mjs trims and
+// re-scales the sources — run it on any logo added to public/assets/images/
+// accreditations, then re-upload with scripts/seed/reimport-accreditation-logos.mts.
 export default function LogoLoopSection({ logos }: LogoLoopSectionProps) {
   // Built inside render, not at module scope: a module-scope array is evaluated
   // at import time, which no amount of prop-passing can reach.
@@ -94,7 +101,16 @@ export default function LogoLoopSection({ logos }: LogoLoopSectionProps) {
           Accreditations &amp; Memberships
         </h2>
 
-        <div ref={loopRef} className="relative mt-8 h-[140px] overflow-hidden sm:mt-10 sm:h-[156px]">
+        {/*
+          items-center, not the default stretch: the marquee row is shorter than
+          this fixed band (the li inherits a 112px font size, so its line box is
+          taller than the chip), which otherwise pins the tiles to the top and
+          leaves the dead space below them.
+        */}
+        <div
+          ref={loopRef}
+          className="relative mt-8 flex h-[140px] items-center overflow-hidden sm:mt-10 sm:h-[156px]"
+        >
           <LogoLoop
             logos={accreditationLogos}
             speed={80}

@@ -154,57 +154,8 @@ export const HomePage: GlobalConfig = {
 
         // ── 4 ─────────────────────────────────────────────────────────────
         {
-          name: 'marketplace',
-          label: '4 · Where We Fly',
-          description: 'The world map with the aircraft photo carousel beside it.',
-          fields: [
-            ...sectionHeader(),
-            {
-              type: 'collapsible',
-              label: 'Aircraft photos used on the map',
-              admin: { initCollapsed: true },
-              fields: [
-                {
-                  name: 'jetVisuals',
-                  type: 'array',
-                  label: 'Aircraft',
-                  labels: { singular: 'Aircraft', plural: 'Aircraft' },
-                  admin: {
-                    description:
-                      'Two photos per aircraft. The route details beside them come from the flight database, not from here.',
-                    components: { RowLabel: '@/payload/components/RowLabel#CardRowLabel' },
-                  },
-                  fields: [
-                    { name: 'title', type: 'text', label: 'Aircraft name', required: true },
-                    {
-                      // The join back to the route data in code. Matching on
-                      // title would break the moment someone renames an
-                      // aircraft, and matching on row order would break the
-                      // moment they reorder — both silently, by showing the
-                      // wrong photographs against the wrong routes.
-                      name: 'aircraft',
-                      type: 'select',
-                      label: 'Which aircraft these photos are of',
-                      required: true,
-                      options: [
-                        { label: 'Gulfstream G450 (heavy)', value: 'gulfstream-heavy' },
-                        { label: 'Gulfstream G200 (mid size)', value: 'gulfstream-mid-size' },
-                        { label: 'Embraer Legacy 650 (heavy)', value: 'embraer-heavy' },
-                      ],
-                    },
-                    imageField({ name: 'exterior', label: 'Outside photo' }),
-                    imageField({ name: 'interior', label: 'Cabin photo' }),
-                  ],
-                },
-              ],
-            },
-          ],
-        },
-
-        // ── 5 ─────────────────────────────────────────────────────────────
-        {
           name: 'accreditations',
-          label: '5 · Accreditations strip',
+          label: '4 · Accreditations strip',
           description: 'The scrolling row of industry logos.',
           fields: [
             { name: 'heading', type: 'text', label: 'Section headline' },
@@ -218,10 +169,10 @@ export const HomePage: GlobalConfig = {
           ],
         },
 
-        // ── 6 ─────────────────────────────────────────────────────────────
+        // ── 5 ─────────────────────────────────────────────────────────────
         {
           name: 'fleet',
-          label: '6 · Our Fleet',
+          label: '5 · Our Fleet',
           description: 'The three aircraft cards near the bottom of the page.',
           fields: [
             ...sectionHeader(),
@@ -250,10 +201,10 @@ export const HomePage: GlobalConfig = {
           ],
         },
 
-        // ── 7 ─────────────────────────────────────────────────────────────
+        // ── 6 ─────────────────────────────────────────────────────────────
         {
           name: 'ctaBanner',
-          label: '7 · Blue banner (bottom)',
+          label: '6 · Blue banner (bottom)',
           description:
             'The solid blue panel just above the footer, at the very bottom of the page.',
           fields: [

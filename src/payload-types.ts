@@ -779,23 +779,6 @@ export interface HomePage {
         }[]
       | null;
   };
-  marketplace?: {
-    eyebrow?: string | null;
-    heading?: string | null;
-    intro?: string | null;
-    /**
-     * Two photos per aircraft. The route details beside them come from the flight database, not from here.
-     */
-    jetVisuals?:
-      | {
-          title: string;
-          aircraft: 'gulfstream-heavy' | 'gulfstream-mid-size' | 'embraer-heavy';
-          exterior?: (number | null) | Media;
-          interior?: (number | null) | Media;
-          id?: string | null;
-        }[]
-      | null;
-  };
   accreditations?: {
     heading?: string | null;
   };
@@ -1866,22 +1849,6 @@ export interface HomePageSelect<T extends boolean = true> {
                     label?: T;
                     href?: T;
                   };
-              id?: T;
-            };
-      };
-  marketplace?:
-    | T
-    | {
-        eyebrow?: T;
-        heading?: T;
-        intro?: T;
-        jetVisuals?:
-          | T
-          | {
-              title?: T;
-              aircraft?: T;
-              exterior?: T;
-              interior?: T;
               id?: T;
             };
       };

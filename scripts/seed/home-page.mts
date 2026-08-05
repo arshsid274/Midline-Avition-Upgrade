@@ -9,7 +9,6 @@ import {
   HOME_HERO,
   POPULAR_DESTINATIONS,
   SHOWCASE_ITEMS,
-  MARKETPLACE,
 } from '../../src/lib/home-content.js'
 
 import { importMedia } from './lib/media.mjs'
@@ -132,30 +131,6 @@ const run = async () => {
     console.log('  + blue banner')
   } else {
     console.log('  = blue banner already has content, skipped (use --force to overwrite)')
-  }
-
-  if (force || !(existing?.marketplace?.jetVisuals ?? []).length) {
-    data.marketplace = {
-      eyebrow: MARKETPLACE.eyebrow,
-      heading: MARKETPLACE.heading,
-      intro: MARKETPLACE.intro,
-      // Sequential: importMedia dedupes by reading then creating, so parallel
-      // calls for the same file both miss and both upload it. Several of these
-      // photographs are also imported by other seeds.
-      jetVisuals: await MARKETPLACE.jetVisuals.reduce(
-        async (acc, jet) => [
-          ...(await acc),
-          {
-            aircraft: jet.aircraft,
-            title: jet.title,
-            exterior: await importMedia(payload, jet.exterior.src, jet.exterior.alt),
-            interior: await importMedia(payload, jet.interior.src, jet.interior.alt),
-          },
-        ],
-        Promise.resolve([] as any[])
-      ),
-    }
-    console.log(`  + where we fly (${MARKETPLACE.jetVisuals.length} aircraft)`)
   }
 
   if (Object.keys(data).length === 0) {
