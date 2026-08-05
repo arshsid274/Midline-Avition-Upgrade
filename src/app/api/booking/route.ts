@@ -131,12 +131,17 @@ export async function POST(request: Request) {
   const departureAirportDetails = describeAirportSelection(payload.departureAirport);
   const arrivalAirportDetails = describeAirportSelection(payload.arrivalAirport);
 
+  /**
+   * The two "Airport" rows only appear when the form sent a resolved airport.
+   * The booking form's autocomplete is currently off and it sends typed text
+   * alone, which would otherwise print two blank rows in every enquiry email.
+   */
   const rows = [
     ["Trip Type", tripType === "round-trip" ? "Round Trip" : "One Way"],
     ["Departure", departureCity],
-    ["Departure Airport", departureAirportDetails],
+    ...(departureAirportDetails ? [["Departure Airport", departureAirportDetails]] : []),
     ["Arrival", arrivalCity],
-    ["Arrival Airport", arrivalAirportDetails],
+    ...(arrivalAirportDetails ? [["Arrival Airport", arrivalAirportDetails]] : []),
     ["Departure Date", departureDate],
     ["Departure Time", departureTime],
     ["Return Date", isRoundTrip ? returnDate : "Not applicable"],

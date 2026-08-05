@@ -1,16 +1,9 @@
 "use client";
 
-import type { FormEvent, KeyboardEvent } from "react";
+import type { FormEvent } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { AlertTriangle, CheckCircle2, X } from "lucide-react";
-
-import { useAirportSuggest } from "@/hooks/useAirportSuggest";
-import {
-  formatSelectionValue,
-  type AirportSelection,
-  type SuggestionItem,
-} from "@/lib/airports";
 
 const AIRCRAFT_OPTIONS = [
   { code: "T7-MID", manufacturer: "Gulfstream", category: "Heavy", maxPax: 13 },
@@ -21,22 +14,6 @@ const AIRCRAFT_OPTIONS = [
 type TripType = "one-way" | "round-trip";
 type AirportField = "departure" | "arrival";
 type SubmitStatus = "idle" | "submitting" | "success" | "error";
-
-// What the booking email needs to identify the chosen airport (or metro-area
-// "Any airport" pick, where ops chooses the exact field later).
-const selectionPayload = (selection: AirportSelection | null) => {
-  if (!selection) return null;
-  if (selection.kind === "metro") {
-    return {
-      flexible: true,
-      metro: selection.ma.name,
-      country: selection.ma.country,
-      main_ap: selection.ma.main_ap,
-    };
-  }
-  const { code, icao, iata, name, city, country, lat, lon } = selection.ap;
-  return { flexible: false, code, icao, iata, name, city, country, lat, lon };
-};
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const PHONE_PATTERN = /^[+()\d\s.-]{7,20}$/;
@@ -506,10 +483,6 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
   const [tripType, setTripType] = useState<TripType>("one-way");
   const [departureCity, setDepartureCity] = useState("");
   const [arrivalCity, setArrivalCity] = useState("");
-  const [departureSelection, setDepartureSelection] = useState<AirportSelection | null>(null);
-  const [arrivalSelection, setArrivalSelection] = useState<AirportSelection | null>(null);
-  const [activeAirportField, setActiveAirportField] = useState<AirportField | null>(null);
-  const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(-1);
   const [paxCount, setPaxCount] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [departureTime, setDepartureTime] = useState("");
@@ -523,11 +496,6 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle");
   const [submitMessage, setSubmitMessage] = useState("");
   const [toastMounted, setToastMounted] = useState(false);
-
-  // One suggest session per field — mirrors VistaJet's widget, where each
-  // input keeps its own debounced query against the suggest endpoint.
-  const departureSuggest = useAirportSuggest();
-  const arrivalSuggest = useAirportSuggest();
 
   // Portal target only exists client-side.
   useEffect(() => {
@@ -563,188 +531,37 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
       : "";
   const paxIsInvalid = paxHasInvalidFormat || paxUnderMinimum || paxOverGlobalLimit || paxOverSelectedLimit;
 
-  const suggestFor = (field: AirportField) =>
-    field === "departure" ? departureSuggest : arrivalSuggest;
-  const cityFor = (field: AirportField) => (field === "departure" ? departureCity : arrivalCity);
-
-  const handleAirportInputChange = (field: AirportField, value: string) => {
-    if (field === "departure") {
-      setDepartureCity(value);
-      setDepartureSelection(null);
-    } else {
-      setArrivalCity(value);
-      setArrivalSelection(null);
-    }
-    setActiveSuggestionIndex(-1);
-    suggestFor(field).search(value);
-  };
-
-  const handleAirportFocus = (field: AirportField) => {
-    setActiveAirportField(field);
-    setActiveSuggestionIndex(-1);
-    const current = cityFor(field).trim();
-    if (current.length < 2) {
-      suggestFor(field).loadPopular();
-    } else {
-      suggestFor(field).search(current);
-    }
-  };
-
-  const handleSuggestionSelect = (field: AirportField, item: SuggestionItem) => {
-    // Picking a metro header ("Any airport") records the metro without
-    // committing to a specific field — mirroring VistaJet's top row; ops
-    // resolves it to the metro's main_ap (or better) later.
-    const selection: AirportSelection =
-      item.type === "airport" || item.type === "airport-nested"
-        ? { kind: "airport", ap: item.ap }
-        : { kind: "metro", ma: item.ma };
-    const nextValue = formatSelectionValue(selection);
-
-    if (field === "departure") {
-      setDepartureCity(nextValue);
-      setDepartureSelection(selection);
-    } else {
-      setArrivalCity(nextValue);
-      setArrivalSelection(selection);
-    }
-
-    setActiveAirportField(null);
-    setActiveSuggestionIndex(-1);
-  };
-
-  const handleAirportKeyDown = (field: AirportField, event: KeyboardEvent<HTMLInputElement>) => {
-    const { items } = suggestFor(field);
-    const isOpen = activeAirportField === field && items.length > 0;
-
-    if (event.key === "Escape") {
-      setActiveAirportField(null);
-      setActiveSuggestionIndex(-1);
-      return;
-    }
-    if (!isOpen) return;
-
-    if (event.key === "ArrowDown") {
-      event.preventDefault();
-      setActiveSuggestionIndex((current) => (current + 1) % items.length);
-    } else if (event.key === "ArrowUp") {
-      event.preventDefault();
-      setActiveSuggestionIndex((current) => (current <= 0 ? items.length - 1 : current - 1));
-    } else if (event.key === "Enter" && activeSuggestionIndex >= 0) {
-      event.preventDefault();
-      handleSuggestionSelect(field, items[activeSuggestionIndex]);
-    }
-  };
-
-  const closeSuggestionsAfterBlur = (field: AirportField) => {
-    window.setTimeout(() => {
-      setActiveAirportField((currentField) => (currentField === field ? null : currentField));
-    }, 100);
-  };
-
-  // Row template mirrors XO's grouped listbox: metro header rows ("Any
-  // airport"), the metro's members as indented nested rows, then flat
-  // non-metro matches — all pre-ordered by groupAirports().
-  const renderSuggestionList = (field: AirportField) => {
-    const { items, loading, isEmpty } = suggestFor(field);
-    if (!loading && !isEmpty && items.length === 0) return null;
-
-    return (
-      <ul
-        id={`${field}-airport-listbox`}
-        role="listbox"
-        aria-label={`${field === "departure" ? "Departure" : "Arrival"} airport suggestions`}
-        className="absolute left-0 right-0 z-50 mt-1 max-h-72 overflow-y-auto border border-hairline bg-white"
-      >
-        {loading && items.length === 0 && (
-          <li className="px-3 py-2 text-xs text-ink-muted">Searching airports…</li>
-        )}
-        {isEmpty && !loading && (
-          <li className="px-3 py-2 text-xs text-ink-muted">No airports found.</li>
-        )}
-        {items.map((item, index) => {
-          const isMetro = item.type === "metropolitan-area" || item.type === "metropolitan-area-with-airports";
-          const isActive = index === activeSuggestionIndex;
-          const key = isMetro
-            ? `metro-${item.ma.metropolitan_area_id}`
-            : `${item.ap.code}-${item.ap.name}`;
-
-          return (
-            <li key={key} role="option" aria-selected={isActive} id={`${field}-airport-option-${index}`}>
-              <button
-                type="button"
-                tabIndex={-1}
-                onMouseDown={(event) => {
-                  event.preventDefault();
-                  handleSuggestionSelect(field, item);
-                }}
-                onMouseEnter={() => setActiveSuggestionIndex(index)}
-                className={`w-full px-3 py-2 text-left normal-case hover:bg-surface-1 ${
-                  isActive ? "bg-surface-1" : ""
-                } ${item.type === "airport-nested" ? "border-l-2 border-hairline pl-6" : ""}`}
-              >
-                {isMetro ? (
-                  <>
-                    <span className="block truncate text-sm font-semibold text-ink">
-                      {item.ma.name}, {item.ma.country}
-                    </span>
-                    <span className="block truncate text-xs font-medium text-ibm-blue">Any airport</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="flex items-center gap-2">
-                      <span className="block truncate text-sm font-medium text-ink">
-                        {item.ap.name}
-                      </span>
-                      {item.ap.isPrivate && (
-                        <span className="shrink-0 border border-ibm-blue px-1.5 py-0.5 text-[10px] font-medium text-ibm-blue">
-                          Private
-                        </span>
-                      )}
-                    </span>
-                    <span className="block truncate text-xs text-ink-muted">
-                      {item.ap.code}, {item.ap.city}
-                      {item.type === "airport-nested" ? "" : `, ${item.ap.country}`}
-                    </span>
-                  </>
-                )}
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-    );
-  };
-
-  const renderAirportInput = (field: AirportField, placeholder: string) => {
-    const isOpen = activeAirportField === field;
-
-    return (
-      <div className="relative">
-        <input
-          type="text"
-          placeholder={placeholder}
-          value={cityFor(field)}
-          role="combobox"
-          aria-expanded={isOpen}
-          aria-controls={`${field}-airport-listbox`}
-          aria-autocomplete="list"
-          aria-activedescendant={
-            isOpen && activeSuggestionIndex >= 0
-              ? `${field}-airport-option-${activeSuggestionIndex}`
-              : undefined
-          }
-          onChange={(event) => handleAirportInputChange(field, event.target.value)}
-          onFocus={() => handleAirportFocus(field)}
-          onBlur={() => closeSuggestionsAfterBlur(field)}
-          onKeyDown={(event) => handleAirportKeyDown(field, event)}
-          className="h-11 w-full border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
-          autoComplete="off"
-          required
-        />
-        {isOpen && renderSuggestionList(field)}
-      </div>
-    );
-  };
+  /**
+   * A plain text field. The airport autocomplete is deliberately switched off
+   * for now — the traveller types where they are flying from and to, and ops
+   * reads it and confirms by phone or email, which is how the enquiry is
+   * handled anyway at this stage.
+   *
+   * Nothing that powered the autocomplete has been deleted: the suggest
+   * endpoint (src/app/api/airports/suggest), its dataset and search ranking
+   * (src/lib/airports.ts, src/lib/airport-search.ts, `npm run build:airports`)
+   * and the useAirportSuggest hook are all still here and still work. Only this
+   * form stopped calling them, so the automatic version can be wired back with
+   * a `renderAirportInput` that reads from the hook again.
+   */
+  const renderAirportInput = (field: AirportField, placeholder: string) => (
+    <input
+      type="text"
+      placeholder={placeholder}
+      value={field === "departure" ? departureCity : arrivalCity}
+      onChange={(event) =>
+        field === "departure"
+          ? setDepartureCity(event.target.value)
+          : setArrivalCity(event.target.value)
+      }
+      className="h-11 w-full border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
+      // No autoComplete token: the spec has none for a trip endpoint, and the
+      // address ones would offer the traveller their own home city. Left at the
+      // browser default so its own history for the field still works — which it
+      // could not do before, while a suggestion list was overlaying it.
+      required
+    />
+  );
 
   const departureDateIsValid = parseIsoDate(departureDate.trim()) !== null;
   const departureTimeIsValid = parseManualTimeValue(departureTime.trim()) !== null;
@@ -754,11 +571,11 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
   const emailIsValid = EMAIL_PATTERN.test(emailAddress.trim());
   const phoneIsValid = PHONE_PATTERN.test(phoneNumber.trim());
 
-  // Airports must be picked from the suggestion list — free-typed text no
-  // longer qualifies (it used to lose the airport identity anyway).
+  // Typed text is all that is asked for while the airport lookup is off, so
+  // any non-empty departure and arrival counts as complete.
   const primaryDetailsComplete =
-    departureSelection !== null &&
-    arrivalSelection !== null &&
+    departureCity.trim().length > 0 &&
+    arrivalCity.trim().length > 0 &&
     departureDateIsValid &&
     departureTimeIsValid &&
     (!isRoundTrip || (returnDateIsValid && returnTimeIsValid && returnDateIsAfterDeparture));
@@ -789,8 +606,8 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
     if (!canSubmit) {
       setSubmitStatus("error");
       setSubmitMessage(
-        departureSelection === null || arrivalSelection === null
-          ? "Please pick your departure and arrival airports from the suggestion list."
+        departureCity.trim().length === 0 || arrivalCity.trim().length === 0
+          ? "Please enter where you are flying from and where you are flying to."
           : "Please complete every required field with a valid email and phone number."
       );
       return;
@@ -806,10 +623,11 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
         },
         body: JSON.stringify({
           tripType,
+          // No departureAirport/arrivalAirport: those carried the identity of a
+          // picked airport, and with the lookup off there is nothing to send.
+          // The API treats them as optional and omits the rows when absent.
           departureCity: departureCity.trim(),
           arrivalCity: arrivalCity.trim(),
-          departureAirport: selectionPayload(departureSelection),
-          arrivalAirport: selectionPayload(arrivalSelection),
           departureDate: departureDate.trim(),
           departureTime: departureTime.trim(),
           returnDate: isRoundTrip ? returnDate.trim() : "",
