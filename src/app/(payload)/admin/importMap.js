@@ -1,6 +1,7 @@
 import { SpecRowLabel as SpecRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
 import { VideoPreview as VideoPreview_d03cb3f2a72d7677ca4c53784843f315 } from '@/payload/components/VideoPreview'
 import { GalleryRowLabel as GalleryRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1 } from '@/payload/components/RowLabel'
+import { EmbedPreview as EmbedPreview_88fc6d27411498f51176dffe6ffa8e54 } from '@/payload/components/EmbedPreview'
 import { UsedOnField as UsedOnField_fba666c6490f778411f484b170ecef8d } from '@/payload/components/UsedOn'
 import { UsedOnCell as UsedOnCell_fba666c6490f778411f484b170ecef8d } from '@/payload/components/UsedOn'
 import { VideoPreviewField as VideoPreviewField_75fab473bc03f87da264c38d75de3b2d } from '@/payload/components/VideoThumb'
@@ -28,6 +29,7 @@ export const importMap = {
   "@/payload/components/RowLabel#SpecRowLabel": SpecRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,
   "@/payload/components/VideoPreview#VideoPreview": VideoPreview_d03cb3f2a72d7677ca4c53784843f315,
   "@/payload/components/RowLabel#GalleryRowLabel": GalleryRowLabel_330bd7521fe9b72cd9d2defbdaf80bf1,
+  "@/payload/components/EmbedPreview#EmbedPreview": EmbedPreview_88fc6d27411498f51176dffe6ffa8e54,
   "@/payload/components/UsedOn#UsedOnField": UsedOnField_fba666c6490f778411f484b170ecef8d,
   "@/payload/components/UsedOn#UsedOnCell": UsedOnCell_fba666c6490f778411f484b170ecef8d,
   "@/payload/components/VideoThumb#VideoPreviewField": VideoPreviewField_75fab473bc03f87da264c38d75de3b2d,

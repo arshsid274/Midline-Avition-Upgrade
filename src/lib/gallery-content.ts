@@ -11,6 +11,18 @@ export type GalleryItem = {
   orientation: "landscape" | "portrait";
   /** Present on video items — src is then an MP4 and poster the preview frame. */
   poster?: string;
+  /**
+   * Present when this tile is a pasted link rather than something we host.
+   * `src` is then the thumbnail, and the lightbox opens `watchUrl` at the
+   * source instead of playing a file of ours.
+   */
+  embed?: {
+    provider: "youtube" | "vimeo" | "image";
+    kind: "video" | "photo";
+    watchUrl: string;
+    /** Bare hostname, shown on the tile so visitors see where it comes from. */
+    host: string;
+  };
 };
 
 const IMG = "/assets/images/aircraft";

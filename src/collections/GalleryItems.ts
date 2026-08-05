@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { revalidatePaths } from '../payload/hooks/revalidate'
 import { videoField } from '../payload/fields/video'
+import { EMBED_HELP, parseEmbed } from '../lib/embeds'
 
 /**
  * The gallery grid — photos and films in one ordered list.
@@ -11,9 +12,16 @@ import { videoField } from '../payload/fields/video'
  * where a list view with filtering beats a single enormous form.
  *
  * Videos stay static files on R2 and are referenced by path, with a player
- * shown beside the field. Photos are uploads. `kind` decides which of the two
+ * shown beside the field. Photos are uploads. `kind` decides which of the three
  * a row uses — the old code inferred it from whether a poster existed, which
  * was invisible to anyone reading the data.
+ *
+ * The third kind is a pasted link — a YouTube or Vimeo film, or a photo hosted
+ * elsewhere. Nothing is copied onto our storage: the tile shows the source's own
+ * still and names the site it comes from, and the lightbox plays it in place.
+ * That keeps a marketing clip that already lives on the company's YouTube
+ * channel out of the 2 GB upload tier, and means a film can go in the gallery
+ * without waiting on a 50 MB upload.
  */
 export const GalleryItems: CollectionConfig = {
   slug: 'gallery-items',
@@ -38,6 +46,7 @@ export const GalleryItems: CollectionConfig = {
       options: [
         { label: 'Photo', value: 'image' },
         { label: 'Film', value: 'video' },
+        { label: 'Link (YouTube, Vimeo, or a photo URL)', value: 'link' },
       ],
       admin: { position: 'sidebar' },
     },
@@ -54,13 +63,42 @@ export const GalleryItems: CollectionConfig = {
       description: 'Path such as /assets/videos/gallery/name.mp4.',
     }),
     {
+      name: 'embedUrl',
+      type: 'text',
+      label: 'Link',
+      admin: {
+        condition: (data) => data?.kind === 'link',
+        description: EMBED_HELP,
+        components: {
+          // Plays the link as it is pasted and names the site it comes from.
+          afterInput: [
+            {
+              path: '@/payload/components/EmbedPreview#EmbedPreview',
+              clientProps: { fieldPath: 'embedUrl' },
+            },
+          ],
+        },
+      },
+      /**
+       * Rejected at save rather than skipped at render. A link the gallery
+       * cannot read would otherwise save cleanly, disappear from the page, and
+       * give the editor nothing to act on.
+       */
+      validate: (value: unknown, { siblingData }: { siblingData?: { kind?: string } }) => {
+        if (siblingData?.kind !== 'link') return true
+        if (!value) return 'Paste a link. ' + EMBED_HELP
+        return parseEmbed(value) ? true : EMBED_HELP
+      },
+    },
+    {
       name: 'poster',
       type: 'upload',
       relationTo: 'media',
       label: 'Film still',
       admin: {
-        condition: (data) => data?.kind === 'video',
-        description: 'The frame shown before the film plays.',
+        condition: (data) => data?.kind === 'video' || data?.kind === 'link',
+        description:
+          'The frame shown before the film plays. Optional for a YouTube link — its own still is used when this is empty — but required for Vimeo, which does not publish one.',
       },
     },
     { name: 'caption', type: 'text', required: true, label: 'Caption' },

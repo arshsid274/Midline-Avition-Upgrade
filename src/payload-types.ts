@@ -247,6 +247,8 @@ export interface Media {
    * Original /assets path this image was imported from. Set by the seed script and used to make re-runs idempotent — do not edit.
    */
   sourcePath?: string | null;
+  _key?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -260,6 +262,7 @@ export interface Media {
   focalY?: number | null;
   sizes?: {
     thumbnail?: {
+      _key?: string | null;
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -285,6 +288,8 @@ export interface Video {
    * Original /assets path this film was imported from. Set by the seed script and used to keep re-runs idempotent — do not edit.
    */
   sourcePath?: string | null;
+  _key?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -345,14 +350,18 @@ export interface Accreditation {
  */
 export interface GalleryItem {
   id: number;
-  kind: 'image' | 'video';
+  kind: 'image' | 'video' | 'link';
   image?: (number | null) | Media;
   /**
    * Path such as /assets/videos/gallery/name.mp4.
    */
   videoUrl?: (number | null) | Video;
   /**
-   * The frame shown before the film plays.
+   * Paste a YouTube link (youtube.com/watch, youtu.be, or a Short), a Vimeo link, or a direct image address ending in .jpg, .png, .webp, .gif or .avif.
+   */
+  embedUrl?: string | null;
+  /**
+   * The frame shown before the film plays. Optional for a YouTube link — its own still is used when this is empty — but required for Vimeo, which does not publish one.
    */
   poster?: (number | null) | Media;
   caption: string;
@@ -569,6 +578,7 @@ export interface GalleryItemsSelect<T extends boolean = true> {
   kind?: T;
   image?: T;
   videoUrl?: T;
+  embedUrl?: T;
   poster?: T;
   caption?: T;
   alt?: T;
@@ -585,6 +595,8 @@ export interface GalleryItemsSelect<T extends boolean = true> {
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
   sourcePath?: T;
+  _key?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -602,6 +614,7 @@ export interface MediaSelect<T extends boolean = true> {
         thumbnail?:
           | T
           | {
+              _key?: T;
               url?: T;
               width?: T;
               height?: T;
@@ -618,6 +631,8 @@ export interface MediaSelect<T extends boolean = true> {
 export interface VideosSelect<T extends boolean = true> {
   title?: T;
   sourcePath?: T;
+  _key?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

@@ -31,7 +31,8 @@ export default function GalleryClient({
     activeCategory === "All"
       ? items
       : activeCategory === "Videos"
-        ? items.filter((item) => item.poster)
+        ? // A film is a film whether we host it or it is linked from YouTube.
+          items.filter((item) => item.poster || item.embed?.kind === "video")
         : items.filter((item) => item.category === activeCategory);
 
   // Capture positions BEFORE React re-renders the filtered grid…
@@ -66,6 +67,7 @@ export default function GalleryClient({
 
   useEffect(() => {
     let lightbox: { destroy: () => void } | null = null;
+    let embedLightbox: { destroy: () => void } | null = null;
 
     async function initLightbox() {
       const GLightbox = (await import("glightbox")).default;
@@ -83,11 +85,31 @@ export default function GalleryClient({
           config: { autoplay: true, ratio: "9:16" },
         },
       } as Parameters<typeof GLightbox>[0]);
+
+      /**
+       * Linked films get their own instance rather than joining the one above.
+       * That config forces a 9:16 ratio for our own portrait clips, and YouTube
+       * and Vimeo are almost always 16:9 — sharing it would letterbox every
+       * embed into a narrow column. Two instances also means two galleries, so
+       * arrowing through linked films never lands mid-way into local ones.
+       */
+      embedLightbox = GLightbox({
+        selector: ".glightbox-embed",
+        touchNavigation: true,
+        loop: true,
+        openEffect: "fade",
+        closeEffect: "fade",
+        videosWidth: "min(900px, 92vw)",
+        plyr: {
+          config: { autoplay: true, ratio: "16:9" },
+        },
+      } as Parameters<typeof GLightbox>[0]);
     }
 
     initLightbox();
     return () => {
       lightbox?.destroy();
+      embedLightbox?.destroy();
     };
   }, [filtered]);
 
@@ -131,11 +153,61 @@ export default function GalleryClient({
             const overlay = (
               <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                 <div className="p-4">
-                  <p className="text-xs text-white/70">{item.category}</p>
+                  <p className="text-xs text-white/70">
+                    {item.category}
+                    {/* Credits the source, so it is clear this is not our footage. */}
+                    {item.embed ? ` · ${item.embed.host}` : ""}
+                  </p>
                   <p className="mt-0.5 text-sm font-medium text-white">{item.caption}</p>
                 </div>
               </div>
             );
+
+            /**
+             * A pasted link. The thumbnail comes from the source (or an uploaded
+             * still), and the lightbox opens the original in place — GLightbox
+             * plays YouTube and Vimeo natively via `data-source`.
+             *
+             * Plain <img>, not next/image: the host is whatever an editor
+             * pasted, and next/image returns 400 for any host missing from
+             * remotePatterns — a broken picture with nothing in the logs.
+             */
+            if (item.embed) {
+              const isVideo = item.embed.kind === "video";
+              return (
+                <a
+                  key={item.embed.watchUrl}
+                  href={item.embed.watchUrl}
+                  aria-label={
+                    isVideo
+                      ? `Play video on ${item.embed.host}: ${item.alt}`
+                      : `View photo from ${item.embed.host}: ${item.alt}`
+                  }
+                  className={`${isVideo ? "glightbox-embed" : "glightbox"} group relative mb-5 block break-inside-avoid overflow-hidden bg-surface-1 ${aspect}`}
+                  data-gallery={isVideo ? "midline-gallery-embeds" : "midline-gallery"}
+                  data-description={item.caption}
+                  data-type={isVideo ? "video" : "image"}
+                  {...(isVideo ? { "data-source": item.embed.provider } : {})}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.src}
+                    alt={item.alt}
+                    loading="lazy"
+                    className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                  />
+                  {isVideo && (
+                    <span
+                      aria-hidden
+                      className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/55 text-white transition-transform duration-300 group-hover:scale-110"
+                    >
+                      <Play className="ml-0.5 h-3.5 w-3.5 fill-current" />
+                    </span>
+                  )}
+                  {overlay}
+                </a>
+              );
+            }
 
             if (item.poster) {
               return (
