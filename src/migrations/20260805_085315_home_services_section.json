@@ -909,6 +909,21 @@
           "notNull": false,
           "autoincrement": false
         },
+        "_key": {
+          "name": "_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "prefix": {
+          "name": "prefix",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "''"
+        },
         "updated_at": {
           "name": "updated_at",
           "type": "text",
@@ -984,6 +999,13 @@
         "focal_y": {
           "name": "focal_y",
           "type": "numeric",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "sizes_thumbnail__key": {
+          "name": "sizes_thumbnail__key",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -1096,6 +1118,21 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "_key": {
+          "name": "_key",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "prefix": {
+          "name": "prefix",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "''"
         },
         "updated_at": {
           "name": "updated_at",
@@ -12730,6 +12767,6 @@
   "internal": {
     "indexes": {}
   },
-  "id": "ce3bae07-e678-4555-bd7d-035c1ac1f0d8",
+  "id": "38660775-69e5-497d-a93d-96ab28721254",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

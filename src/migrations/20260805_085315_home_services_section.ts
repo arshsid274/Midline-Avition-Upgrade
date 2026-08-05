@@ -42,21 +42,11 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   await db.run(sql`ALTER TABLE \`_home_page_v\` ADD \`version_services_eyebrow\` text;`)
   await db.run(sql`ALTER TABLE \`_home_page_v\` ADD \`version_services_heading\` text;`)
   await db.run(sql`ALTER TABLE \`_home_page_v\` ADD \`version_services_intro\` text;`)
-  await db.run(sql`ALTER TABLE \`media\` DROP COLUMN \`_key\`;`)
-  await db.run(sql`ALTER TABLE \`media\` DROP COLUMN \`prefix\`;`)
-  await db.run(sql`ALTER TABLE \`media\` DROP COLUMN \`sizes_thumbnail__key\`;`)
-  await db.run(sql`ALTER TABLE \`videos\` DROP COLUMN \`_key\`;`)
-  await db.run(sql`ALTER TABLE \`videos\` DROP COLUMN \`prefix\`;`)
 }
 
 export async function down({ db, payload, req }: MigrateDownArgs): Promise<void> {
   await db.run(sql`DROP TABLE \`home_page_services_cards\`;`)
   await db.run(sql`DROP TABLE \`_home_page_v_version_services_cards\`;`)
-  await db.run(sql`ALTER TABLE \`media\` ADD \`_key\` text;`)
-  await db.run(sql`ALTER TABLE \`media\` ADD \`prefix\` text DEFAULT '';`)
-  await db.run(sql`ALTER TABLE \`media\` ADD \`sizes_thumbnail__key\` text;`)
-  await db.run(sql`ALTER TABLE \`videos\` ADD \`_key\` text;`)
-  await db.run(sql`ALTER TABLE \`videos\` ADD \`prefix\` text DEFAULT '';`)
   await db.run(sql`ALTER TABLE \`home_page\` DROP COLUMN \`services_eyebrow\`;`)
   await db.run(sql`ALTER TABLE \`home_page\` DROP COLUMN \`services_heading\`;`)
   await db.run(sql`ALTER TABLE \`home_page\` DROP COLUMN \`services_intro\`;`)
