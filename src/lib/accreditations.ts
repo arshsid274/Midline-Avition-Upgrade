@@ -38,31 +38,40 @@ export const ACCREDITATIONS: Accreditation[] = [
     enabled: true,
   },
   {
-    // Pending: confirm whether the membership is BACA or MEBAA before labelling.
+    // Published on request, 2026-08-05. The label is still unconfirmed: the
+    // body may be BACA or MEBAA rather than "The Air Charter Association".
+    // Correct `name` and `shortName` here once ops says which, and re-run
+    // `npm run seed:accreditations` — the strip reads both fields.
     id: "air-charter-association",
     src: "/assets/images/accreditations/air-charter-association.webp",
     name: "The Air Charter Association",
     shortName: "The Air Charter Association",
     kind: "membership",
-    enabled: false,
+    enabled: true,
   },
   {
-    // Pending: certificate and level (Wingman vs Registered) not yet verified.
+    // Published on request, 2026-08-05. The certificate level (Wingman vs
+    // Registered) was never verified. The mark carries no tier on its own, so
+    // nothing here states one — do not add a level to `name` without the
+    // certificate in hand.
     id: "wyvern",
     src: "/assets/images/accreditations/wyvern.webp",
     name: "WYVERN",
     shortName: "WYVERN",
     kind: "rating",
-    enabled: false,
+    enabled: true,
   },
   {
-    // Not in the ops brief; fleet operates under the San Marino registry.
+    // Published on request, 2026-08-05, against the original ops brief: this
+    // authority is not in it and the fleet flies on San Marino T7- registrations.
+    // Kept enabled because it was asked for explicitly; revisit if the registry
+    // is ever queried.
     id: "caa-cayman",
     src: "/assets/images/accreditations/caa-cayman.webp",
     name: "Civil Aviation Authority of the Cayman Islands",
     shortName: "CAA Cayman Islands",
     kind: "authority",
-    enabled: false,
+    enabled: true,
   },
 ];
 
