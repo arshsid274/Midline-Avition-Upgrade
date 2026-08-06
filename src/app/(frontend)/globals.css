@@ -14,21 +14,28 @@
   --font-display: var(--font-cinzel), Georgia, "Times New Roman", serif;
   --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  /* Carbon palette (DESIGN-ibm.md) — exposed as Tailwind color utilities:
-     bg-ibm-blue, text-ink-muted, border-hairline, bg-surface-1, … */
-  --color-ibm-blue: #0f62fe;
-  --color-ibm-blue-hover: #0050e6;
-  --color-ibm-blue-60: #0043ce;
-  --color-ibm-blue-80: #002d9c;
+  /* Midline luxury palette (client brief, Aug 2026) — exposed as Tailwind
+     color utilities: bg-navy, text-champagne, bg-ivory, text-offwhite,
+     text-ink-muted, border-hairline, bg-surface-1, …
+     Primary #0A2632 and accent #C8A46B are client-specified; the warm
+     neutrals are proposed values (no hex was given for those). */
+  --color-navy: #0a2632;
+  --color-navy-soft: #113344;
+  --color-navy-deep: #071b26;
+  --color-champagne: #c8a46b;
+  --color-champagne-hover: #b7935a;
+  --color-champagne-deep: #a57f48;
+  --color-ivory: #f5f1e8;
+  --color-offwhite: #f1ece2;
   --color-ink: #161616;
-  --color-ink-muted: #525252;
-  --color-ink-subtle: #8c8c8c;
-  --color-surface-1: #f4f4f4;
-  --color-surface-2: #e0e0e0;
-  --color-hairline: #e0e0e0;
-  --color-inverse-canvas: #161616;
-  --color-inverse-surface-1: #262626;
-  --color-inverse-ink-muted: #c6c6c6;
+  --color-ink-muted: #56524a;
+  --color-ink-subtle: #8b8578;
+  --color-surface-1: #f5f1e8;
+  --color-surface-2: #e9e3d6;
+  --color-hairline: #e6e0d2;
+  --color-inverse-canvas: #0a2632;
+  --color-inverse-surface-1: #113344;
+  --color-inverse-ink-muted: #c3bcac;
   --color-success: #24a148;
   --color-warning: #f1c21b;
   --color-error: #da1e28;
@@ -74,91 +81,94 @@
 }
 
 :root {
-  /* Carbon theme (DESIGN-ibm.md): white canvas, charcoal ink, IBM Blue as the
-     single accent, 0px radii, hairline borders instead of shadows. */
+  /* Midline luxury theme: warm-white canvas, charcoal ink, deep navy #0A2632
+     primary, champagne #C8A46B accent, 0px radii (rectangular, no app-style
+     rounding), thin warm hairlines instead of shadows. */
   --radius: 0rem;
-  --background: #ffffff;
+  --background: #faf7f0;
   --foreground: #161616;
-  --card: #ffffff;
+  --card: #fffdf8;
   --card-foreground: #161616;
-  --popover: #ffffff;
+  --popover: #fffdf8;
   --popover-foreground: #161616;
-  --primary: #0f62fe;
-  --primary-foreground: #ffffff;
-  --secondary: #161616;
-  --secondary-foreground: #ffffff;
-  --muted: #f4f4f4;
-  --muted-foreground: #525252;
-  --accent: #f4f4f4;
+  --primary: #0a2632;
+  --primary-foreground: #f1ece2;
+  --secondary: #c8a46b;
+  --secondary-foreground: #0a2632;
+  --muted: #f5f1e8;
+  --muted-foreground: #56524a;
+  --accent: #f5f1e8;
   --accent-foreground: #161616;
   --destructive: #da1e28;
-  --border: #e0e0e0;
-  --input: #e0e0e0;
-  --ring: #0f62fe;
-  --chart-1: #0f62fe;
-  --chart-2: #0043ce;
-  --chart-3: #002d9c;
+  --border: #e6e0d2;
+  --input: #e6e0d2;
+  --ring: #c8a46b;
+  --chart-1: #0a2632;
+  --chart-2: #c8a46b;
+  --chart-3: #113344;
   --chart-4: #24a148;
   --chart-5: #f1c21b;
-  --sidebar: #ffffff;
+  --sidebar: #fffdf8;
   --sidebar-foreground: #161616;
-  --sidebar-primary: #0f62fe;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #f4f4f4;
+  --sidebar-primary: #0a2632;
+  --sidebar-primary-foreground: #f1ece2;
+  --sidebar-accent: #f5f1e8;
   --sidebar-accent-foreground: #161616;
-  --sidebar-border: #e0e0e0;
-  --sidebar-ring: #0f62fe;
-  --hover-link: #0f62fe;
-  --active-link: #0043ce;
-  /* Legacy Midline brand vars remapped onto the Carbon palette so every
+  --sidebar-border: #e6e0d2;
+  --sidebar-ring: #c8a46b;
+  --hover-link: #c8a46b;
+  --active-link: #c8a46b;
+  /* Legacy Midline brand vars remapped onto the luxury palette so every
      existing consumer picks up the new system without markup changes:
-     navy → ink, cyan → IBM Blue, cyan-strong → blue-60, soft bg → surface-1. */
-  --midline-navy: #161616;
-  --midline-cyan: #0f62fe;
-  --midline-cyan-strong: #0043ce;
-  --midline-bg-soft: #f4f4f4;
+     navy → #0A2632, cyan → champagne, cyan-strong → champagne-hover,
+     soft bg → warm ivory. */
+  --midline-navy: #0a2632;
+  --midline-cyan: #c8a46b;
+  --midline-cyan-strong: #b7935a;
+  --midline-bg-soft: #f5f1e8;
 }
 
 .dark {
-  /* Carbon Gray-100 inverse theme — the site ships light-only (only the
-     footer inverts), but the tokens stay coherent if dark mode is enabled. */
-  --background: #161616;
-  --foreground: #ffffff;
-  --card: #262626;
-  --card-foreground: #ffffff;
-  --popover: #262626;
-  --popover-foreground: #ffffff;
-  --primary: #0f62fe;
-  --primary-foreground: #ffffff;
-  --secondary: #ffffff;
-  --secondary-foreground: #161616;
-  --muted: #262626;
-  --muted-foreground: #c6c6c6;
-  --accent: #262626;
-  --accent-foreground: #ffffff;
+  /* Navy inverse theme — the site ships with the dark-led hybrid handled per
+     section (navy surfaces on a warm canvas), but the tokens stay coherent
+     if class-based dark mode is ever enabled. */
+  --background: #0a2632;
+  --foreground: #f1ece2;
+  --card: #113344;
+  --card-foreground: #f1ece2;
+  --popover: #113344;
+  --popover-foreground: #f1ece2;
+  --primary: #c8a46b;
+  --primary-foreground: #0a2632;
+  --secondary: #f1ece2;
+  --secondary-foreground: #0a2632;
+  --muted: #113344;
+  --muted-foreground: #c3bcac;
+  --accent: #113344;
+  --accent-foreground: #f1ece2;
   --destructive: #da1e28;
-  --border: #393939;
-  --input: #393939;
-  --ring: #0f62fe;
-  --chart-1: #0f62fe;
-  --chart-2: #0043ce;
-  --chart-3: #002d9c;
+  --border: #1d4356;
+  --input: #1d4356;
+  --ring: #c8a46b;
+  --chart-1: #c8a46b;
+  --chart-2: #f1ece2;
+  --chart-3: #b7935a;
   --chart-4: #24a148;
   --chart-5: #f1c21b;
-  --sidebar: #262626;
-  --sidebar-foreground: #ffffff;
-  --sidebar-primary: #0f62fe;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #393939;
-  --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #393939;
-  --sidebar-ring: #0f62fe;
-  --hover-link: #78a9ff;
-  --active-link: #a6c8ff;
-  --midline-navy: #161616;
-  --midline-cyan: #0f62fe;
-  --midline-cyan-strong: #78a9ff;
-  --midline-bg-soft: #262626;
+  --sidebar: #113344;
+  --sidebar-foreground: #f1ece2;
+  --sidebar-primary: #c8a46b;
+  --sidebar-primary-foreground: #0a2632;
+  --sidebar-accent: #1d4356;
+  --sidebar-accent-foreground: #f1ece2;
+  --sidebar-border: #1d4356;
+  --sidebar-ring: #c8a46b;
+  --hover-link: #c8a46b;
+  --active-link: #d6b982;
+  --midline-navy: #0a2632;
+  --midline-cyan: #c8a46b;
+  --midline-cyan-strong: #d6b982;
+  --midline-bg-soft: #113344;
 }
 
 @layer base {
@@ -171,64 +181,50 @@
     @apply border-border outline-ring/50;
   }
 
-  /* Site-wide body voice: Montserrat Light (self-hosted via next/font, variable
-     attached to <html> in layout.tsx). Referenced directly because the
+  /* Site-wide body voice: Montserrat Regular (client brief: the previous
+     Light/300 body read as thin and weak). Referenced directly because the
      @theme inline block does not emit --font-sans to :root. */
   html {
     font-family: var(--font-montserrat), "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-weight: 300;
+    font-weight: 400;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
     min-height: 100svh;
-    line-height: 1.5;
-    /* Carbon precision detail: small positive tracking on body sizes is part
-       of the typographic voice (DESIGN-ibm.md). Display sizes reset it below. */
+    line-height: 1.6;
     letter-spacing: 0.16px;
   }
 
-  /* Carbon display type: light-weight (300) headlines are the brand signature.
-     All headline levels run uppercase with a touch of positive tracking (caps
-     need room to breathe — negative tracking under uppercase reads as
-     collided). Explicit weight/tracking utilities on a heading still win
-     (utilities layer beats this base-layer rule). */
-  /* Headlines are Cinzel. Set on the elements rather than relying on every
-     heading carrying `font-display` — most do not, and a heading that quietly
-     inherited the body face would be the kind of inconsistency nobody spots
-     until it is everywhere. */
+  /* Type rules (client brief): Cinzel is reserved for hero headlines and major
+     section headings (h1/h2) — Regular weight, moderate tracking, and since
+     Cinzel is inherently all-caps it runs a step smaller than a typical
+     display size. Everything else — card titles, subheads, UI — is
+     Montserrat. Explicit utilities on a heading still win (utilities layer
+     beats this base-layer rule). */
   h1,
-  h2,
+  h2 {
+    font-family: var(--font-cinzel), Georgia, "Times New Roman", serif;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
   h3,
   h4,
   h5,
   h6 {
-    font-family: var(--font-cinzel), Georgia, "Times New Roman", serif;
-  }
-
-  h1,
-  h2 {
-    /* Cinzel has no weight below 400, so 300 here would render as 400 anyway
-       and, worse, invite the browser to synthesise a thin face. Stated
-       honestly instead. */
-    font-weight: 400;
+    font-family: var(--font-montserrat), "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 500;
     letter-spacing: 0.01em;
-    text-transform: uppercase;
   }
 
-  h3,
-  h4 {
-    font-weight: 400;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
-  }
-
-  /* Buttons read as uppercase labels site-wide — native <button>s only;
-     Link/anchor CTAs opt in per-component via the `uppercase` utility since
-     not every anchor is a button. */
+  /* Buttons: Montserrat SemiBold uppercase labels site-wide — native
+     <button>s only; Link/anchor CTAs opt in per-component via utilities. */
   button {
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    font-weight: 600;
+    letter-spacing: 0.08em;
   }
 }
 
@@ -305,6 +301,46 @@
   }
 }
 
+/* ── Signature brand device: thin champagne flight-path line ────────────────
+   A 1px champagne line that draws in slowly, ending in a small waypoint dot —
+   used under hero headlines, beside section headings, and as the footer
+   divider (client brief §10: recurring Midline element, slow elegant motion).
+   SVG paths carry pathLength="1" so the dash math is unit-based. */
+.flight-path-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: flightPathDraw 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
+}
+
+.flight-path-dot {
+  opacity: 0;
+  animation: flightPathDot 0.6s ease-out 2.1s forwards;
+}
+
+@keyframes flightPathDraw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes flightPathDot {
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flight-path-draw {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+
+  .flight-path-dot {
+    animation: none;
+    opacity: 1;
+  }
+}
+
 /* ── Toast entrance (booking form notifications) ──────────────────────────── */
 @keyframes toastIn {
   from {
@@ -369,14 +405,14 @@
     @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
   }
 
-  /* Carbon hero band: flat charcoal inverse surface — no gradient, no radius,
-     no shadow (DESIGN-ibm.md `hero-card` on `inverse-canvas`). */
+  /* Hero band: flat deep-navy surface — no gradient, no radius, no shadow.
+     Text is warm off-white, never pure white on navy (client brief). */
   .page-hero {
-    @apply border border-inverse-surface-1 bg-inverse-canvas p-6 text-white sm:p-8 md:p-12;
+    @apply border border-inverse-surface-1 bg-inverse-canvas p-6 text-offwhite sm:p-8 md:p-12;
   }
 
   .page-title {
-    @apply text-3xl font-light tracking-tight sm:text-4xl md:text-5xl;
+    @apply text-2xl sm:text-3xl md:text-4xl;
   }
 
   .page-lead {
@@ -394,8 +430,8 @@
   }
 
   .midline-page {
-    background: #fff;
-    color: var(--midline-navy);
+    background: var(--background);
+    color: var(--color-ink);
     overflow: hidden;
   }
 
@@ -434,128 +470,129 @@
     }
   }
 
-  /* Carbon eyebrow: sentence case 14px — Carbon resists all-caps tracking
-     (DESIGN-ibm.md typography principles). */
+  /* Subheading/eyebrow: Montserrat Medium, uppercase, increased letter
+     spacing (client brief typography system). */
   .midline-eyebrow {
-    font-size: 0.875rem;
-    font-weight: 400;
-    letter-spacing: 0.16px;
-    text-transform: none;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
     color: var(--color-ink-muted);
   }
 
-  /* Carbon display type: weight 300 is the brand voice — never bold. */
+  /* Section heading scale: Cinzel is inherently all-caps, so it runs a step
+     smaller than a typical display size (client brief). */
   .midline-title {
-    font-size: clamp(1.875rem, 3vw, 2.625rem);
-    line-height: 1.2;
-    letter-spacing: 0;
-    font-weight: 300;
+    font-size: clamp(1.5rem, 2.4vw, 2.125rem);
+    line-height: 1.25;
+    letter-spacing: 0.04em;
+    font-weight: 400;
     color: var(--color-ink);
   }
 
   .midline-copy {
     color: var(--color-ink-muted);
-    line-height: 1.5;
-    font-size: 1rem;
+    line-height: 1.7;
+    font-size: clamp(1rem, 0.9rem + 0.2vw, 1.125rem);
     letter-spacing: 0.16px;
   }
 
-  /* Carbon tiles: 1px hairline, square, flat — hierarchy via surface change,
-     never drop shadow. */
+  /* Luxury tiles: solid warm surfaces, square, flat — no outline frames
+     (client brief: fewer borders, warm off-white boxes). */
   .midline-card {
-    border: 1px solid var(--color-hairline);
+    border: none;
     border-radius: 0;
-    background: #fff;
+    background: var(--card);
   }
 
   .midline-card-soft {
-    border: 1px solid var(--color-hairline);
+    border: none;
     border-radius: 0;
-    background: var(--color-surface-1);
+    background: var(--color-ivory);
   }
 
   .midline-surface-dark {
-    border: 1px solid var(--color-inverse-surface-1);
+    border: 1px solid rgba(200, 164, 107, 0.25);
     border-radius: 0;
     background: var(--color-inverse-canvas);
-    color: #fff;
+    color: var(--color-offwhite);
   }
 
-  /* Carbon button-primary: IBM Blue solid, square, weight-400 label with
-     0.16px tracking, 48px touch target. Hover/pressed walk the blue ramp. */
+  /* Primary button: champagne solid, rectangular, Montserrat SemiBold
+     uppercase, navy label, 48px touch target. */
   .midline-btn-primary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: 3rem;
-    padding-inline: 1rem;
+    padding-inline: 1.5rem;
     padding-block: 0.75rem;
     border-radius: 0;
     border: 1px solid transparent;
-    background: var(--color-ibm-blue);
-    color: #fff;
-    font-size: 0.875rem;
-    font-weight: 400;
-    letter-spacing: 0.04em;
+    background: var(--color-champagne);
+    color: var(--color-navy);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    transition: background-color 150ms ease;
+    transition: background-color 200ms ease;
   }
 
   .midline-btn-primary:hover {
-    background: var(--color-ibm-blue-hover);
+    background: var(--color-champagne-hover);
   }
 
   .midline-btn-primary:active {
-    background: var(--color-ibm-blue-80);
+    background: var(--color-champagne-deep);
   }
 
   .midline-btn-secondary:active {
-    background: var(--color-ibm-blue-60);
-    color: #fff;
+    background: var(--color-champagne-deep);
+    color: var(--color-navy);
   }
 
-  /* Carbon button-tertiary: white ground, 1px blue stroke + blue label;
-     hover fills blue. */
+  /* Secondary button: transparent ground, thin champagne stroke; hover fills
+     champagne with navy label. */
   .midline-btn-secondary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-height: 3rem;
-    padding-inline: 1rem;
+    padding-inline: 1.5rem;
     padding-block: 0.75rem;
     border-radius: 0;
-    border: 1px solid var(--color-ibm-blue);
-    background: #fff;
-    color: var(--color-ibm-blue);
-    font-size: 0.875rem;
-    font-weight: 400;
-    letter-spacing: 0.04em;
+    border: 1px solid var(--color-champagne);
+    background: transparent;
+    color: currentColor;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    transition: background-color 150ms ease, color 150ms ease;
+    transition: background-color 200ms ease, color 200ms ease;
   }
 
   .midline-btn-secondary:hover {
-    background: var(--color-ibm-blue);
-    color: #fff;
+    background: var(--color-champagne);
+    color: var(--color-navy);
   }
 
-  /* Carbon tag (blue): square, sentence case, quiet. */
+  /* Tag: quiet champagne tint, square. */
   .midline-chip {
     display: inline-flex;
     align-items: center;
     border-radius: 0;
     border: 1px solid transparent;
-    background: #d0e2ff;
-    color: var(--color-ibm-blue-80);
+    background: rgba(200, 164, 107, 0.16);
+    color: var(--color-champagne-deep);
     font-size: 0.75rem;
-    font-weight: 400;
+    font-weight: 500;
     letter-spacing: 0.32px;
     text-transform: none;
     padding: 0.3rem 0.7rem;
   }
 
-  /* Carbon text-input: gray field, bottom rule only; focus swaps the rule for
-     a 2px IBM Blue outline (Carbon's signature focus treatment). */
+  /* Text input: warm ivory field, bottom rule only; focus swaps the rule for
+     a 2px champagne outline. */
   .midline-input {
     width: 100%;
     border-radius: 0;
@@ -574,7 +611,7 @@
   }
 
   .midline-input:focus {
-    outline: 2px solid var(--color-ibm-blue);
+    outline: 2px solid var(--color-champagne);
     outline-offset: -2px;
     border-bottom-color: transparent;
     box-shadow: none;

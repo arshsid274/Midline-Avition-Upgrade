@@ -4,7 +4,7 @@ export const SITE_NAME = "Midline Aviation";
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://midline-aviation.com";
 export const DEFAULT_OG_IMAGE = "/assets/images/Midline_Airlines.png";
-export const BRAND_THEME_COLOR = "#0f62fe";
+export const BRAND_THEME_COLOR = "#0A2632";
 export const CONTACT_EMAIL = "info@midlineaviation.com";
 export const CONTACT_PHONE = "+97145533430";
 export const DEFAULT_LOCALE = "en_US";
