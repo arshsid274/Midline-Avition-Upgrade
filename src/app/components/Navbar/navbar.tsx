@@ -7,13 +7,14 @@ import MobileMenu from "./MobileMenu.client"
 import BookFlightButton from "./BookFlightButton"
 
 export default function Navbar() {
-  // Carbon top nav: a solid white bar with a 1px hairline at every scroll
-  // position — the old scroll-driven navy tint is gone. Loader-driven
-  // hide/show still targets [data-site-navbar] from globals.css.
+  // Dark navy top nav (client brief §8) with a low-opacity champagne hairline.
+  // Loader-driven hide/show still targets [data-site-navbar] from globals.css.
+  // The logo PNG is dark navy, so it gets an off-white filter treatment on
+  // this surface until the final logo arrives.
   return (
     <header
       data-site-navbar="true"
-      className="fixed top-0 left-0 z-50 w-full border-b border-hairline bg-white transition-colors duration-500"
+      className="fixed top-0 left-0 z-50 w-full border-b border-champagne/25 bg-navy transition-colors duration-500"
     >
       <nav
         aria-label="Primary navigation"
@@ -27,8 +28,8 @@ export default function Navbar() {
             alt="Midline Aviation"
             width={150}
             height={40}
-            sizes="(max-width: 640px) 96px, (max-width: 768px) 112px, 150px"
-            className="h-9 w-auto sm:h-10 md:h-12 lg:h-14"
+            sizes="(max-width: 640px) 112px, (max-width: 768px) 128px, 170px"
+            className="h-10 w-auto sm:h-11 md:h-14 lg:h-16 [filter:brightness(0)_invert(0.93)_sepia(0.14)]"
             priority
           />
         </Link>

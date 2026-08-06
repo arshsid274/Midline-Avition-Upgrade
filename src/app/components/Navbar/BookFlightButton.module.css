@@ -1,9 +1,9 @@
 .cartBtn {
-  width: 140px;
-  height: 40px;
+  width: 158px;
+  height: 42px;
   border-radius: 0;
   border: none;
-  background-color: #0f62fe;
+  background-color: #c8a46b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -15,11 +15,11 @@
 }
 
 .cartBtn:hover {
-  background-color: #0050e6;
+  background-color: #b7935a;
 }
 
 .cartBtn:focus-visible {
-  outline: 2px solid #0f62fe;
+  outline: 2px solid #c8a46b;
   outline-offset: 2px;
 }
 
@@ -48,12 +48,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
+  color: #0a2632;
   z-index: 1;
   transition-duration: 0.5s;
-  font-size: 0.875rem;
-  font-weight: 400;
-  letter-spacing: 0.04em;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
@@ -68,5 +68,5 @@
 }
 
 .cartBtn:active {
-  background-color: #002d9c;
+  background-color: #a57f48;
 }

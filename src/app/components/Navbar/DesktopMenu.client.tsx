@@ -74,12 +74,12 @@ export default function DesktopMenu() {
                 <li key={service.title}>
                   <NavigationMenuLink
                     asChild
-                    className="border border-hairline bg-white p-3 transition-colors hover:bg-surface-1"
+                    className="border border-champagne/20 bg-transparent p-3 text-offwhite transition-colors hover:bg-navy-soft"
                     data-active={isActive(service.href) ? "true" : undefined}
                   >
                     <Link href={service.href} aria-current={isActive(service.href) ? "page" : undefined}>
-                      <div className="text-sm font-semibold uppercase tracking-wide lg:text-base">{service.title}</div>
-                      <p className="line-clamp-2 text-xs text-muted-foreground lg:text-sm">{service.description}</p>
+                      <div className="text-sm font-medium uppercase tracking-[0.1em] lg:text-sm">{service.title}</div>
+                      <p className="line-clamp-2 text-xs text-inverse-ink-muted lg:text-sm">{service.description}</p>
                     </Link>
                   </NavigationMenuLink>
                 </li>

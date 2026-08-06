@@ -59,7 +59,7 @@ function NavigationMenuItem({
 }
 
 const navigationMenuTriggerStyle = cva(
-  "group inline-flex h-10 w-max items-center justify-center px-3 py-2 text-sm font-normal uppercase tracking-wide text-ink disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-ring/50 outline-none transition-[color,background-color,box-shadow] hover:text-ibm-blue focus-visible:ring-[3px] focus-visible:outline-1 lg:px-4 lg:text-base"
+  "group inline-flex h-10 w-max items-center justify-center px-3 py-2 text-sm font-medium uppercase tracking-[0.12em] text-offwhite disabled:pointer-events-none disabled:opacity-50 focus-visible:ring-ring/50 outline-none transition-[color,background-color,box-shadow] hover:text-champagne focus-visible:ring-[3px] focus-visible:outline-1 lg:px-4 lg:text-sm"
 )
 
 function NavigationMenuTrigger({
@@ -112,7 +112,7 @@ function NavigationMenuViewport({
       <NavigationMenuPrimitive.Viewport
         data-slot="navigation-menu-viewport"
         className={cn(
-          "origin-top-center bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden border border-hairline md:w-[var(--radix-navigation-menu-viewport-width)]",
+          "origin-top-center bg-navy text-offwhite data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-90 relative mt-1.5 h-[var(--radix-navigation-menu-viewport-height)] w-full overflow-hidden border border-champagne/25 md:w-[var(--radix-navigation-menu-viewport-width)]",
           className
         )}
         {...props}
@@ -129,7 +129,7 @@ function NavigationMenuLink({
     <NavigationMenuPrimitive.Link
       data-slot="navigation-menu-link"
       className={cn(
-        "data-[active=true]:focus:text-ibm-blue data-[active=true]:text-ibm-blue hover:text-ibm-blue focus:text-ibm-blue focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-muted-foreground flex flex-col gap-1 p-2 text-sm transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-4",
+        "data-[active=true]:focus:text-champagne data-[active=true]:text-champagne hover:text-champagne focus:text-champagne focus-visible:ring-ring/50 [&_svg:not([class*='text-'])]:text-muted-foreground flex flex-col gap-1 p-2 text-sm transition-all outline-none focus-visible:ring-[3px] focus-visible:outline-1 [&_svg:not([class*='size-'])]:size-4",
         className
       )}
       {...props}

@@ -51,10 +51,10 @@ export default function MobileMenu() {
     pathname === href || (href !== "/" && pathname?.startsWith(href));
 
   const itemClasses = (active: boolean) =>
-    `block px-3 py-2.5 text-base font-normal uppercase tracking-wide transition-colors ${
+    `block px-3 py-2.5 text-base font-medium uppercase tracking-[0.1em] transition-colors ${
       active
-        ? "bg-surface-1 text-ibm-blue"
-        : "text-ink hover:bg-surface-1 hover:text-ibm-blue"
+        ? "bg-navy-soft text-champagne"
+        : "text-offwhite hover:bg-navy-soft hover:text-champagne"
     }`;
 
   const mobileMenuLayer = mounted
@@ -63,17 +63,17 @@ export default function MobileMenu() {
           <aside
             id="mobile-nav-panel"
             aria-hidden={!open}
-            className={`fixed inset-y-0 left-0 z-[70] flex w-[86vw] max-w-sm flex-col border-r border-hairline bg-white p-4 transition-transform duration-300 ease-out ${
+            className={`fixed inset-y-0 left-0 z-[70] flex w-[86vw] max-w-sm flex-col border-r border-champagne/25 bg-navy p-4 transition-transform duration-300 ease-out ${
               open ? "translate-x-0" : "-translate-x-full pointer-events-none"
             }`}
           >
-            <div className="flex items-center justify-between border-b border-hairline pb-4">
-              <p className="text-sm text-ink-muted">Navigation</p>
+            <div className="flex items-center justify-between border-b border-champagne/25 pb-4">
+              <p className="text-sm text-inverse-ink-muted">Navigation</p>
               <button
                 type="button"
                 aria-label="Close menu"
                 onClick={() => setOpen(false)}
-                className="p-2 text-ink-muted transition-colors hover:bg-surface-1 hover:text-ink"
+                className="p-2 text-inverse-ink-muted transition-colors hover:bg-navy-soft hover:text-offwhite"
               >
                 <X size={20} />
               </button>
@@ -101,8 +101,8 @@ export default function MobileMenu() {
                     Our Fleet
                   </Link>
                 </li>
-                <li className="border border-hairline p-3">
-                  <p className="pb-2 text-sm uppercase tracking-wide text-ink-muted">Services</p>
+                <li className="border border-champagne/20 p-3">
+                  <p className="pb-2 text-sm uppercase tracking-[0.14em] text-inverse-ink-muted">Services</p>
                   <ul className="flex flex-col gap-1">
                     {services.map((service) => (
                       <li key={service.href}>
@@ -184,7 +184,7 @@ export default function MobileMenu() {
           aria-expanded={open}
           aria-label={open ? "Close menu" : "Open menu"}
           onClick={() => setOpen((prev) => !prev)}
-          className="flex h-11 w-11 items-center justify-center text-ink transition-colors hover:bg-surface-1 hover:text-ibm-blue"
+          className="flex h-11 w-11 items-center justify-center text-offwhite transition-colors hover:bg-navy-soft hover:text-champagne"
         >
           {open ? <X size={22} /> : <Menu size={22} />}
         </button>
