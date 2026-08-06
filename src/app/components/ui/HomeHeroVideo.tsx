@@ -1,14 +1,13 @@
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
-import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { HOME_HERO, type HeroContent } from "@/lib/home-content";
 
 /**
  * Home hero — centered, minimal treatment matching the fleet page hero
  * (client review, Aug 2026): a muted looping showcase reel behind a deep-navy
- * overlay, one short Cinzel headline in warm off-white, one line of support
- * copy, and the champagne flight-path line. No eyebrow and no hero CTA — the
- * nav "Request Quote" button and the booking form below carry the action.
+ * overlay, one short Cinzel headline in warm off-white, and one line of
+ * support copy. No eyebrow and no hero CTA — the nav "Request Quote" button
+ * and the booking form below carry the action.
  *
  * The heading renders in a single colour by design: `accent`/`rest` are kept
  * for the CMS field structure but are never tinted, so stale CMS content
@@ -78,10 +77,6 @@ export default function HomeHeroVideo({ content = HOME_HERO }: HomeHeroVideoProp
         >
           {body}
         </p>
-
-        <div data-reveal-item className="mt-6">
-          <FlightPathLine />
-        </div>
       </Reveal>
     </section>
   );

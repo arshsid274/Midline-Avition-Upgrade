@@ -1,6 +1,5 @@
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
-import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { FLEET_PAGE } from "@/lib/fleet-page-content";
 
 export default function FleetExceptionalHero({
@@ -48,9 +47,6 @@ export default function FleetExceptionalHero({
           <p data-reveal-item className="mt-5 max-w-2xl text-base leading-relaxed text-offwhite/90 sm:text-lg">
             {content.body}
           </p>
-          <div data-reveal-item className="mt-6">
-            <FlightPathLine />
-          </div>
         </Reveal>
       </div>
     </section>

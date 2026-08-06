@@ -301,46 +301,6 @@
   }
 }
 
-/* ── Signature brand device: thin champagne flight-path line ────────────────
-   A 1px champagne line that draws in slowly, ending in a small waypoint dot —
-   used under hero headlines, beside section headings, and as the footer
-   divider (client brief §10: recurring Midline element, slow elegant motion).
-   SVG paths carry pathLength="1" so the dash math is unit-based. */
-.flight-path-draw {
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: flightPathDraw 2.2s cubic-bezier(0.22, 1, 0.36, 1) 0.3s forwards;
-}
-
-.flight-path-dot {
-  opacity: 0;
-  animation: flightPathDot 0.6s ease-out 2.1s forwards;
-}
-
-@keyframes flightPathDraw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@keyframes flightPathDot {
-  to {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .flight-path-draw {
-    animation: none;
-    stroke-dashoffset: 0;
-  }
-
-  .flight-path-dot {
-    animation: none;
-    opacity: 1;
-  }
-}
-
 /* ── Toast entrance (booking form notifications) ──────────────────────────── */
 @keyframes toastIn {
   from {

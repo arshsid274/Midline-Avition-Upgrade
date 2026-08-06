@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { HOME_SERVICES, type ServicesGridContent } from "@/lib/home-content";
 
 /**
@@ -113,9 +112,6 @@ export default function HomeServicesGrid({
           >
             {content.heading}
           </h2>
-          <div data-service-heading-line className="mt-5 flex justify-center">
-            <FlightPathLine />
-          </div>
           <p
             data-service-heading-line
             className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-ink-muted"

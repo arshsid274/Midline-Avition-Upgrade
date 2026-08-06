@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { HOME_AIRCRAFT, type AircraftCard } from "@/lib/home-content";
 
 /**
@@ -156,9 +155,6 @@ export default function HomeAircraftCards({
           >
             Our Fleet
           </h2>
-          <div data-aircraft-heading-line className="mt-5 flex justify-center">
-            <FlightPathLine />
-          </div>
           <p
             data-aircraft-heading-line
             className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-inverse-ink-muted"

@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { SHOWCASE_ITEMS, type ShowcaseItem } from "@/lib/home-content";
 
 function ShowcasePanel({ item }: { item: ShowcaseItem }) {
@@ -161,9 +160,6 @@ export default function ServiceShowcase({
         >
           {heading?.trim() || "Discover Midline"}
         </h2>
-        <div className="mt-5 flex justify-center">
-          <FlightPathLine />
-        </div>
 
         <div className="mt-12 space-y-20 lg:mt-16 lg:space-y-28">
           {items.map((item) => (

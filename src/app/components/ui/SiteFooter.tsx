@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Linkedin } from "lucide-react";
-import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { SITE_NAME } from "@/lib/seo";
 
 const footerColumns = [
@@ -56,7 +55,7 @@ export default function SiteFooter() {
       <div className="mx-auto max-w-7xl">
         {/* The logo PNG is dark navy, so it gets the off-white filter treatment
             on this surface until the final logo arrives. */}
-        <div className="mb-8 flex justify-center">
+        <div className="mb-16 flex justify-center">
           <Link href="/" aria-label={`${SITE_NAME} home`}>
             <Image
               src="/assets/images/Midline_Airlines.png"
@@ -66,11 +65,6 @@ export default function SiteFooter() {
               className="h-14 w-auto object-contain sm:h-16 [filter:brightness(0)_invert(0.93)_sepia(0.14)]"
             />
           </Link>
-        </div>
-
-        {/* Brand device: champagne flight-path divider */}
-        <div className="mb-16 flex justify-center">
-          <FlightPathLine width={160} />
         </div>
 
         {/* Link columns */}
