@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { SHOWCASE_ITEMS, type ShowcaseItem } from "@/lib/home-content";
 
 function ShowcasePanel({ item }: { item: ShowcaseItem }) {
@@ -109,15 +110,16 @@ function ShowcasePanel({ item }: { item: ShowcaseItem }) {
     </div>
   );
 
+  // Clean heading + body only — the small subtitle line was removed on client
+  // review (no sub titles under section/card titles).
   const textBlock = (
     <div ref={textRef} data-reveal="" className="mx-auto w-full max-w-[360px]">
-      <h3 className="text-3xl font-light leading-tight text-ink sm:text-[2rem]">{item.title}</h3>
-      <p className="mt-3 text-sm text-ink-muted">{item.subtitle}</p>
-      <div className="mt-4 h-px w-full bg-hairline" />
-      <p className="mt-5 text-sm leading-relaxed text-ink-muted">{item.description}</p>
+      <h3 className="text-xl font-medium leading-tight text-ink sm:text-2xl">{item.title}</h3>
+      <div className="mt-4 h-px w-full bg-champagne/40" />
+      <p className="mt-5 text-base leading-relaxed text-ink-muted">{item.description}</p>
       <Link
         href={item.href}
-        className="mt-6 inline-flex min-h-10 items-center border-b border-ibm-blue pb-0.5 text-sm text-ibm-blue transition-colors hover:border-ibm-blue-60 hover:text-ibm-blue-60"
+        className="mt-6 inline-flex min-h-10 items-center border-b border-champagne pb-0.5 text-sm font-medium text-champagne-deep transition-colors hover:border-champagne-deep hover:text-champagne-hover"
       >
         {item.ctaLabel}
       </Link>
@@ -148,17 +150,22 @@ export default function ServiceShowcase({
   return (
     <section
       aria-labelledby="service-showcase-heading"
-      className="bg-white py-14 sm:py-16 lg:py-20"
+      className="bg-ivory py-16 sm:py-20 lg:py-24"
     >
       <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
+        {/* Single-colour heading — mixed-colour H1s/H2s were removed on client
+            review. */}
         <h2
           id="service-showcase-heading"
-          className="text-center text-3xl font-light tracking-tight text-ink sm:text-4xl"
+          className="text-center text-2xl text-ink sm:text-3xl"
         >
-          Discover <span className="text-ibm-blue">Midline</span>
+          {heading?.trim() || "Discover Midline"}
         </h2>
+        <div className="mt-5 flex justify-center">
+          <FlightPathLine />
+        </div>
 
-        <div className="mt-10 space-y-20 lg:mt-14 lg:space-y-28">
+        <div className="mt-12 space-y-20 lg:mt-16 lg:space-y-28">
           {items.map((item) => (
             <ShowcasePanel key={item.id} item={item} />
           ))}

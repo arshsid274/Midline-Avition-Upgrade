@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import dynamic from "next/dynamic";
 import HomePageClient from "@/app/components/HomePageClient";
 import { SITE_NAME, SITE_URL, absoluteUrl, buildPageMetadata } from "@/lib/seo";
-import { getEnabledAccreditations } from "@/lib/cms/accreditations";
 import { getHomeContent } from "@/lib/cms/home";
 
 // Loaded only in draft mode, so the published static page never requests
@@ -71,10 +70,9 @@ const homePageSchema = {
 };
 
 export default async function HomePage() {
-  const [home, accreditationLogos] = await Promise.all([
-    getHomeContent(),
-    getEnabledAccreditations(),
-  ]);
+  // The accreditations marquee was removed from the homepage on client review
+  // (Aug 2026) — the Accreditations collection still feeds /safety.
+  const home = await getHomeContent();
 
   return (
     <>
@@ -84,7 +82,7 @@ export default async function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homePageSchema) }}
       />
       {home.isDraft && <LivePreviewListener />}
-      <HomePageClient home={home} accreditationLogos={accreditationLogos} />
+      <HomePageClient home={home} />
     </>
   );
 }
