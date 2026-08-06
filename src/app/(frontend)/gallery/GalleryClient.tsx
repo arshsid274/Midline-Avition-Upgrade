@@ -114,7 +114,7 @@ export default function GalleryClient({
   }, [filtered]);
 
   return (
-    <main ref={galleryRef} className="min-h-screen bg-white pt-[84px]">
+    <main ref={galleryRef} className="min-h-screen bg-background pt-[84px]">
       {/* Header */}
       <div className="mx-auto max-w-7xl px-4 pb-8 pt-12 sm:px-6 lg:px-8 lg:pt-16">
         <h1 data-reveal-item className="text-3xl font-light text-ink sm:text-4xl">
@@ -131,7 +131,7 @@ export default function GalleryClient({
               key={cat}
               type="button"
               onClick={() => handleCategory(cat)}
-              className={`px-4 py-1.5 text-sm font-medium transition-all duration-200 focus-visible:outline-2 focus-visible:outline-ibm-blue ${
+              className={`px-4 py-1.5 text-sm font-medium transition-all duration-200 focus-visible:outline-2 focus-visible:outline-champagne ${
                 activeCategory === cat
                   ? "bg-ink text-white"
                   : "border border-hairline text-ink-muted hover:border-ink hover:text-ink"

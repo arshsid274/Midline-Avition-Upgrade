@@ -292,7 +292,7 @@ export default function FleetAircraftComparisonSection() {
                       <a
                         href={aircraft.brochure}
                         download={`Midline-Aviation-${aircraft.name.replace(/\s+/g, "-")}-Brochure.pdf`}
-                        className="mt-5 inline-flex w-full items-center justify-center gap-2 border border-ibm-blue bg-white px-4 py-3 text-sm font-normal uppercase tracking-wide text-ibm-blue transition-[background-color,transform,color] duration-150 ease-out hover:bg-ibm-blue hover:text-white active:scale-[0.98] lg:mt-auto"
+                        className="mt-5 inline-flex w-full items-center justify-center gap-2 border border-champagne bg-white px-4 py-3 text-sm font-normal uppercase tracking-wide text-champagne-deep transition-[background-color,transform,color] duration-150 ease-out hover:bg-champagne hover:text-navy active:scale-[0.98] lg:mt-auto"
                       >
                         <Download className="h-4 w-4" />
                         Download Brochure
@@ -324,7 +324,7 @@ export default function FleetAircraftComparisonSection() {
                           }`}
                         >
                           {isBest && (
-                            <Star className="absolute right-3 top-3 h-3.5 w-3.5 fill-ibm-blue text-ibm-blue" />
+                            <Star className="absolute right-3 top-3 h-3.5 w-3.5 fill-champagne-deep text-champagne-deep" />
                           )}
                           <div className="flex items-center gap-2 text-left text-ink-muted lg:hidden">
                             <span className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-surface-2">
@@ -345,7 +345,7 @@ export default function FleetAircraftComparisonSection() {
                     <div className="flex h-20 items-center justify-center border-b border-hairline px-5 lg:h-24">
                       <Link
                         href={aircraft.href}
-                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-ibm-blue transition-[color,transform] duration-150 ease-out hover:text-ibm-blue-60 active:scale-[0.98]"
+                        className="inline-flex items-center gap-1.5 text-sm font-semibold text-champagne-deep transition-[color,transform] duration-150 ease-out hover:text-champagne-deep active:scale-[0.98]"
                       >
                         View Details
                         <ArrowRight className="h-4 w-4" />

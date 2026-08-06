@@ -85,7 +85,7 @@ const TestimonialsColumn = (props: {
           {props.testimonials.map(({ text, image, name, role }, i) => (
             <div
               key={i}
-              className="w-full max-w-sm border border-hairline bg-white p-10"
+              className="w-full max-w-sm bg-card p-10"
             >
               <p className="text-base leading-relaxed text-ink-muted">{text}</p>
               <div className="mt-6 flex items-center gap-3">
@@ -115,7 +115,7 @@ const TestimonialsColumn = (props: {
 
 export default function ClientTestimonialsComponent() {
   return (
-    <section className="relative bg-white py-20 sm:py-24">
+    <section className="relative bg-ivory py-20 sm:py-24">
       <div className="mx-auto w-full max-w-[1200px] px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div

@@ -91,7 +91,7 @@ export default function ContactLeadershipSection({
         );
 
   return (
-    <section ref={sectionRef} className="mt-14 bg-white sm:mt-20">
+    <section ref={sectionRef} className="mt-14 bg-ivory sm:mt-20">
 
       {/* ── Header ── */}
       <div data-reveal-item className="flex flex-col gap-6 pb-8 sm:flex-row sm:items-end sm:justify-between sm:gap-10">
@@ -200,7 +200,7 @@ export default function ContactLeadershipSection({
 
                   {/* accent top bar */}
                   <div
-                    className="absolute left-0 right-0 top-0 h-[3px] bg-ibm-blue"
+                    className="absolute left-0 right-0 top-0 h-[3px] bg-champagne"
                     style={{ opacity: isActive ? 1 : 0, transition: "opacity 0.35s ease" }}
                   />
 
@@ -231,7 +231,7 @@ export default function ContactLeadershipSection({
                     alignSelf: "stretch",
                   }}
                 >
-                  <div className="mb-5 h-[2px] w-8 flex-none bg-ibm-blue" />
+                  <div className="mb-5 h-[2px] w-8 flex-none bg-champagne" />
                   <p className="flex-none text-xs text-inverse-ink-muted">
                     {member.title}
                   </p>

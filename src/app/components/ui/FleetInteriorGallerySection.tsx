@@ -12,7 +12,7 @@ export default function FleetInteriorGallerySection() {
         </h2>
         <Link
           href="/fleet"
-          className="inline-flex items-center gap-1 text-sm font-medium text-ibm-blue transition-colors hover:text-ibm-blue-60"
+          className="inline-flex items-center gap-1 text-sm font-medium text-champagne-deep transition-colors hover:text-champagne-deep"
         >
           View Full Fleet Gallery
           <ArrowRight className="h-4 w-4" />

@@ -14,12 +14,12 @@ export default async function DraftBanner() {
   return (
     <div
       role="status"
-      className="fixed inset-x-0 bottom-0 z-[100] flex items-center justify-center gap-3 bg-ibm-blue px-4 py-2 text-xs text-white"
+      className="fixed inset-x-0 bottom-0 z-[100] flex items-center justify-center gap-3 bg-navy px-4 py-2 text-xs text-offwhite"
     >
       <span>You are viewing unpublished draft content.</span>
       <a
         href="/exit-preview"
-        className="border border-white/60 px-2 py-1 font-medium uppercase tracking-wide transition-colors hover:bg-white hover:text-ibm-blue"
+        className="border border-offwhite/60 px-2 py-1 font-medium uppercase tracking-wide transition-colors hover:bg-champagne hover:border-champagne hover:text-navy"
       >
         Exit preview
       </a>

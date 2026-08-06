@@ -48,7 +48,7 @@ export default function ContactLegacyStorySection({
                 type="button"
                 onClick={() => setActiveFeature(slide.key)}
                 aria-pressed={activeFeature === slide.key}
-                className={`px-3 py-1.5 text-[0.63rem] font-medium tracking-[0.01em] transition-colors focus-visible:outline-2 focus-visible:outline-ibm-blue sm:px-4 ${
+                className={`px-3 py-1.5 text-[0.63rem] font-medium tracking-[0.01em] transition-colors focus-visible:outline-2 focus-visible:outline-champagne sm:px-4 ${
                   activeFeature === slide.key
                     ? "bg-[var(--midline-navy)] text-white"
                     : "text-[var(--midline-navy)] hover:bg-[color:color-mix(in_srgb,var(--midline-bg-soft)_65%,white_35%)] hover:text-[var(--midline-cyan-strong)]"

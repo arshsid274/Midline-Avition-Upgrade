@@ -408,7 +408,7 @@ const LogoLoop = React.memo<LogoLoopProps>(
             className={cx(
               "inline-flex items-center no-underline",
               "transition-opacity duration-200 ease-linear hover:opacity-80",
-              "focus-visible:outline focus-visible:outline-ibm-blue focus-visible:outline-offset-2"
+              "focus-visible:outline focus-visible:outline-champagne focus-visible:outline-offset-2"
             )}
           >
             {content}

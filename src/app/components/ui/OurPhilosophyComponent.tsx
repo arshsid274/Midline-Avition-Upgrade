@@ -11,7 +11,7 @@ export default function OurPhilosophyComponent() {
             <h2 className="text-4xl font-light leading-tight text-ink">
               The Art of Elegance &amp;
               <br />
-              <span className="text-ibm-blue">Unmatched Comfort</span>
+              <span className="text-champagne-deep">Unmatched Comfort</span>
             </h2>
           </div>
           <p data-reveal-item className="text-lg leading-relaxed text-ink-muted">

@@ -46,7 +46,7 @@ export default async function FaqPage() {
   const faqSchema = buildFaqSchema(content.groups);
 
   return (
-    <main className="bg-white">
+    <main className="bg-background">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -93,7 +93,7 @@ export default async function FaqPage() {
                       <span className="text-base font-semibold text-ink sm:text-lg">{item.q}</span>
                       <span
                         aria-hidden
-                        className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-hairline text-ibm-blue transition-transform duration-300 group-open:rotate-45"
+                        className="flex h-8 w-8 flex-none items-center justify-center rounded-full border border-hairline text-champagne-deep transition-transform duration-300 group-open:rotate-45"
                       >
                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                           <path d="M6 1v10M1 6h10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
@@ -109,11 +109,11 @@ export default async function FaqPage() {
             </Reveal>
           ))}
 
-          <Reveal as="div" variant="fade-up" className="mt-12 bg-ibm-blue p-7 text-center sm:mt-14 sm:p-9">
-            <h2 className="font-display text-2xl font-light text-white">{content.closing.heading}</h2>
-            <p className="mt-2 text-sm leading-7 text-white/80 sm:text-base">
+          <Reveal as="div" variant="fade-up" className="mt-12 bg-navy p-7 text-center sm:mt-14 sm:p-9">
+            <h2 className="font-display text-2xl font-light text-offwhite">{content.closing.heading}</h2>
+            <p className="mt-2 text-sm leading-7 text-inverse-ink-muted sm:text-base">
               {content.closing.bodyBefore}{" "}
-              <a className="font-semibold text-white underline underline-offset-2" href={`mailto:${CONTACT_EMAIL}`}>
+              <a className="font-semibold text-offwhite underline underline-offset-2" href={`mailto:${CONTACT_EMAIL}`}>
                 {CONTACT_EMAIL}
               </a>{" "}
               {content.closing.bodyAfter}

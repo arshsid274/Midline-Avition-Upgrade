@@ -118,9 +118,9 @@ export default function ChatWidget() {
         aria-expanded={open}
         aria-label={open ? "Close Midline Assistant chat" : "Chat with the Midline Assistant"}
         data-home-fab="true"
-        className="fixed bottom-5 right-4 z-[70] flex h-14 w-14 items-center justify-center rounded-full bg-ibm-blue transition-transform duration-200 hover:bg-ibm-blue-hover hover:scale-105 active:scale-95"
+        className="fixed bottom-5 right-4 z-[70] flex h-14 w-14 items-center justify-center rounded-full bg-champagne transition-transform duration-200 hover:bg-champagne-hover hover:scale-105 active:scale-95"
       >
-        {open ? <X className="h-6 w-6 text-white" /> : <RobotIcon className="h-9 w-9" />}
+        {open ? <X className="h-6 w-6 text-navy" /> : <RobotIcon className="h-9 w-9" />}
       </button>
 
       {/* Panel */}
@@ -149,7 +149,7 @@ export default function ChatWidget() {
                   className={
                     "max-w-[85%] whitespace-pre-wrap px-3.5 py-2.5 text-[0.82rem] leading-relaxed " +
                     (m.role === "user"
-                      ? "bg-ibm-blue text-white"
+                      ? "bg-navy text-offwhite"
                       : "bg-surface-1 text-ink")
                   }
                 >
@@ -165,7 +165,7 @@ export default function ChatWidget() {
                     key={q}
                     type="button"
                     onClick={() => send(q)}
-                    className="border border-ibm-blue bg-white px-3 py-1.5 text-[0.7rem] font-medium text-ibm-blue transition-colors hover:bg-ibm-blue hover:text-white"
+                    className="border border-champagne bg-white px-3 py-1.5 text-[0.7rem] font-medium text-champagne-deep transition-colors hover:bg-champagne hover:text-navy"
                   >
                     {q}
                   </button>
@@ -196,14 +196,14 @@ export default function ChatWidget() {
                 rows={1}
                 placeholder="Ask about flights, baggage, policies…"
                 aria-label="Your question"
-                className="max-h-28 flex-1 resize-none border border-hairline bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-subtle outline-none focus:border-ibm-blue"
+                className="max-h-28 flex-1 resize-none border border-hairline bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-subtle outline-none focus:border-champagne"
               />
               <button
                 type="button"
                 onClick={() => send()}
                 disabled={loading || !input.trim()}
                 aria-label="Send message"
-                className="flex h-11 w-11 items-center justify-center bg-ibm-blue text-white transition-colors hover:bg-ibm-blue-hover disabled:opacity-40"
+                className="flex h-11 w-11 items-center justify-center bg-champagne text-navy transition-colors hover:bg-champagne-hover disabled:opacity-40"
               >
                 <Send className="h-4.5 w-4.5" />
               </button>

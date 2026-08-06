@@ -43,7 +43,7 @@ export default function AircraftManagementSafetyCardsSection({
                 data-reveal-item
                 className="border border-inverse-surface-1 bg-inverse-surface-1 p-6 transition-colors hover:border-ink-subtle"
               >
-                <span className="inline-flex h-11 w-11 items-center justify-center bg-ibm-blue text-white">
+                <span className="inline-flex h-11 w-11 items-center justify-center bg-champagne text-navy">
                   <Icon className="h-5 w-5" />
                 </span>
                 <h3 className="mt-4 text-xl font-normal text-white">{card.title}</h3>

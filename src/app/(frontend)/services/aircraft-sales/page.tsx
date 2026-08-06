@@ -47,7 +47,7 @@ export default async function AircraftSalesPage() {
   const { hero, intro, showcase, chips, closing } = await getServicePage("sales-page");
 
   return (
-    <main className="midline-page bg-white text-ink">
+    <main className="midline-page text-ink">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -67,8 +67,8 @@ export default async function AircraftSalesPage() {
           className="object-cover hero-kenburns"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/38 via-black/24 to-black/70" />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(22,22,22,0.64)_0%,rgba(22,22,22,0.28)_48%,rgba(22,22,22,0.62)_100%)]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-navy/40 via-navy/25 to-navy/70" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(10,38,50,0.64)_0%,rgba(10,38,50,0.28)_48%,rgba(10,38,50,0.62)_100%)]" />
 
         <div className="relative z-10 mx-auto flex min-h-[calc(100svh-72px)] w-full max-w-[1440px] flex-col justify-end px-4 pb-12 pt-32 sm:px-6 md:min-h-[calc(100svh-84px)] lg:px-16 lg:pb-16">
           <Reveal
@@ -85,11 +85,11 @@ export default async function AircraftSalesPage() {
               mode="lcp"
               on="load"
               delay={0.25}
-              className="font-display mt-4 text-4xl font-light leading-[1.05] text-white sm:text-5xl md:text-6xl lg:text-7xl"
+              className="font-display mt-4 text-4xl font-light leading-[1.05] text-offwhite sm:text-5xl md:text-6xl lg:text-7xl"
             >
               {hero.heading}
               {hero.headingAccent ? (
-                <> <span className="text-ibm-blue">{hero.headingAccent}</span></>
+                <> <span className="text-champagne">{hero.headingAccent}</span></>
               ) : null}
               {hero.headingRest}
             </SplitHeading>
@@ -100,7 +100,7 @@ export default async function AircraftSalesPage() {
               {hero.primary?.href ? (
                 <Link
                   href={hero.primary.href}
-                  className="inline-flex items-center justify-center gap-2 bg-ibm-blue px-5 py-3 text-sm font-normal uppercase tracking-wide text-white transition-[background-color,transform] duration-150 ease-out hover:bg-ibm-blue-hover active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 bg-champagne px-5 py-3 text-sm font-normal uppercase tracking-wide text-navy transition-[background-color,transform] duration-150 ease-out hover:bg-champagne-hover active:scale-[0.98]"
                 >
                   {hero.primary.label}
                   <ArrowRight className="h-4 w-4" />
@@ -165,7 +165,7 @@ export default async function AircraftSalesPage() {
                 <h2 className="font-display mt-3 text-3xl font-light text-ink sm:text-4xl">
                   {section.title}
                 </h2>
-                <div className="mt-6 h-px w-12 bg-ibm-blue" />
+                <div className="mt-6 h-px w-12 bg-champagne" />
                 <div className="mt-7 space-y-5 text-base leading-7 text-ink-muted">
                   {(section.description ?? "").split("\n\n").filter(Boolean).map((paragraph) => (
                     <p key={paragraph}>{paragraph}</p>
@@ -194,7 +194,7 @@ export default async function AircraftSalesPage() {
         );
       })}
 
-      <section className="bg-white px-4 py-16 sm:px-6 sm:py-20 lg:px-16">
+      <section className="bg-ivory px-4 py-16 sm:px-6 sm:py-20 lg:px-16">
         <div className="mx-auto w-full max-w-[1180px]">
           <Reveal as="div" variant="fade-up" className="mx-auto max-w-3xl text-center">
             <p className="text-sm text-ink-muted">{chips?.eyebrow}</p>
@@ -220,7 +220,7 @@ export default async function AircraftSalesPage() {
                   data-reveal-item
                   className="flex min-h-20 items-center gap-3 border border-hairline bg-white px-4 py-4"
                 >
-                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center bg-surface-1 text-ibm-blue">
+                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center bg-surface-1 text-champagne-deep">
                     <Icon className="h-4.5 w-4.5" />
                   </span>
                   <span className="text-sm font-semibold text-ink">{service.label}</span>
@@ -231,7 +231,7 @@ export default async function AircraftSalesPage() {
         </div>
       </section>
 
-      <section className="bg-white px-4 py-16 sm:px-6 sm:py-20 lg:px-16">
+      <section className="bg-ivory px-4 py-16 sm:px-6 sm:py-20 lg:px-16">
         <Reveal
           as="div"
           variant="fade-up"
@@ -249,7 +249,7 @@ export default async function AircraftSalesPage() {
           {closing?.cta?.href ? (
             <Link
               href={closing.cta.href}
-            className="inline-flex shrink-0 items-center justify-center gap-2 bg-ibm-blue px-7 py-4 text-sm font-normal uppercase tracking-wide text-white transition-[background-color,transform] duration-150 ease-out hover:bg-ibm-blue-hover active:scale-[0.98]"
+            className="inline-flex shrink-0 items-center justify-center gap-2 bg-champagne px-7 py-4 text-sm font-normal uppercase tracking-wide text-navy transition-[background-color,transform] duration-150 ease-out hover:bg-champagne-hover active:scale-[0.98]"
             >
               {closing.cta.label}
               <ArrowRight className="h-4 w-4" />

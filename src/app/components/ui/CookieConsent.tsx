@@ -34,7 +34,7 @@ export default function CookieConsent() {
       <p className="text-sm font-semibold">Cookies &amp; analytics</p>
       <p className="mt-1.5 text-[0.8rem] leading-relaxed text-ink-muted">
         We use Microsoft Clarity analytics to improve this site. It only runs if you accept. See our{" "}
-        <Link href="/cookie-policy" className="font-semibold text-ibm-blue underline-offset-2 hover:text-ibm-blue-60 hover:underline">
+        <Link href="/cookie-policy" className="font-semibold text-champagne-deep underline-offset-2 hover:text-champagne-hover hover:underline">
           Cookie Policy
         </Link>
         .
@@ -43,7 +43,7 @@ export default function CookieConsent() {
         <button
           type="button"
           onClick={() => decide("accepted")}
-          className="inline-flex min-h-10 flex-1 items-center justify-center bg-ibm-blue px-4 text-sm font-normal text-white transition-colors hover:bg-ibm-blue-hover active:bg-ibm-blue-80"
+          className="inline-flex min-h-10 flex-1 items-center justify-center bg-champagne px-4 text-sm font-normal text-navy transition-colors hover:bg-champagne-hover active:bg-champagne-deep"
         >
           Accept
         </button>

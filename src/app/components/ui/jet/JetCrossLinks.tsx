@@ -8,7 +8,7 @@ export default function JetCrossLinks({ jet, fleet }: { jet: Jet; fleet: Jet[] }
   const siblings = fleet.filter((candidate) => candidate.slug !== jet.slug);
 
   return (
-    <section aria-label="Explore the rest of the fleet" className="bg-white py-16 sm:py-20">
+    <section aria-label="Explore the rest of the fleet" className="bg-ivory py-16 sm:py-20">
       <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
         <Reveal as="div" variant="fade-up" className="mb-9 flex flex-wrap items-end justify-between gap-4">
           <h2 className="font-display text-3xl font-light tracking-[-0.02em] text-ink sm:text-4xl">
@@ -16,7 +16,7 @@ export default function JetCrossLinks({ jet, fleet }: { jet: Jet; fleet: Jet[] }
           </h2>
           <Link
             href="/fleet"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-ibm-blue transition-colors hover:text-ibm-blue-60"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-champagne-deep transition-colors hover:text-champagne-deep"
           >
             Compare all aircraft
             <ArrowRight className="h-4 w-4" />
@@ -59,26 +59,26 @@ export default function JetCrossLinks({ jet, fleet }: { jet: Jet; fleet: Jet[] }
         </Reveal>
 
         <Reveal as="div" variant="fade-up" className="mt-12">
-          <div className="overflow-hidden bg-ibm-blue p-8 text-white sm:p-10">
+          <div className="overflow-hidden bg-navy p-8 text-offwhite sm:p-10">
             <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
               <div>
                 <h3 className="font-display text-2xl font-medium sm:text-3xl sm:font-light">
                   Ready to fly {jet.name.split(" ").slice(-1)[0]}?
                 </h3>
-                <p className="mt-2 max-w-xl text-sm text-white/85">
+                <p className="mt-2 max-w-xl text-sm text-inverse-ink-muted">
                   Our charter team confirms availability, routing, and a bespoke cabin service plan within hours.
                 </p>
               </div>
               <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
                 <Link
                   href="/services/aircraft-charter"
-                  className="inline-flex min-h-11 items-center justify-center border border-white px-6 py-3 text-sm font-normal uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-ibm-blue"
+                  className="inline-flex min-h-11 items-center justify-center border border-white px-6 py-3 text-sm font-normal uppercase tracking-wide text-white transition-colors hover:bg-white hover:text-navy"
                 >
                   Charter Services
                 </Link>
                 <Link
                   href="/contact"
-                  className="inline-flex min-h-11 items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-normal uppercase tracking-wide text-ibm-blue transition-colors hover:bg-surface-1"
+                  className="inline-flex min-h-11 items-center justify-center gap-2 bg-white px-6 py-3 text-sm font-normal uppercase tracking-wide text-navy transition-colors hover:bg-surface-1"
                 >
                   Request a Quote
                   <ArrowRight className="h-4 w-4" />

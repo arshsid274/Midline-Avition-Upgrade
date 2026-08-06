@@ -23,7 +23,7 @@ export default function AircraftManagementFleetSection({
   const cards = content.cards.filter((card) => card.image?.src);
 
   return (
-    <section className="bg-white py-14 sm:py-16 lg:py-20">
+    <section className="bg-ivory py-14 sm:py-16 lg:py-20">
       <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
         <Reveal as="div" variant="fade-up" className="mb-9 flex flex-wrap items-end justify-between gap-4 sm:mb-10">
           <div>
@@ -36,7 +36,7 @@ export default function AircraftManagementFleetSection({
           </div>
           <Link
             href="/fleet"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-ibm-blue transition-colors hover:text-ibm-blue-60"
+            className="inline-flex items-center gap-2 text-sm font-semibold text-champagne-deep transition-colors hover:text-champagne-hover"
           >
             View All Specifications
             <ArrowRight className="h-4 w-4" />

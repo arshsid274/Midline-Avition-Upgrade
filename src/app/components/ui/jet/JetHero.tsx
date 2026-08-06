@@ -20,8 +20,8 @@ export default function JetHero({ jet }: { jet: Jet }) {
       />
       {jet.hero.video && <JetHeroVideo src={jet.hero.video.src} poster={jet.hero.image.src} />}
 
-      <div className="absolute inset-0 bg-gradient-to-r from-black/62 via-black/28 to-transparent" />
-      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/55 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-navy/62 via-navy/28 to-transparent" />
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-navy/55 to-transparent" />
 
       <div className="relative mx-auto flex h-full w-full max-w-[1400px] flex-col justify-end px-4 pb-12 sm:px-6 lg:px-8 lg:pb-16">
         <nav aria-label="Breadcrumb" className="mb-5">
@@ -50,7 +50,7 @@ export default function JetHero({ jet }: { jet: Jet }) {
             mode="lcp"
             on="load"
             delay={0.15}
-            className="font-display mt-4 text-4xl font-light leading-[1.04] tracking-[-0.02em] text-white sm:text-6xl lg:text-7xl"
+            className="font-display mt-4 text-4xl font-light leading-[1.04] tracking-[-0.02em] text-offwhite sm:text-6xl lg:text-7xl"
           >
             {jet.name}
           </SplitHeading>
@@ -60,7 +60,7 @@ export default function JetHero({ jet }: { jet: Jet }) {
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/contact"
-                className="inline-flex min-h-11 items-center justify-center gap-2 bg-ibm-blue px-6 py-3 text-sm font-normal uppercase tracking-wide text-white transition-colors hover:bg-ibm-blue-hover"
+                className="inline-flex min-h-11 items-center justify-center gap-2 bg-champagne px-6 py-3 text-sm font-normal uppercase tracking-wide text-navy transition-colors hover:bg-champagne-hover"
               >
                 Request Charter
                 <ArrowRight className="h-4 w-4" />

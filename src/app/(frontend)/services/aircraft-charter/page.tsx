@@ -47,7 +47,7 @@ export default async function CharterPage() {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <main className="midline-page bg-white">
+      <main className="midline-page">
         <AircraftCharterHeroComponent hero={hero} />
         <OurPhilosophyComponent />
         <CharterStepsComponent />

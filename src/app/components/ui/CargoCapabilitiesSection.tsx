@@ -25,7 +25,7 @@ export default function CargoCapabilitiesSection({
   const cards = content.cards.filter((card) => card.image?.src);
 
   return (
-    <section className="bg-white py-16 sm:py-20 lg:py-24">
+    <section className="bg-ivory py-16 sm:py-20 lg:py-24">
       <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
         {/* Header row */}
         <div className="mb-10 flex flex-col items-start justify-between gap-4 sm:mb-12 sm:flex-row sm:items-end">
@@ -80,7 +80,7 @@ export default function CargoCapabilitiesSection({
                 {op.link?.href ? (
                   <Link
                     href={op.link.href}
-                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-normal text-ibm-blue underline-offset-4 hover:text-ibm-blue-60 hover:underline"
+                    className="mt-4 inline-flex items-center gap-1.5 text-sm font-normal text-champagne-deep underline-offset-4 hover:text-champagne-hover hover:underline"
                 >
                   {op.link.label}
                   <ArrowUpRight className="h-3.5 w-3.5" />

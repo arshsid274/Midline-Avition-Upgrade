@@ -21,7 +21,7 @@ export default function WhyChooseUsComponent({
       <div className="mx-auto w-full max-w-7xl px-6 lg:px-10">
         <Reveal as="div" variant="fade-up" className="mb-16 text-center">
           <h2 className="mb-4 text-3xl font-light text-ink md:text-4xl">{content.heading}</h2>
-          <div className="mx-auto h-1 w-20 bg-ibm-blue" />
+          <div className="mx-auto h-1 w-20 bg-champagne" />
         </Reveal>
 
         <Reveal
@@ -36,9 +36,9 @@ export default function WhyChooseUsComponent({
               <article
                 key={card.title}
                 data-reveal-item
-                className="group border border-hairline bg-white p-8 text-center transition-colors hover:border-ibm-blue"
+                className="group border border-hairline bg-white p-8 text-center transition-colors hover:border-champagne"
               >
-                <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-ibm-blue/10 text-ibm-blue transition-transform group-hover:scale-110">
+                <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-full bg-champagne/10 text-champagne-deep transition-transform group-hover:scale-110">
                   <Icon className="h-7 w-7" />
                 </div>
                 <h3 className="mb-3 text-base font-semibold text-ink">{card.title}</h3>

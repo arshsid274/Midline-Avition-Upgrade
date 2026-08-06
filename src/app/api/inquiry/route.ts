@@ -94,7 +94,7 @@ export async function POST(request: Request) {
   const textBody = rows.map(([label, value]) => `${label}: ${value || "Not provided"}`).join("\n");
   const htmlBody = `
     <div style="font-family:'IBM Plex Sans',Arial,sans-serif;line-height:1.5;color:#161616;">
-      <h2 style="margin:0 0 16px;font-weight:400;color:#161616;border-bottom:2px solid #0f62fe;padding-bottom:8px;">New Midline Aviation Inquiry</h2>
+      <h2 style="margin:0 0 16px;font-weight:400;color:#161616;border-bottom:2px solid #C8A46B;padding-bottom:8px;">New Midline Aviation Inquiry</h2>
       <table style="border-collapse:collapse;width:100%;max-width:680px;border:1px solid #e0e0e0;border-radius:0;">
         <tbody>${rows.map(([label, value]) => buildRow(label, value)).join("")}</tbody>
       </table>

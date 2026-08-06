@@ -50,7 +50,7 @@ export default function AircraftManagementStandardsSection({
                   className="max-w-[32rem] bg-inverse-surface-1 p-4"
                 >
                   <div className="flex items-start gap-4">
-                    <span className="inline-flex h-9 w-9 items-center justify-center bg-ibm-blue text-white">
+                    <span className="inline-flex h-9 w-9 items-center justify-center bg-champagne text-navy">
                       <Icon className="h-5 w-5" />
                     </span>
                     <div>

@@ -41,14 +41,14 @@ export default function MROComingSoon({
         className="object-cover object-center hero-kenburns"
         priority
       />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.80)_0%,rgba(0,0,0,0.62)_55%,rgba(0,0,0,0.88)_100%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(10,38,50,0.80)_0%,rgba(10,38,50,0.62)_55%,rgba(10,38,50,0.88)_100%)]" />
 
       <div className="relative mx-auto flex w-full max-w-[1400px] flex-1 flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:px-8">
         <Reveal as="div" on="load" variant="fade-up" delay={0.05}>
           <p className="inline-flex items-center gap-2.5 text-sm text-inverse-ink-muted">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-ibm-blue opacity-75 motion-safe:animate-ping" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-ibm-blue" />
+              <span className="absolute inline-flex h-full w-full rounded-full bg-champagne opacity-75 motion-safe:animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-champagne" />
             </span>
             Aircraft MRO · Maintenance, Repair &amp; Overhaul
           </p>
@@ -60,11 +60,11 @@ export default function MROComingSoon({
           mode="lcp"
           on="load"
           delay={0.2}
-          className="font-display mt-7 text-6xl font-light leading-[0.98] tracking-[-0.03em] text-white sm:text-8xl lg:text-9xl"
+          className="font-display mt-7 text-6xl font-light leading-[0.98] tracking-[-0.03em] text-offwhite sm:text-8xl lg:text-9xl"
         >
           {hero.heading}
           {hero.headingAccent ? (
-            <> <span className="italic text-ibm-blue">{hero.headingAccent}</span></>
+            <> <span className="italic text-champagne">{hero.headingAccent}</span></>
           ) : null}
           {hero.headingRest}
         </SplitHeading>
@@ -109,7 +109,7 @@ export default function MROComingSoon({
             {hero.primary?.href ? (
               <Link
                 href={hero.primary.href}
-                className="inline-flex min-h-11 items-center justify-center gap-2 bg-ibm-blue px-6 py-3 text-sm font-normal uppercase tracking-wide text-white transition-colors hover:bg-ibm-blue-hover active:scale-[0.98]"
+                className="inline-flex min-h-11 items-center justify-center gap-2 bg-champagne px-6 py-3 text-sm font-normal uppercase tracking-wide text-navy transition-colors hover:bg-champagne-hover active:scale-[0.98]"
               >
                 {hero.primary.label}
                 <ArrowRight className="h-4 w-4" />
@@ -142,7 +142,7 @@ export default function MROComingSoon({
                     className="mx-6 whitespace-nowrap text-2xl font-semibold uppercase tracking-[0.3em] text-transparent sm:text-3xl"
                     style={{ WebkitTextStroke: "1px rgba(255,255,255,0.22)" }}
                   >
-                    Coming Soon <span className="mx-4 text-ibm-blue/40" style={{ WebkitTextStroke: "0" }}>•</span>
+                    Coming Soon <span className="mx-4 text-champagne/40" style={{ WebkitTextStroke: "0" }}>•</span>
                   </span>
                 ))}
               </div>

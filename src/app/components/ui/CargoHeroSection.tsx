@@ -18,12 +18,12 @@ export default function CargoHeroSection({ hero = SERVICE_HEROES["cargo-page"] }
       />
 
       {/* Layered overlays */}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-navy/50 via-navy/20 to-transparent" />
 
       <div className="relative mx-auto flex h-full w-full max-w-[1400px] items-center px-4 sm:px-6 lg:px-8">
         <Reveal
           as="div"
-          className="max-w-[40rem] text-left text-white"
+          className="max-w-[40rem] text-left text-offwhite"
           on="load"
           variant="stagger"
           stagger={0.12}
@@ -50,7 +50,7 @@ export default function CargoHeroSection({ hero = SERVICE_HEROES["cargo-page"] }
             {hero.headingAccent ? (
               <>
                 <br />
-                <span className="text-ibm-blue">{hero.headingAccent}</span>
+                <span className="text-champagne">{hero.headingAccent}</span>
               </>
             ) : null}
             {hero.headingRest}
@@ -71,7 +71,7 @@ export default function CargoHeroSection({ hero = SERVICE_HEROES["cargo-page"] }
           >
             {(hero.stats ?? []).map((stat) => (
               <div key={stat.label}>
-                <p className="text-2xl font-light text-ibm-blue">{stat.value}</p>
+                <p className="text-2xl font-light text-champagne">{stat.value}</p>
                 <p className="text-xs text-inverse-ink-muted">{stat.label}</p>
               </div>
             ))}
@@ -83,7 +83,7 @@ export default function CargoHeroSection({ hero = SERVICE_HEROES["cargo-page"] }
             {hero.primary?.href ? (
               <Link
                 href={hero.primary.href}
-                className="inline-flex min-h-11 items-center justify-center gap-2 bg-ibm-blue px-6 py-3 text-sm font-normal text-white transition-colors hover:bg-ibm-blue-hover"
+                className="inline-flex min-h-11 items-center justify-center gap-2 bg-champagne px-6 py-3 text-sm font-normal text-navy transition-colors hover:bg-champagne-hover"
               >
                 {hero.primary.label}
                 <ArrowRight className="h-4 w-4" />

@@ -42,13 +42,13 @@ export default function CargoWhyChooseSection({
                 data-reveal-item
                 className={`relative overflow-hidden border p-6 transition-colors ${
                   item.featured
-                    ? "border-ibm-blue bg-inverse-surface-1"
+                    ? "border-champagne bg-inverse-surface-1"
                     : "border-inverse-surface-1 bg-inverse-surface-1 hover:border-ink-subtle"
                 }`}
               >
                 <span
                   className={`relative inline-flex h-12 w-12 items-center justify-center ${
-                    item.featured ? "bg-ibm-blue text-white" : "bg-inverse-canvas text-white"
+                    item.featured ? "bg-champagne text-navy" : "bg-inverse-canvas text-white"
                   }`}
                 >
                   <Icon className="h-5 w-5" />
@@ -60,7 +60,7 @@ export default function CargoWhyChooseSection({
                 <ul className="relative mt-5 space-y-2.5">
                   {(item.points ?? []).map((point) => (
                     <li key={point} className="flex items-start gap-2.5 text-sm text-inverse-ink-muted">
-                      <span aria-hidden className="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-ibm-blue" />
+                      <span aria-hidden className="mt-[0.45rem] h-1.5 w-1.5 shrink-0 rounded-full bg-champagne" />
                       <span>{point}</span>
                     </li>
                   ))}

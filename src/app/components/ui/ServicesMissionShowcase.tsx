@@ -186,7 +186,7 @@ export default function ServicesMissionShowcase() {
                 >
                   <span>{tab.label}</span>
                   <span
-                    className={`absolute bottom-[-1px] left-1/2 h-[2px] -translate-x-1/2 bg-ibm-blue transition-all duration-300 ${
+                    className={`absolute bottom-[-1px] left-1/2 h-[2px] -translate-x-1/2 bg-champagne transition-all duration-300 ${
                       isActive ? "w-[52%] opacity-100" : "w-0 opacity-0"
                     }`}
                   />
@@ -214,10 +214,10 @@ export default function ServicesMissionShowcase() {
 
             <Link
               href={activeConfig.ctaHref}
-              className="mt-7 inline-flex items-center gap-2 bg-ibm-blue px-7 py-3 text-sm font-normal uppercase tracking-wide text-white transition-colors hover:bg-ibm-blue-hover"
+              className="mt-7 inline-flex items-center gap-2 bg-champagne px-7 py-3 text-sm font-normal uppercase tracking-wide text-navy transition-colors hover:bg-champagne-hover"
             >
               {activeConfig.ctaLabel}
-              <Star size={14} className="text-white" />
+              <Star size={14} className="text-navy" />
             </Link>
           </div>
 

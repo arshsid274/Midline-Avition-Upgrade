@@ -40,7 +40,7 @@ export default async function SafetyPage() {
   ]);
 
   return (
-    <main className="bg-white">
+    <main className="bg-background">
       <script
         type="application/ld+json"
         suppressHydrationWarning
@@ -118,7 +118,7 @@ export default async function SafetyPage() {
             variant="fade-up"
             className="mt-8 flex flex-col items-start gap-6 border border-hairline bg-white p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8"
           >
-            <span className="inline-flex h-14 w-14 flex-none items-center justify-center bg-ibm-blue text-white">
+            <span className="inline-flex h-14 w-14 flex-none items-center justify-center bg-champagne text-navy">
               <ShieldCheck className="h-7 w-7" />
             </span>
             <div>
@@ -170,7 +170,7 @@ export default async function SafetyPage() {
           variant="fade-up"
           className="mx-auto flex w-full max-w-[1180px] flex-col items-start gap-6 border border-inverse-surface-1 bg-inverse-canvas p-7 sm:flex-row sm:items-center sm:gap-8 sm:p-10"
         >
-          <span className="inline-flex h-14 w-14 flex-none items-center justify-center bg-ibm-blue text-white">
+          <span className="inline-flex h-14 w-14 flex-none items-center justify-center bg-champagne text-navy">
             <BadgeCheck className="h-7 w-7" />
           </span>
           <div>
@@ -201,7 +201,7 @@ export default async function SafetyPage() {
               const Icon = MAINTENANCE_ICONS[index] ?? Wrench;
               return (
               <div key={label} data-reveal-item className="border border-hairline bg-white p-5">
-                <span className="inline-flex h-10 w-10 items-center justify-center bg-ibm-blue/10 text-ibm-blue">
+                <span className="inline-flex h-10 w-10 items-center justify-center bg-champagne/10 text-champagne-deep">
                   <Icon className="h-5 w-5" />
                 </span>
                 <p className="mt-3 text-xs text-ink-muted">
@@ -222,7 +222,7 @@ export default async function SafetyPage() {
             {content.questions.heading}
           </h2>
           <p className="mt-3 text-base leading-8 text-ink-muted">
-            Write to <a className="font-semibold text-ibm-blue transition-colors hover:text-ibm-blue-60" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>{" "}
+            Write to <a className="font-semibold text-champagne-deep transition-colors hover:text-champagne-hover" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>{" "}
             — we are happy to walk you through our operating arrangements before you fly.
           </p>
         </Reveal>

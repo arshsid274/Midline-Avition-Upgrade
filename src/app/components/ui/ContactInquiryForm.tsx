@@ -7,9 +7,9 @@ import { AlertTriangle, CheckCircle2, ChevronDown, X } from "lucide-react";
 type ToastState = { kind: "success" | "error"; text: string } | null;
 
 const inputClass =
-  "w-full border-0 border-b border-inverse-ink-muted/40 bg-inverse-surface-1 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-transparent focus:outline-2 focus:outline-ibm-blue focus:-outline-offset-2";
+  "w-full border-0 border-b border-inverse-ink-muted/40 bg-inverse-surface-1 px-4 py-3 text-sm text-white placeholder:text-white/50 focus:border-transparent focus:outline-2 focus:outline-champagne focus:-outline-offset-2";
 const selectClass =
-  "w-full appearance-none border-0 border-b border-inverse-ink-muted/40 bg-inverse-surface-1 px-4 py-3 pr-11 text-sm text-white focus:border-transparent focus:outline-2 focus:outline-ibm-blue focus:-outline-offset-2";
+  "w-full appearance-none border-0 border-b border-inverse-ink-muted/40 bg-inverse-surface-1 px-4 py-3 pr-11 text-sm text-white focus:border-transparent focus:outline-2 focus:outline-champagne focus:-outline-offset-2";
 const labelClass = "block text-xs text-inverse-ink-muted";
 
 export default function ContactInquiryForm() {
@@ -201,10 +201,10 @@ export default function ContactInquiryForm() {
           <button
             type="submit"
             disabled={sending}
-            className="group relative flex w-full items-center justify-center gap-3 overflow-hidden bg-ibm-blue py-4 transition-colors hover:bg-ibm-blue-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ibm-blue disabled:cursor-not-allowed disabled:opacity-60"
+            className="group relative flex w-full items-center justify-center gap-3 overflow-hidden bg-champagne py-4 transition-colors hover:bg-champagne-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <span className="absolute left-0 top-0 h-full w-1 -translate-x-full bg-ibm-blue-80 transition-transform duration-300 group-hover:translate-x-0" />
-            <span className="text-sm font-normal text-white">
+            <span className="absolute left-0 top-0 h-full w-1 -translate-x-full bg-champagne-deep transition-transform duration-300 group-hover:translate-x-0" />
+            <span className="text-sm font-normal text-navy">
               {sending ? "Sending…" : "Submit Inquiry"}
             </span>
           </button>

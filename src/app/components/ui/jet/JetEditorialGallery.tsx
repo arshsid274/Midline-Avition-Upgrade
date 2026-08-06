@@ -13,7 +13,7 @@ const spanClasses = (span?: "wide" | "tall" | "standard") => {
 
 export default function JetEditorialGallery({ jet }: { jet: Jet }) {
   return (
-    <section aria-label={`${jet.name} gallery`} className="bg-white py-16 sm:py-20">
+    <section aria-label={`${jet.name} gallery`} className="bg-ivory py-16 sm:py-20">
       <div className="mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
         <div className="mb-10 max-w-3xl sm:mb-12">
           <Reveal as="p" variant="fade-up" className="text-sm text-ink-muted">

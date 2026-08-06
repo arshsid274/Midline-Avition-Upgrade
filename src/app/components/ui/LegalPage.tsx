@@ -14,7 +14,7 @@ export default function LegalPage({
   children: ReactNode;
 }) {
   return (
-    <main className="midline-page bg-white">
+    <main className="midline-page">
       <div className="mx-auto w-full max-w-3xl px-4 py-16 sm:px-6 sm:py-20">
         <p className="text-sm text-ink-muted">
           Midline Aviation
@@ -24,7 +24,7 @@ export default function LegalPage({
         </h1>
         <p className="mt-3 text-sm text-ink-muted">Last updated: {updated}</p>
 
-        <div className="mt-10 space-y-8 text-[0.95rem] leading-relaxed text-ink-muted [&_a]:font-semibold [&_a]:text-ibm-blue [&_a:hover]:text-ibm-blue-60 [&_h2]:font-display [&_h2]:mt-2 [&_h2]:text-xl [&_h2]:font-medium [&_h2]:text-ink [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-ink [&_li]:mt-2 [&_ul]:list-disc [&_ul]:pl-5 [&_table]:w-full [&_table]:text-sm [&_td]:border-b [&_td]:border-hairline [&_td]:px-3 [&_td]:py-2 [&_th]:border-b [&_th]:border-hairline [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_th]:text-ink">
+        <div className="mt-10 space-y-8 text-[0.95rem] leading-relaxed text-ink-muted [&_a]:font-semibold [&_a]:text-champagne-deep [&_a:hover]:text-champagne-hover [&_h2]:font-display [&_h2]:mt-2 [&_h2]:text-xl [&_h2]:font-medium [&_h2]:text-ink [&_h3]:text-base [&_h3]:font-semibold [&_h3]:text-ink [&_li]:mt-2 [&_ul]:list-disc [&_ul]:pl-5 [&_table]:w-full [&_table]:text-sm [&_td]:border-b [&_td]:border-hairline [&_td]:px-3 [&_td]:py-2 [&_th]:border-b [&_th]:border-hairline [&_th]:px-3 [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_th]:text-ink">
           {children}
         </div>
       </div>

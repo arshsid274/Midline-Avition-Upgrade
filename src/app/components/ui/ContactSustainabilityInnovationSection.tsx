@@ -9,7 +9,7 @@ const sustainabilityPoints = [
 
 export default function ContactSustainabilityInnovationSection() {
   return (
-    <section className="mt-12 bg-white pb-2 pt-5 sm:mt-14 sm:pt-6">
+    <section className="mt-12 bg-ivory pb-2 pt-5 sm:mt-14 sm:pt-6">
       <Reveal as="div" variant="fade-up" className="mx-auto max-w-3xl text-center">
         <p className="inline-flex items-center gap-2 text-sm text-ink-muted">
           <span aria-hidden className="h-px w-8 bg-ink-subtle" />
@@ -48,7 +48,7 @@ export default function ContactSustainabilityInnovationSection() {
             <ul className="mt-3 space-y-1.5">
               {sustainabilityPoints.map((point) => (
                 <li key={point} className="flex items-start gap-2 text-[0.66rem] leading-[1.6] text-inverse-ink-muted">
-                  <span aria-hidden className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-ibm-blue" />
+                  <span aria-hidden className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-champagne" />
                   <span>{point}</span>
                 </li>
               ))}

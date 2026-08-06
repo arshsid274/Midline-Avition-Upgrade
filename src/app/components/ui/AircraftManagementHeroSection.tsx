@@ -15,7 +15,7 @@ export default function AircraftManagementHeroSection({ hero = SERVICE_HEROES["m
         className="object-cover object-center hero-kenburns"
         priority
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-navy/50 via-navy/20 to-transparent" />
 
       <Reveal
         as="div"
@@ -27,7 +27,7 @@ export default function AircraftManagementHeroSection({ hero = SERVICE_HEROES["m
       >
         <p
           data-reveal-item
-          className="inline-flex items-center gap-2 border border-white/30 bg-black/50 px-4 py-1.5 text-sm text-white"
+          className="inline-flex items-center gap-2 border border-white/30 bg-navy/50 px-4 py-1.5 text-sm text-white"
         >
           {hero.eyebrow}
         </p>
@@ -37,7 +37,7 @@ export default function AircraftManagementHeroSection({ hero = SERVICE_HEROES["m
           mode="lcp"
           on="load"
           delay={0.25}
-          className="font-display mt-5 text-4xl font-light leading-[1.08] tracking-[-0.02em] text-white sm:text-5xl md:text-6xl"
+          className="font-display mt-5 text-4xl font-light leading-[1.08] tracking-[-0.02em] text-offwhite sm:text-5xl md:text-6xl"
         >
           {hero.heading}
           {hero.headingAccent ? (
@@ -65,7 +65,7 @@ export default function AircraftManagementHeroSection({ hero = SERVICE_HEROES["m
           {hero.primary?.href ? (
             <Link
               href={hero.primary.href}
-              className="inline-flex min-h-11 items-center justify-center bg-ibm-blue px-6 py-3 text-sm font-normal text-white transition-colors hover:bg-ibm-blue-hover"
+              className="inline-flex min-h-11 items-center justify-center bg-champagne px-6 py-3 text-sm font-normal text-navy transition-colors hover:bg-champagne-hover"
             >
               {hero.primary.label}
             </Link>
