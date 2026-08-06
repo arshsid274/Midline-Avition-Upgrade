@@ -656,10 +656,13 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
   };
 
   return (
+    // Solid warm-ivory band (client follow-up): the section is filled with the
+    // theme cream so the navy card sits on one uniform ground — no video strip
+    // or mixed colours showing either side of the card.
     <section
       id="book-your-flight"
       aria-label="Flight booking form"
-      className="relative z-40 -mt-16 scroll-mt-28 px-4 sm:px-6 md:px-10"
+      className="relative z-40 scroll-mt-28 bg-ivory px-4 py-10 sm:px-6 sm:py-12 md:px-10"
     >
       {/* Dark navy booking card (client brief §5): designed-for-Midline field
           styling, champagne focus states, generous spacing — no plugin look. */}

@@ -59,7 +59,7 @@ Status legend: `[x]` done, with a `VERIFIED:` note from the post-implementation 
 - [x] 23. Navy overlay, H1 one step smaller (3xl→5xl scale), subtext up to `text-base sm:text-lg`, champagne flight-path line. VERIFIED: screenshot — balance fixed, navy overlay legible.
 
 ### F. Booking form (docx §5)
-- [x] 24. Solid navy card, champagne/25 frame, off-white labels, low-opacity underline fields with hover + champagne focus states, padding up (p-5→p-8), grid gaps up. VERIFIED: screenshot shows navy card w/ champagne toggle.
+- [x] 24. Solid navy card, champagne/25 frame, off-white labels, low-opacity underline fields with hover + champagne focus states, padding up (p-5→p-8), grid gaps up. VERIFIED: screenshot shows navy card w/ champagne toggle. **Follow-up (2026-08-06):** the card no longer overlaps the hero — its section is a solid theme-cream (`bg-ivory`) band so no video strip or mixed ground shows either side of the card (Arsh: fill with theme cream instead of blue). VERIFIED: served section markup carries `bg-ivory`.
 - [x] 25. One Way/Round Trip toggle: navy-soft track, champagne slider, navy active label. VERIFIED: screenshot.
 - [x] 26. Date/time popovers restyled navy with champagne selected states. VERIFIED: class audit (no light/blue remnants in pickers).
 - [x] 27. Submit → champagne "Request Quote"; `/api/booking` flow untouched. VERIFIED: rendered HTML contains champagne submit with new label.
@@ -87,7 +87,7 @@ Status legend: `[x]` done, with a `VERIFIED:` note from the post-implementation 
 - [x] 39. `#0A2632` ground (via retinted `inverse-canvas`), enlarged white-treated logo (no white tile), champagne flight-path divider, champagne column headings + hovers, champagne/20 bottom rule, more breathing room, tidied legal/social row. VERIFIED: class audit + fleet-page screenshot bottom.
 
 ### L. Brand device (docx §10)
-- [x] 40. `FlightPathLine` component — 1px champagne line drawing in slowly to a waypoint dot (reduced-motion safe, CSS-only). Applied: home hero, fleet hero, Discover Midline heading, services-grid heading, fleet-cards heading, footer divider; `.link-underline` draw retained for nav/footer links. VERIFIED: visible under hero + fleet headings in screenshots.
+- [x] 40. ~~`FlightPathLine` flight-path element~~ **REMOVED on Arsh's follow-up (2026-08-06): "remove this from everywhere from website".** Component deleted, all six usages (both heroes, three section headings, footer divider) and its CSS stripped. The `.link-underline` hover draw on nav/footer links remains as the only recurring motion device. VERIFIED: `grep -rn "FlightPathLine|flight-path" src/` → no hits; build passes.
 
 ### M. Rest-of-site sweep
 - [x] 41. All remaining pages/components swept (management ×4, cargo ×3, sales, contact ×4, ChatWidget, CookieConsent, MROComingSoon, fleet sections ×3, JetHero, JetCrossLinks, JourneyStartsHere, OurPhilosophy, WhyChooseUs, LegalPage, faq, gallery, safety, testimonials, JetEditorialGallery); hero scrims → navy tones; stark-white section/main wrappers → warm ivory/canvas. No structural changes. VERIFIED: all 15 routes return 200 with 0 blue occurrences; MRO screenshot fully on-system.
