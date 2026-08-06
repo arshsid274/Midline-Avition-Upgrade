@@ -44,16 +44,17 @@ export const headingField = ({
     {
       name: 'accent',
       type: 'text',
-      label: 'Highlighted words',
+      label: 'Start of the second line',
       admin: {
-        description: 'Shown in Midline blue at the start of the second line. Leave empty for none.',
+        description:
+          'Headings render in a single colour (client brief: no mixed-colour headlines). Leave empty for none.',
       },
     },
     {
       name: 'rest',
       type: 'text',
       label: 'Rest of the second line',
-      admin: { description: 'Follows the highlighted words, in the normal colour.' },
+      admin: { description: 'Follows the start of the second line, same colour.' },
     },
   ],
 })

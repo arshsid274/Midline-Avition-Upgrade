@@ -18,7 +18,11 @@
 
 export type HeadingParts = {
   line1: string;
-  /** Rendered in Midline blue at the start of the second line. */
+  /**
+   * Start of the second line. Historically tinted blue; since the Aug 2026
+   * client review headings render in a single colour, so this is now plain
+   * text kept for the CMS field structure.
+   */
   accent: string;
   rest: string;
 };
@@ -50,16 +54,20 @@ export type CtaBannerContent = {
   secondary: LinkContent;
 };
 
+// Client review (Aug 2026): shorter H1, short subtext, no eyebrow and no hero
+// button — the nav "Request Quote" CTA and the booking form carry the action.
+// The eyebrow/cta fields stay for the CMS structure; the hero no longer
+// renders them.
 export const HOME_HERO: HeroContent = {
-  eyebrow: "Established Excellence",
+  eyebrow: "",
   heading: {
-    line1: "Midline Aviation",
-    accent: "Your Sky.",
-    rest: "Your Schedule. Your Way.",
+    line1: "Your Sky. Your Schedule.",
+    accent: "",
+    rest: "",
   },
-  body: "Refining the art of private travel with bespoke charters from Dubai. Available to the discerning explorer 24/7.",
+  body: "Refining the art of private travel with bespoke charters from Dubai.",
   cta: {
-    label: "Book Flight",
+    label: "Request Quote",
     href: "/#book-your-flight",
   },
   videoUrl: "/assets/videos/g200-showcase.mp4",
@@ -75,7 +83,7 @@ export const HOME_CTA_BANNER: CtaBannerContent = {
   heading: "Plan your next flight",
   body: "Charter, management, sales, MRO, and cargo — one team, available 24/7 from Dubai.",
   primary: {
-    label: "Book a flight",
+    label: "Request Quote",
     href: "/#book-your-flight",
   },
   secondary: {

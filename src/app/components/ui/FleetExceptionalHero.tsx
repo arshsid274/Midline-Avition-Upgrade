@@ -1,5 +1,6 @@
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
+import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { FLEET_PAGE } from "@/lib/fleet-page-content";
 
 export default function FleetExceptionalHero({
@@ -23,7 +24,9 @@ export default function FleetExceptionalHero({
         >
           <source src={content.videoUrl} type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/34 via-black/16 to-black/34" />
+        {/* Navy-tone overlay (client brief): keeps the headline readable over
+            busy footage while staying on-brand. */}
+        <div className="absolute inset-0 bg-navy/50" />
 
         <Reveal
           as="div"
@@ -38,14 +41,16 @@ export default function FleetExceptionalHero({
             mode="lcp"
             on="load"
             delay={0.25}
-            className="font-display text-4xl font-light tracking-[-0.02em] text-white sm:text-5xl md:text-6xl"
+            className="font-display text-3xl leading-[1.18] text-offwhite sm:text-4xl md:text-5xl"
           >
             {content.heading}
           </SplitHeading>
-          <p data-reveal-item className="mt-3 max-w-2xl text-sm leading-relaxed text-white/85 sm:text-base md:text-lg">
+          <p data-reveal-item className="mt-5 max-w-2xl text-base leading-relaxed text-offwhite/90 sm:text-lg">
             {content.body}
           </p>
-          <span aria-hidden data-reveal-item className="mt-4 h-[2px] w-16 bg-ibm-blue" />
+          <div data-reveal-item className="mt-6">
+            <FlightPathLine />
+          </div>
         </Reveal>
       </div>
     </section>

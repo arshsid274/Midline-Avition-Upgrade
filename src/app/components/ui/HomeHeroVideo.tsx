@@ -1,23 +1,26 @@
-import Link from "next/link";
 import Reveal from "@/app/components/motion/Reveal";
 import SplitHeading from "@/app/components/motion/SplitHeading";
+import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { HOME_HERO, type HeroContent } from "@/lib/home-content";
 
 /**
- * Home hero — same treatment as the fleet page's exceptional-fleet hero
- * (FleetExceptionalHero): a muted looping showcase reel with a poster for
- * fast LCP, dark gradient scrim, and a left-aligned Carbon-style headline.
- * Replaces the old scroll-scrubbed image-sequence hero (AircraftScroll).
+ * Home hero — centered, minimal treatment matching the fleet page hero
+ * (client review, Aug 2026): a muted looping showcase reel behind a deep-navy
+ * overlay, one short Cinzel headline in warm off-white, one line of support
+ * copy, and the champagne flight-path line. No eyebrow and no hero CTA — the
+ * nav "Request Quote" button and the booking form below carry the action.
  *
- * Content is CMS-driven. The default keeps this rendering unchanged until the
- * Home Page global is wired in, and is deleted once it is.
+ * The heading renders in a single colour by design: `accent`/`rest` are kept
+ * for the CMS field structure but are never tinted, so stale CMS content
+ * cannot reintroduce a mixed-colour headline.
  */
 type HomeHeroVideoProps = {
   content?: HeroContent;
 };
 
 export default function HomeHeroVideo({ content = HOME_HERO }: HomeHeroVideoProps) {
-  const { eyebrow, heading, body, cta, videoUrl, poster } = content;
+  const { heading, body, videoUrl, poster } = content;
+  const secondLine = [heading.accent, heading.rest].filter(Boolean).join(" ");
 
   return (
     <section className="relative isolate h-[calc(100svh-72px)] w-full overflow-hidden md:h-[calc(100svh-84px)]">
@@ -32,57 +35,54 @@ export default function HomeHeroVideo({ content = HOME_HERO }: HomeHeroVideoProp
       >
         <source src={videoUrl} type="video/mp4" />
       </video>
-      <div className="absolute inset-0 bg-gradient-to-r from-black/55 via-black/25 to-transparent" />
+      {/* Navy-tone overlay (client brief §4 / fleet-hero screenshot): keeps the
+          headline readable over busy footage while staying on-brand. */}
+      <div className="absolute inset-0 bg-navy/50" />
 
-      <div className="relative mx-auto flex h-full w-full max-w-[1400px] items-center px-4 sm:px-6 lg:px-8">
-        <Reveal
-          as="div"
-          className="max-w-[38rem] text-left text-white"
+      <Reveal
+        as="div"
+        on="load"
+        variant="stagger"
+        stagger={0.12}
+        delay={0.1}
+        className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
+      >
+        {/*
+          Keyed on its own content so a live-preview router.refresh() remounts
+          the heading rather than reconciling against the DOM that GSAP's
+          SplitText has already rewritten — that reconciliation throws
+          removeChild, or renders the new text inside a stale mask (i.e.
+          invisibly). The key is constant in production, so nothing changes
+          there.
+        */}
+        <SplitHeading
+          key={`${heading.line1}|${heading.accent}|${heading.rest}`}
+          as="h1"
+          mode="lcp"
           on="load"
-          variant="stagger"
-          stagger={0.12}
-          delay={0.1}
+          delay={0.25}
+          className="font-display text-3xl leading-[1.18] text-offwhite sm:text-4xl md:text-5xl"
         >
-          <span data-reveal-item className="text-sm text-white/80">
-            {eyebrow}
-          </span>
+          {heading.line1}
+          {secondLine ? (
+            <>
+              <br />
+              {secondLine}
+            </>
+          ) : null}
+        </SplitHeading>
 
-          {/*
-            Keyed on its own content so a live-preview router.refresh() remounts
-            the heading rather than reconciling against the DOM that GSAP's
-            SplitText has already rewritten — that reconciliation throws
-            removeChild, or renders the new text inside a stale mask (i.e.
-            invisibly). The key is constant in production, so nothing changes
-            there.
-          */}
-          <SplitHeading
-            key={`${heading.line1}|${heading.accent}|${heading.rest}`}
-            as="h1"
-            mode="lcp"
-            on="load"
-            delay={0.25}
-            className="font-display mt-5 text-4xl font-light leading-[1.12] tracking-[-0.02em] sm:text-5xl md:text-[3.4rem]"
-          >
-            {heading.line1}
-            <br />
-            <span className="text-ibm-blue">{heading.accent}</span> {heading.rest}
-          </SplitHeading>
+        <p
+          data-reveal-item
+          className="mt-5 max-w-xl text-base leading-relaxed text-offwhite/90 sm:text-lg"
+        >
+          {body}
+        </p>
 
-          <span aria-hidden data-reveal-item className="mt-6 block h-px w-14 bg-ibm-blue" />
-
-          <p data-reveal-item className="mt-6 max-w-md text-sm leading-relaxed text-white/80 sm:text-base">
-            {body}
-          </p>
-
-          <Link
-            data-reveal-item
-            href={cta.href}
-            className="mt-8 inline-flex min-h-12 items-center bg-ibm-blue px-6 py-3 text-sm text-white uppercase tracking-wide transition-colors hover:bg-ibm-blue-hover"
-          >
-            {cta.label}
-          </Link>
-        </Reveal>
-      </div>
+        <div data-reveal-item className="mt-6">
+          <FlightPathLine />
+        </div>
+      </Reveal>
     </section>
   );
 }

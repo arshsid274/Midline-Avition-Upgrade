@@ -714,11 +714,11 @@ export interface HomePage {
     heading: {
       line1: string;
       /**
-       * Shown in Midline blue at the start of the second line. Leave empty for none.
+       * Headings render in a single colour (client brief: no mixed-colour headlines). Leave empty for none.
        */
       accent?: string | null;
       /**
-       * Follows the highlighted words, in the normal colour.
+       * Follows the start of the second line, same colour.
        */
       rest?: string | null;
     };
