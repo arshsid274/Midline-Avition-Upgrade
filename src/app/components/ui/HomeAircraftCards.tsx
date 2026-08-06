@@ -5,8 +5,15 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { HOME_AIRCRAFT, type AircraftCard } from "@/lib/home-content";
 
+/**
+ * Card media (client review, Aug 2026): horizontal 16:9, no overlaid title or
+ * registration chips — the aircraft name lives in the text area below. The
+ * same fixed ratio holds on every breakpoint so mobile never auto-crops the
+ * aircraft differently.
+ */
 function HoverVideoCard({ aircraft }: { aircraft: AircraftCard }) {
   const [hovered, setHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -26,7 +33,7 @@ function HoverVideoCard({ aircraft }: { aircraft: AircraftCard }) {
 
   return (
     <div
-      className="relative aspect-square overflow-hidden"
+      className="relative aspect-video overflow-hidden"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -36,7 +43,7 @@ function HoverVideoCard({ aircraft }: { aircraft: AircraftCard }) {
         alt={aircraft.imageAlt}
         fill
         sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-        className={`object-cover transition-opacity duration-500 ${hovered ? "opacity-0" : "opacity-100"}`}
+        className={`object-cover transition-all duration-700 group-hover:scale-[1.04] ${hovered ? "opacity-0" : "opacity-100"}`}
         priority
       />
 
@@ -49,16 +56,6 @@ function HoverVideoCard({ aircraft }: { aircraft: AircraftCard }) {
         playsInline
         className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${hovered ? "opacity-100" : "opacity-0"}`}
       />
-
-      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-      <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
-        <div className="inline-flex bg-ink px-3.5 py-2">
-          <h3 className="text-[1.05rem] font-medium tracking-tight text-white">{aircraft.name}</h3>
-        </div>
-        <div className="inline-flex bg-ink px-3 py-2">
-          <span className="font-mono text-xs font-medium text-white">{aircraft.registration}</span>
-        </div>
-      </div>
     </div>
   );
 }
@@ -143,84 +140,72 @@ export default function HomeAircraftCards({
   }, []);
 
   return (
+    // Dark navy fleet panel (client brief §2 hybrid choreography) with solid
+    // warm-ivory cards — no outline frames (client review screenshots).
     <section
       ref={sectionRef}
       aria-labelledby="home-aircraft-heading"
-      className="overflow-x-clip bg-white py-14 sm:py-16 lg:py-20"
+      className="overflow-x-clip bg-navy py-16 sm:py-20 lg:py-24"
     >
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8">
-        <header ref={headerRef} className="mb-8 text-center sm:mb-10 lg:mb-12">
-          <p data-aircraft-heading-line className="text-sm text-ink-muted">
-            Fleet
-          </p>
+        <header ref={headerRef} className="mb-10 text-center sm:mb-12 lg:mb-14">
           <h2
             id="home-aircraft-heading"
             data-aircraft-heading-line
-            className="mt-3 text-3xl font-light tracking-tight text-ink sm:text-4xl"
+            className="text-2xl text-offwhite sm:text-3xl"
           >
             Our Fleet
           </h2>
+          <div data-aircraft-heading-line className="mt-5 flex justify-center">
+            <FlightPathLine />
+          </div>
           <p
             data-aircraft-heading-line
-            className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted sm:text-base"
+            className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-inverse-ink-muted"
           >
             Explore three signature aircraft from the Midline fleet, built for comfort, range, and performance.
           </p>
         </header>
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3 lg:gap-8">
           {cards.map((aircraft) => (
             <article
               key={aircraft.id}
               data-aircraft-card
-              className="flex h-full flex-col border border-hairline bg-white p-4 transition-colors hover:bg-surface-1 sm:p-5"
+              className="group flex h-full flex-col bg-ivory"
             >
               {aircraft.videoSrc ? (
                 <HoverVideoCard aircraft={aircraft} />
               ) : (
-                <div className="relative aspect-square overflow-hidden">
+                <div className="relative aspect-video overflow-hidden">
                   <Image
                     src={aircraft.imageSrc}
                     alt={aircraft.imageAlt}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                  <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
-                    <div className="inline-flex bg-ink px-3.5 py-2">
-                      <h3 className="text-[1.05rem] font-medium tracking-tight text-white">{aircraft.name}</h3>
-                    </div>
-                    <div className="inline-flex bg-ink px-3 py-2">
-                      <span className="font-mono text-xs font-medium text-white">{aircraft.registration}</span>
-                    </div>
-                  </div>
                 </div>
               )}
 
               {/*
-                flex-1 with mt-auto on the footer keeps the badge and button on
-                the same line across all three cards, whatever length the
-                descriptions run to. The 3D version could not do this: every
-                element sat on its own translateZ plane, so heights were
-                independent per card and the actions came out ragged.
+                flex-1 with mt-auto on the footer keeps the button on the same
+                line across all three cards, whatever length the descriptions
+                run to. Aircraft name sits here as the card heading (client
+                review) — no overlay chips, no registration, no availability
+                pill.
               */}
-              <div data-aircraft-text className="mt-4 flex flex-1 flex-col">
-                <p className="text-sm leading-relaxed text-ink-muted">{aircraft.description}</p>
+              <div data-aircraft-text className="flex flex-1 flex-col p-5 sm:p-6">
+                <h3 className="text-lg font-medium text-ink sm:text-xl">{aircraft.name}</h3>
+                <p className="mt-3 text-base leading-relaxed text-ink-muted">{aircraft.description}</p>
 
-                <div className="mt-auto space-y-4 pt-4">
-                  <div className="inline-flex items-center border border-hairline bg-surface-1 px-3 py-1 text-xs font-medium text-ink">
-                    {aircraft.comingSoon ? "Coming Soon" : "Available Now"}
-                  </div>
-
-                  <div>
-                    <Link
-                      href={aircraft.href}
-                      className="inline-flex items-center border border-ibm-blue bg-white px-4 py-2 text-sm text-ibm-blue uppercase tracking-wide transition hover:bg-ibm-blue hover:text-white"
-                    >
-                      More Details
-                    </Link>
-                  </div>
+                <div className="mt-auto pt-6">
+                  <Link
+                    href={aircraft.href}
+                    className="inline-flex items-center border border-champagne px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.08em] text-champagne-deep transition-colors duration-300 hover:bg-champagne hover:text-navy"
+                  >
+                    More Details
+                  </Link>
                 </div>
               </div>
             </article>

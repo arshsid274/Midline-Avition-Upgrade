@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { HOME_SERVICES, type ServicesGridContent } from "@/lib/home-content";
 
 /**
@@ -95,23 +96,29 @@ export default function HomeServicesGrid({
     <section
       ref={sectionRef}
       aria-labelledby="home-services-heading"
-      className="overflow-x-clip bg-white py-14 sm:py-16 lg:py-20"
+      className="overflow-x-clip bg-ivory py-16 sm:py-20 lg:py-24"
     >
       <div className="mx-auto w-full max-w-[1440px] px-4 sm:px-6 lg:px-8">
-        <header ref={headerRef} className="mb-8 text-center sm:mb-10 lg:mb-12">
-          <p data-service-heading-line className="text-sm text-ink-muted">
+        <header ref={headerRef} className="mb-10 text-center sm:mb-12 lg:mb-14">
+          <p
+            data-service-heading-line
+            className="text-xs font-medium uppercase tracking-[0.22em] text-ink-muted"
+          >
             {content.eyebrow}
           </p>
           <h2
             id="home-services-heading"
             data-service-heading-line
-            className="mt-3 text-3xl font-light tracking-tight text-ink sm:text-4xl"
+            className="mt-4 text-2xl text-ink sm:text-3xl"
           >
             {content.heading}
           </h2>
+          <div data-service-heading-line className="mt-5 flex justify-center">
+            <FlightPathLine />
+          </div>
           <p
             data-service-heading-line
-            className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-ink-muted sm:text-base"
+            className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-ink-muted"
           >
             {content.intro}
           </p>
@@ -125,7 +132,7 @@ export default function HomeServicesGrid({
                 key={service.id}
                 href={service.href}
                 data-service-card
-                className={`group flex h-full flex-col border border-hairline bg-white p-4 transition-colors hover:bg-surface-1 sm:p-5 ${
+                className={`group flex h-full flex-col bg-card p-4 sm:p-5 ${
                   wide ? "xl:col-span-3" : "xl:col-span-2"
                 }`}
               >
@@ -141,8 +148,8 @@ export default function HomeServicesGrid({
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   {service.tag ? (
-                    <div className="absolute left-3 top-3 inline-flex bg-ink px-3 py-1.5">
-                      <span className="text-xs font-medium uppercase tracking-wide text-white">
+                    <div className="absolute left-3 top-3 inline-flex bg-navy px-3 py-1.5">
+                      <span className="text-xs font-medium uppercase tracking-wide text-offwhite">
                         {service.tag}
                       </span>
                     </div>
@@ -153,12 +160,12 @@ export default function HomeServicesGrid({
                   <h3 className="text-[1.05rem] font-medium tracking-tight text-ink">
                     {service.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+                  <p className="mt-2 text-base leading-relaxed text-ink-muted">
                     {service.description}
                   </p>
 
                   <div className="mt-auto pt-4">
-                    <span className="inline-flex items-center gap-2 text-sm uppercase tracking-wide text-ibm-blue">
+                    <span className="inline-flex items-center gap-2 text-sm font-medium uppercase tracking-wide text-champagne-deep">
                       {service.ctaLabel}
                       <span
                         aria-hidden
