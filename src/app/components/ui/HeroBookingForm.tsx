@@ -227,7 +227,7 @@ function DatePickerField({ value, onChange, placeholder, minDateValue }: DatePic
 
   return (
     <div ref={containerRef} className="relative">
-      <div className="flex h-11 w-full border-b border-ink-subtle bg-surface-1 text-sm transition-colors focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-ibm-blue">
+      <div className="flex h-11 w-full border-b border-offwhite/30 bg-navy-soft text-sm transition-colors hover:border-offwhite/50 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-champagne">
         <input
           type="text"
           inputMode="numeric"
@@ -247,7 +247,7 @@ function DatePickerField({ value, onChange, placeholder, minDateValue }: DatePic
               applyManualDateValue(value);
             }
           }}
-          className="h-full min-w-0 flex-1 bg-transparent px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-none"
+          className="h-full min-w-0 flex-1 bg-transparent px-3 text-sm text-offwhite placeholder:text-offwhite/50 focus:outline-none"
         />
         <button
           type="button"
@@ -264,7 +264,7 @@ function DatePickerField({ value, onChange, placeholder, minDateValue }: DatePic
               return nextState;
             })
           }
-          className="h-full shrink-0 border-l border-hairline px-3 text-xs font-semibold text-ibm-blue transition-colors hover:bg-surface-2"
+          className="h-full shrink-0 border-l border-offwhite/20 px-3 text-xs font-semibold text-champagne transition-colors hover:bg-navy-deep"
         >
           Pick
         </button>
@@ -273,18 +273,18 @@ function DatePickerField({ value, onChange, placeholder, minDateValue }: DatePic
       {manualDateError && <p className="mt-1 px-1 text-[11px] text-error">{manualDateError}</p>}
 
       {isOpen && (
-        <div className="absolute left-0 right-0 z-50 mt-2 border border-hairline bg-white p-3">
+        <div className="absolute left-0 right-0 z-50 mt-2 border border-champagne/30 bg-navy p-3">
           <div className="mb-3 flex items-center justify-between gap-2">
             <button
               type="button"
               onClick={() =>
                 setMonthCursor((current) => new Date(current.getFullYear(), current.getMonth() - 1, 1))
               }
-              className="border border-hairline px-2 py-1 text-xs font-medium text-ink transition-colors hover:bg-surface-1"
+              className="border border-offwhite/20 px-2 py-1 text-xs font-medium text-offwhite transition-colors hover:bg-navy-soft"
             >
               Prev
             </button>
-            <p className="text-sm font-semibold text-ink">
+            <p className="text-sm font-semibold text-offwhite">
               {MONTH_LABELS[monthCursor.getMonth()]} {monthCursor.getFullYear()}
             </p>
             <button
@@ -292,7 +292,7 @@ function DatePickerField({ value, onChange, placeholder, minDateValue }: DatePic
               onClick={() =>
                 setMonthCursor((current) => new Date(current.getFullYear(), current.getMonth() + 1, 1))
               }
-              className="border border-hairline px-2 py-1 text-xs font-medium text-ink transition-colors hover:bg-surface-1"
+              className="border border-offwhite/20 px-2 py-1 text-xs font-medium text-offwhite transition-colors hover:bg-navy-soft"
             >
               Next
             </button>
@@ -302,7 +302,7 @@ function DatePickerField({ value, onChange, placeholder, minDateValue }: DatePic
             {WEEKDAY_LABELS.map((label) => (
               <span
                 key={label}
-                className="text-center text-[10px] font-medium text-ink-subtle"
+                className="text-center text-[10px] font-medium text-offwhite/50"
               >
                 {label}
               </span>
@@ -316,11 +316,11 @@ function DatePickerField({ value, onChange, placeholder, minDateValue }: DatePic
 
               const dayClassName = [
                 "h-8 text-xs font-medium transition-colors",
-                day.inCurrentMonth ? "text-ink" : "text-ink-subtle",
-                day.isToday ? "border border-ink-subtle" : "",
-                isSelected ? "border-none bg-ibm-blue text-white" : "",
-                !isSelected && !isDisabled ? "hover:bg-surface-1" : "",
-                isDisabled ? "cursor-not-allowed text-surface-2" : "",
+                day.inCurrentMonth ? "text-offwhite" : "text-offwhite/40",
+                day.isToday ? "border border-offwhite/40" : "",
+                isSelected ? "border-none bg-champagne text-navy" : "",
+                !isSelected && !isDisabled ? "hover:bg-navy-soft" : "",
+                isDisabled ? "cursor-not-allowed text-offwhite/20" : "",
               ]
                 .filter(Boolean)
                 .join(" ");
@@ -410,7 +410,7 @@ function TimePickerField({ value, onChange, placeholder }: TimePickerFieldProps)
 
   return (
     <div ref={containerRef} className="relative">
-      <div className="flex h-11 w-full border-b border-ink-subtle bg-surface-1 text-sm transition-colors focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-ibm-blue">
+      <div className="flex h-11 w-full border-b border-offwhite/30 bg-navy-soft text-sm transition-colors hover:border-offwhite/50 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-champagne">
         <input
           type="text"
           inputMode="text"
@@ -430,12 +430,12 @@ function TimePickerField({ value, onChange, placeholder }: TimePickerFieldProps)
               applyManualTimeValue(value);
             }
           }}
-          className="h-full min-w-0 flex-1 bg-transparent px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-none"
+          className="h-full min-w-0 flex-1 bg-transparent px-3 text-sm text-offwhite placeholder:text-offwhite/50 focus:outline-none"
         />
         <button
           type="button"
           onClick={() => setIsOpen((current) => !current)}
-          className="h-full shrink-0 border-l border-hairline px-3 text-xs font-semibold text-ibm-blue transition-colors hover:bg-surface-2"
+          className="h-full shrink-0 border-l border-offwhite/20 px-3 text-xs font-semibold text-champagne transition-colors hover:bg-navy-deep"
         >
           Pick
         </button>
@@ -444,11 +444,11 @@ function TimePickerField({ value, onChange, placeholder }: TimePickerFieldProps)
       {manualTimeError && <p className="mt-1 px-1 text-[11px] text-error">{manualTimeError}</p>}
 
       {isOpen && (
-        <div className="absolute left-0 right-0 z-50 mt-2 border border-hairline bg-white p-2">
-          <div className="mb-2 px-1 text-[11px] font-medium text-ink-muted">
+        <div className="absolute left-0 right-0 z-50 mt-2 border border-champagne/30 bg-navy p-2">
+          <div className="mb-2 px-1 text-[11px] font-medium text-offwhite/70">
             Select Time
           </div>
-          <p className="mb-2 px-1 text-[11px] text-ink-subtle">Or type manually: HH:MM or h:mm AM/PM</p>
+          <p className="mb-2 px-1 text-[11px] text-offwhite/50">Or type manually: HH:MM or h:mm AM/PM</p>
           <div className="max-h-56 overflow-y-auto pr-1">
             <div className="grid grid-cols-2 gap-1">
               {TIME_OPTIONS.map((option) => {
@@ -464,7 +464,7 @@ function TimePickerField({ value, onChange, placeholder }: TimePickerFieldProps)
                       setIsOpen(false);
                     }}
                     className={`px-2 py-1.5 text-left text-xs font-medium transition-colors ${
-                      isSelected ? "bg-ibm-blue text-white" : "text-ink hover:bg-surface-1"
+                      isSelected ? "bg-champagne text-navy" : "text-offwhite hover:bg-navy-soft"
                     }`}
                   >
                     {option.label}
@@ -554,7 +554,7 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
           ? setDepartureCity(event.target.value)
           : setArrivalCity(event.target.value)
       }
-      className="h-11 w-full border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
+      className="h-11 w-full border-b border-offwhite/30 bg-navy-soft px-3 text-sm text-offwhite transition-colors placeholder:text-offwhite/50 hover:border-offwhite/50 focus:outline-2 focus:-outline-offset-2 focus:outline-champagne"
       // No autoComplete token: the spec has none for a trip endpoint, and the
       // address ones would offer the traveller their own home city. Left at the
       // browser default so its own history for the field still works — which it
@@ -661,18 +661,20 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
       aria-label="Flight booking form"
       className="relative z-40 -mt-16 scroll-mt-28 px-4 sm:px-6 md:px-10"
     >
+      {/* Dark navy booking card (client brief §5): designed-for-Midline field
+          styling, champagne focus states, generous spacing — no plugin look. */}
       <form
-        className={`mx-auto w-full max-w-6xl border border-hairline bg-white p-4 text-ink transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] sm:p-5 md:p-6 ${
+        className={`mx-auto w-full max-w-6xl border border-champagne/25 bg-navy p-5 text-offwhite transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] sm:p-6 md:p-8 ${
           revealFromBelow ? "translate-y-0 opacity-100 delay-[180ms]" : "translate-y-16 opacity-0"
         }`}
         onSubmit={handleSubmit}
       >
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <p className="text-sm font-semibold text-ink">Book Your Flight</p>
-          <div className="relative inline-grid grid-cols-2 border border-hairline bg-surface-1 p-1">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm font-medium uppercase tracking-[0.16em] text-offwhite">Book Your Flight</p>
+          <div className="relative inline-grid grid-cols-2 border border-champagne/30 bg-navy-soft p-1">
             <span
               aria-hidden="true"
-              className={`absolute inset-y-1 w-[calc(50%-4px)] bg-ink transition-transform duration-300 ${
+              className={`absolute inset-y-1 w-[calc(50%-4px)] bg-champagne transition-transform duration-300 ${
                 isRoundTrip ? "translate-x-[calc(100%+4px)]" : "translate-x-1"
               }`}
             />
@@ -680,7 +682,7 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
               type="button"
               onClick={() => changeTripType("one-way")}
               className={`relative z-[1] px-4 py-1.5 text-xs font-semibold transition-colors ${
-                !isRoundTrip ? "text-white" : "text-ink-muted"
+                !isRoundTrip ? "text-navy" : "text-inverse-ink-muted"
               }`}
             >
               One Way
@@ -689,7 +691,7 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
               type="button"
               onClick={() => changeTripType("round-trip")}
               className={`relative z-[1] px-4 py-1.5 text-xs font-semibold transition-colors ${
-                isRoundTrip ? "text-white" : "text-ink-muted"
+                isRoundTrip ? "text-navy" : "text-inverse-ink-muted"
               }`}
             >
               Round Trip
@@ -697,7 +699,7 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
           </div>
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {renderAirportInput("departure", "Departure City, Country or Airport Code")}
           {renderAirportInput("arrival", "Arrival City, Country or Airport Code")}
           <DatePickerField value={departureDate} onChange={setDepartureDate} placeholder="Departure Date" />
@@ -705,7 +707,7 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
         </div>
 
         {isRoundTrip && (
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2">
             <DatePickerField
               value={returnDate}
               onChange={setReturnDate}
@@ -719,17 +721,17 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
         <div
           className={`overflow-hidden transition-all duration-500 ${
             primaryDetailsComplete
-              ? "mt-4 max-h-[560px] border-t border-hairline pt-4 opacity-100"
+              ? "mt-6 max-h-[560px] border-t border-offwhite/15 pt-6 opacity-100"
               : "max-h-0 opacity-0"
           }`}
         >
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <input
               type="text"
               placeholder="First Name"
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
-              className="h-11 border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
+              className="h-11 border-b border-offwhite/30 bg-navy-soft px-3 text-sm text-offwhite transition-colors placeholder:text-offwhite/50 hover:border-offwhite/50 focus:outline-2 focus:-outline-offset-2 focus:outline-champagne"
               required={primaryDetailsComplete}
             />
             <input
@@ -737,7 +739,7 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
               placeholder="Last Name"
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
-              className="h-11 border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
+              className="h-11 border-b border-offwhite/30 bg-navy-soft px-3 text-sm text-offwhite transition-colors placeholder:text-offwhite/50 hover:border-offwhite/50 focus:outline-2 focus:-outline-offset-2 focus:outline-champagne"
               required={primaryDetailsComplete}
             />
             <input
@@ -745,7 +747,7 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
               placeholder="Email Address"
               value={emailAddress}
               onChange={(event) => setEmailAddress(event.target.value)}
-              className="h-11 border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
+              className="h-11 border-b border-offwhite/30 bg-navy-soft px-3 text-sm text-offwhite transition-colors placeholder:text-offwhite/50 hover:border-offwhite/50 focus:outline-2 focus:-outline-offset-2 focus:outline-champagne"
               required={primaryDetailsComplete}
             />
             <input
@@ -754,7 +756,7 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
               value={phoneNumber}
               onChange={(event) => setPhoneNumber(event.target.value)}
               pattern="[+()0-9\s.-]{7,20}"
-              className="h-11 border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
+              className="h-11 border-b border-offwhite/30 bg-navy-soft px-3 text-sm text-offwhite transition-colors placeholder:text-offwhite/50 hover:border-offwhite/50 focus:outline-2 focus:-outline-offset-2 focus:outline-champagne"
               required={primaryDetailsComplete}
             />
             <select
@@ -764,7 +766,7 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
                 setSelectedAircraft(event.target.value);
                 setPaxCount("");
               }}
-              className="h-11 border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue"
+              className="h-11 border-b border-offwhite/30 bg-navy-soft px-3 text-sm text-offwhite transition-colors hover:border-offwhite/50 focus:outline-2 focus:-outline-offset-2 focus:outline-champagne"
               required={primaryDetailsComplete}
             >
               <option value="" className="text-ink">
@@ -789,7 +791,7 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
                 if (!/^\d+$/.test(nextValue)) return;
                 setPaxCount(nextValue);
               }}
-              className="h-11 border-b border-ink-subtle bg-surface-1 px-3 text-sm text-ink placeholder:text-ink-subtle focus:outline-2 focus:-outline-offset-2 focus:outline-ibm-blue disabled:cursor-not-allowed disabled:opacity-55"
+              className="h-11 border-b border-offwhite/30 bg-navy-soft px-3 text-sm text-offwhite transition-colors placeholder:text-offwhite/50 hover:border-offwhite/50 focus:outline-2 focus:-outline-offset-2 focus:outline-champagne disabled:cursor-not-allowed disabled:opacity-55"
               min={1}
               max={selectedAircraftMaxPax}
               step={1}
@@ -807,13 +809,13 @@ export default function HeroBookingForm({ revealFromBelow = false }: HeroBooking
               {paxErrorMessage}
             </p>
           )}
-          <div className="mt-4 flex flex-wrap items-center justify-end gap-3">
+          <div className="mt-6 flex flex-wrap items-center justify-end gap-3">
             <button
               type="submit"
               disabled={!canSubmit}
-              className="inline-flex h-11 items-center justify-center bg-ibm-blue px-5 text-sm font-normal text-white transition-colors hover:bg-ibm-blue-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ibm-blue disabled:cursor-not-allowed disabled:opacity-55"
+              className="inline-flex h-12 items-center justify-center bg-champagne px-8 text-[0.8125rem] font-semibold uppercase tracking-[0.08em] text-navy transition-colors hover:bg-champagne-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-champagne disabled:cursor-not-allowed disabled:opacity-55"
             >
-              {submitStatus === "submitting" ? "Sending..." : "Request Flight"}
+              {submitStatus === "submitting" ? "Sending..." : "Request Quote"}
             </button>
           </div>
         </div>
