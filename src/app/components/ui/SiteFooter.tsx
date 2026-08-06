@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, Linkedin } from "lucide-react";
+import FlightPathLine from "@/app/components/ui/FlightPathLine";
 import { SITE_NAME } from "@/lib/seo";
 
 const footerColumns = [
@@ -48,35 +49,43 @@ const socials = [
 
 export default function SiteFooter() {
   return (
-    <footer className="w-full bg-inverse-canvas px-6 pt-20 pb-12 text-inverse-ink-muted md:px-12 lg:px-24">
+    // Deep-navy footer (client brief §9): #0A2632 ground, stronger logo, thin
+    // champagne dividers, generous breathing room, controlled legal/social
+    // hierarchy.
+    <footer className="w-full bg-inverse-canvas px-6 pt-24 pb-14 text-inverse-ink-muted md:px-12 lg:px-24">
       <div className="mx-auto max-w-7xl">
-        {/* Logo on a flat white tile — the logo is dark navy, so a plain white
-            square with a hairline border lifts it off the charcoal footer. */}
-        <div className="mb-16 flex justify-center">
+        {/* The logo PNG is dark navy, so it gets the off-white filter treatment
+            on this surface until the final logo arrives. */}
+        <div className="mb-8 flex justify-center">
           <Link href="/" aria-label={`${SITE_NAME} home`}>
-            <div className="border border-hairline bg-white px-8 py-5">
-              <Image
-                src="/assets/images/Midline_Airlines.png"
-                alt={SITE_NAME}
-                width={734}
-                height={340}
-                className="h-11 w-auto object-contain sm:h-12"
-              />
-            </div>
+            <Image
+              src="/assets/images/Midline_Airlines.png"
+              alt={SITE_NAME}
+              width={734}
+              height={340}
+              className="h-14 w-auto object-contain sm:h-16 [filter:brightness(0)_invert(0.93)_sepia(0.14)]"
+            />
           </Link>
         </div>
 
+        {/* Brand device: champagne flight-path divider */}
+        <div className="mb-16 flex justify-center">
+          <FlightPathLine width={160} />
+        </div>
+
         {/* Link columns */}
-        <div className="mb-16 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-16">
+        <div className="mb-20 grid grid-cols-1 gap-12 md:grid-cols-2 lg:grid-cols-4 lg:gap-16">
           {footerColumns.map((column) => (
             <div key={column.heading}>
-              <h3 className="mb-8 text-sm font-medium text-white">{column.heading}</h3>
+              <h3 className="mb-6 text-xs font-medium uppercase tracking-[0.18em] text-champagne">
+                {column.heading}
+              </h3>
               <ul className="space-y-4 text-sm">
                 {column.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="link-underline text-inverse-ink-muted transition-colors duration-300 hover:text-white"
+                      className="link-underline text-inverse-ink-muted transition-colors duration-300 hover:text-champagne"
                     >
                       {link.label}
                     </Link>
@@ -88,24 +97,21 @@ export default function SiteFooter() {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col items-center justify-between border-t border-inverse-surface-1 pt-8 text-xs md:flex-row">
+        <div className="flex flex-col items-center justify-between border-t border-champagne/20 pt-8 text-xs md:flex-row">
           <div className="mb-6 flex flex-col items-center gap-3 md:mb-0 md:flex-row md:gap-4">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-inverse-surface-1 text-[10px] font-semibold text-white">
-              M
-            </span>
             <p>
               &copy; {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
             </p>
             <nav aria-label="Legal" className="flex items-center gap-3">
-              <Link href="/privacy-policy" className="link-underline transition-colors hover:text-white">
+              <Link href="/privacy-policy" className="link-underline transition-colors hover:text-champagne">
                 Privacy
               </Link>
-              <span aria-hidden className="text-white/25">·</span>
-              <Link href="/terms-and-conditions" className="link-underline transition-colors hover:text-white">
+              <span aria-hidden className="text-champagne/40">·</span>
+              <Link href="/terms-and-conditions" className="link-underline transition-colors hover:text-champagne">
                 Terms
               </Link>
-              <span aria-hidden className="text-white/25">·</span>
-              <Link href="/cookie-policy" className="link-underline transition-colors hover:text-white">
+              <span aria-hidden className="text-champagne/40">·</span>
+              <Link href="/cookie-policy" className="link-underline transition-colors hover:text-champagne">
                 Cookies
               </Link>
             </nav>
@@ -118,7 +124,7 @@ export default function SiteFooter() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={label}
-                className="text-inverse-ink-muted transition-colors duration-300 hover:text-white"
+                className="text-inverse-ink-muted transition-colors duration-300 hover:text-champagne"
               >
                 <Icon className="h-4 w-4" />
               </a>
